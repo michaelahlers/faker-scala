@@ -21,6 +21,7 @@ package object internet {
       And collection.MaxSize[64]
       And string.Trimmed)
 
+  /** @see [[https://en.wikipedia.org/wiki/Email_address#Local-part]] */
   @newtype case class EmailLocal(toText: EmailLocalType)
 
   /** @see [[https://emailregex.com]] */
@@ -31,6 +32,7 @@ package object internet {
         Or extras.Drop[1, 1, string.IPv4]
         Or extras.Drop[1, 1, string.IPv6]))
 
+  /** @see [[https://en.wikipedia.org/wiki/Email_address#Domain]] */
   @newtype case class EmailDomain(toText: EmailDomainType)
 
 }
