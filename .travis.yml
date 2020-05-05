@@ -20,7 +20,7 @@ matrix:
       jdk: openjdk8
 
 before_script:
-  - sbt +test:compile +it:compile
+  - sbt +test:compile
 
 script:
   - sbt +test
