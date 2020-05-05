@@ -39,5 +39,5 @@ This library and tools are fully-tested on and supported for these Java versions
 [scala-steward-status-badge]: https://img.shields.io/badge/Scala_Steward-helping-blue.svg
 [scala-steward-overview]: https://scala-steward.org
 
-[travis-ci-build]: https://www.travis-ci.org/michaelahlers/faker-scala
-[travis-ci-status-badge]: https://www.travis-ci.org/michaelahlers/faker-scala.svg?branch=v0.0.x
+[travis-ci-build]: https://www.travis-ci.com/michaelahlers/faker-scala
+[travis-ci-status-badge]: https://www.travis-ci.com/michaelahlers/faker-scala.svg?branch=v0.0.x
