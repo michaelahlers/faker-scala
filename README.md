@@ -17,6 +17,19 @@ And means to fill gaps left by those for Scala which haven't seen recent activit
 - [justwrote/scala-faker](https://github.com/justwrote/scala-faker)
 - [therealadam/scala-faker](https://github.com/therealadam/scala-faker)
 
+## Platforms
+
+This library and tools are fully-tested on and supported for these Java versions and operating systems:
+
+| JDK | macOS | Linux | Windows |
+| ---: | :---: | :---: | :---: |
+| **1.8** | :grey_question: | :white_check_mark: | :white_check_mark: | 
+| **9** | :grey_question: | :grey_question: | :grey_question: | 
+| **11** | :grey_question: | :grey_question: | :grey_question: | 
+| **12** | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| **13** | :grey_question: | :grey_question: | :grey_question: | 
+| **14** | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+
 [appveyor-build]: https://ci.appveyor.com/project/michaelahlers/faker-scala
 [appveyor-status-badge]: https://ci.appveyor.com/api/projects/status/erw16d62o5erwy95/branch/v0.0.x?svg=true
 
