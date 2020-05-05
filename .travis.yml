@@ -1,0 +1,32 @@
+language: scala
+
+os:
+  - linux
+  - osx
+
+jdk:
+  - openjdk8
+  - openjdk12
+  - openjdk14
+
+matrix:
+  # OpenJDK installation fails, even with older Xcode image. See https://github.com/travis-ci/travis-ci/issues/10289 for details.
+  #include:
+  #  - os: osx
+  #    osx_image: xcode9.3
+  #    jdk: openjdk8
+  exclude:
+    - os: osx
+      jdk: openjdk8
+
+before_script:
+  - sbt +test:compile +it:compile
+
+script:
+  - sbt +test
+
+cache:
+  directories:
+    - $HOME/.cache
+    - $HOME/.ivy2
+    - $HOME/.sbt
