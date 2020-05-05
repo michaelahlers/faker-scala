@@ -1,4 +1,4 @@
-package ahlers.refined
+package ahlers.faker.refined
 
 import eu.timepit.refined.api.Result
 import eu.timepit.refined.api.Validate
