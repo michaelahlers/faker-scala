@@ -20,9 +20,9 @@ class MatchEmailLocalSpec extends AnyWordSpec {
 
     isValid("jane").should(be(true))
     isValid("jane+a").should(be(true))
-    isValid("jane.doe").should(be(true))
-    isValid("jane.doe+a").should(be(true))
-    isValid("jane.doe+a+b").should(be(true))
+    isValid("jane.smith").should(be(true))
+    isValid("jane.smith+a").should(be(true))
+    isValid("jane.smith+a+b").should(be(true))
 
     isValid("jane-doe").should(be(true))
     isValid("jane-doe+a").should(be(true))
@@ -43,7 +43,7 @@ class MatchEmailLocalSpec extends AnyWordSpec {
 
   "showExpr" in {
     val showExpr = Validate[String, MatchEmailLocal].showExpr(_)
-    showExpr("jane.doe").should(matchTo("jane.doe is a valid email local part"))
+    showExpr("jane.smith").should(matchTo("jane.smith is a valid email local part"))
   }
 
 }
