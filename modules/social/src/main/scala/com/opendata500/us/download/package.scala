@@ -1,12 +1,6 @@
 package com.opendata500.us
 
-import ahlers.faker.social.CompanyName
-import ahlers.faker.social.CompanyHomepage
-import eu.timepit.refined.api._
-import eu.timepit.refined.boolean._
-import eu.timepit.refined.collection._
-import eu.timepit.refined.string._
-import io.estatico.newtype.macros.newtype
+import ahlers.faker.social._
 import kantan.csv._
 import kantan.csv.ops._
 import kantan.csv.generic._
@@ -18,11 +12,16 @@ import kantan.csv.refined._
  */
 package object download {
 
-  type CompanyIdType = String Refined (NonEmpty And Trimmed)
-  @newtype case class CompanyId(toText: CompanyIdType)
+  implicit private val CellDecoderCompanyId: CellDecoder[CompanyId] = CompanyId.deriving
+  implicit private val CellDecoderCompanyName: CellDecoder[CompanyName] = CompanyName.deriving
+  implicit private val CellDecoderCompanyWebsite: CellDecoder[Seq[CompanyWebsite]] = CompanyWebsite.deriving[CellDecoder].map(Seq(_))
 
-  implicit val CellDecoderCompanyId: CellDecoder[CompanyId] = CompanyId.deriving
-  implicit val CellDecoderCompanyName: CellDecoder[CompanyName] = CompanyName.deriving
-  implicit val CellDecoderCompanyHomepage: CellDecoder[CompanyHomepage] = CompanyHomepage.deriving
+  val usCompanies: IndexedSeq[Company] =
+    Thread.currentThread()
+      .getContextClassLoader()
+      .getResourceAsStream("com/opendata500/us/download/us_companies.csv")
+      .asCsvReader[Company](rfc.withHeader)
+      .toIndexedSeq
+      .flatMap(_.toOption)
 
 }

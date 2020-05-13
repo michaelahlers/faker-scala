@@ -12,10 +12,13 @@ import io.estatico.newtype.macros.newtype
  */
 package object social {
 
+  type CompanyIdType = String Refined (NonEmpty And Trimmed)
+  @newtype case class CompanyId(toText: CompanyIdType)
+
   type CompanyNameType = String Refined (NonEmpty And Trimmed)
   @newtype case class CompanyName(toText: CompanyNameType)
 
-  type CompanyHomepageType = String Refined Uri
-  @newtype case class CompanyHomepage(toText: CompanyHomepageType)
+  type CompanyWebsiteType = String Refined Uri
+  @newtype case class CompanyWebsite(toText: CompanyWebsiteType)
 
 }
