@@ -12,7 +12,7 @@ Realistic sample value generators for Scala.
 
 #### Email
 
-Made available as component parts (local, domain, and comment) with strict validation according to applicable IETF standards (_e.g._, [RFC 5322](https://tools.ietf.org/html/rfc5322). Synthesized using this library's person name and company generators.
+Made available as component parts (local, domain, and comment) with strict validation according to applicable IETF standards (_e.g._, [RFC 5322](https://tools.ietf.org/html/rfc5322)). Synthesized using this library's person name and company generators.
 
 ### Social
 
