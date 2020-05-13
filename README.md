@@ -38,6 +38,14 @@ And means to fill gaps left by those for Scala which haven't seen recent activit
 - [justwrote/scala-faker](https://github.com/justwrote/scala-faker)
 - [therealadam/scala-faker](https://github.com/therealadam/scala-faker)
 
+## Dependencies
+
+This project's working to keep transitive dependencies at a minimum, and includes the following:
+
+- [kantan.csv](https://github.com/nrinaudo/kantan.csv)
+- [NewType](https://github.com/estatico/scala-newtype)
+- [refined](https://github.com/fthomas/refined)
+
 ## Platforms
 
 This library and tools are fully-tested on and supported for these Java versions and operating systems:
