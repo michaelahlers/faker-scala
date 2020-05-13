@@ -2,7 +2,7 @@ libraryDependencies ++=
   "eu.timepit" %% "refined" % "0.9.14" ::
     "eu.timepit" %% "refined-scalacheck" % "0.9.14" ::
     "eu.timepit" %% "refined-shapeless" % "0.9.14" ::
-    "io.estatico" %% "newtype" % "0.4.3" ::
+    "io.estatico" %% "newtype" % "0.4.4" ::
     "org.scalacheck" %% "scalacheck" % "1.14.3" ::
     Nil
 
