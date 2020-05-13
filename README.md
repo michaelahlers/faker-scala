@@ -2,6 +2,26 @@
 
 Realistic sample value generators for Scala.
 
+## Status
+
+**This library's a work-in-progress.** Still settling on design patterns and essential datasets to provide. Once those are stabilized, this project will begin publishing artifacts and accepting any pull-requests.
+
+## Datasets
+
+### Internet
+
+#### Email
+
+Made available as component parts (local, domain, and comment) with strict validation according to applicable IETF standards (_e.g._, [RFC 5322](https://tools.ietf.org/html/rfc5322). Synthesized using this library's person name and company generators.
+
+### Social
+
+#### Company
+
+Various parts (_e.g._, name, homepage, locality) of businesses from these sources:
+
+- [Open Data 500 US](https://www.opendata500.com/us/)
+
 ## Inspiration
 
 While arbitrary value generation is useful, testing often profits from realistic samples. This library aims to provide generators for email addresses, geographical locations, person names, phone numbers, universal resource identifiers (URI), and more.
