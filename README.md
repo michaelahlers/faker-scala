@@ -20,6 +20,7 @@ Made available as component parts (local, domain, and comment) with strict valid
 
 Various parts (_e.g._, name, homepage, locality) of businesses from these sources:
 
+- [Open Data 500 KS](https://www.opendata500.com/kr/)
 - [Open Data 500 US](https://www.opendata500.com/us/)
 
 ## Inspiration
