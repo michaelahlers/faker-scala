@@ -10,7 +10,7 @@ import kantan.csv.refined._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 11, 2020
  */
-case class Company(id: CompanyId, name: CompanyName)
+case class Company(id: CompanyId, name: CompanyName, homepage: CompanyHomepage)
 object Company {
 
   val values: IndexedSeq[Company] =

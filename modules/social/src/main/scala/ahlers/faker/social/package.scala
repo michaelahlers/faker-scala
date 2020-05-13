@@ -15,7 +15,7 @@ package object social {
   type CompanyNameType = String Refined (NonEmpty And Trimmed)
   @newtype case class CompanyName(toText: CompanyNameType)
 
-  type CompanyUrlType = String Refined Url
-  @newtype case class CompanyUrl(toText: CompanyUrlType)
+  type CompanyHomepageType = String Refined Uri
+  @newtype case class CompanyHomepage(toText: CompanyHomepageType)
 
 }

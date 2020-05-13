@@ -1,6 +1,7 @@
 package com.opendata500.us.download
 
 import ahlers.faker.social.CompanyName
+import ahlers.faker.social.CompanyHomepage
 import eu.timepit.refined.auto._
 import com.softwaremill.diffx.scalatest.DiffMatcher._
 import org.scalatest.wordspec._
@@ -20,7 +21,8 @@ class CompanySpec extends AnyWordSpec {
         matchTo(
           Company(
             CompanyId("3-round-stones-inc"),
-            CompanyName("3 Round Stones, Inc.")
+            CompanyName("3 Round Stones, Inc."),
+            CompanyHomepage("http://3RoundStones.com")
           ))
       }
 
@@ -28,7 +30,8 @@ class CompanySpec extends AnyWordSpec {
         matchTo(
           Company(
             CompanyId("cloudspyre"),
-            CompanyName("Cloudspyre")
+            CompanyName("Cloudspyre"),
+            CompanyHomepage("http://www.cloudspyre.com")
           ))
       }
 
@@ -36,7 +39,8 @@ class CompanySpec extends AnyWordSpec {
         matchTo(
           Company(
             CompanyId("govtribe"),
-            CompanyName("GovTribe")
+            CompanyName("GovTribe"),
+            CompanyHomepage("govtribe.com")
           ))
       }
 
@@ -44,7 +48,8 @@ class CompanySpec extends AnyWordSpec {
         matchTo(
           Company(
             CompanyId("mhealthcoach"),
-            CompanyName("mHealthCoach")
+            CompanyName("mHealthCoach"),
+            CompanyHomepage("http://mhealthcoach.com")
           ))
       }
 
@@ -52,7 +57,8 @@ class CompanySpec extends AnyWordSpec {
         matchTo(
           Company(
             CompanyId("reed-elsevier"),
-            CompanyName("Reed Elsevier")
+            CompanyName("Reed Elsevier"),
+            CompanyHomepage("http://www.reedelsevier.com/Pages/Home.aspx")
           ))
       }
 
@@ -60,7 +66,8 @@ class CompanySpec extends AnyWordSpec {
         matchTo(
           Company(
             CompanyId("walk-score"),
-            CompanyName("Walk Score")
+            CompanyName("Walk Score"),
+            CompanyHomepage("www.walkscore.com")
           ))
       }
     }
