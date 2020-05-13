@@ -13,14 +13,14 @@ object string {
   final case class MatchEmailLocal()
   object MatchEmailLocal {
 
-    implicit def emailLocalValidate: Validate.Plain[String, MatchEmailLocal] =
-      Validate.fromPredicate(predicate, t => s"$t is a valid email local part", MatchEmailLocal())
-
     private val regex = """^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")$""".r.pattern
     private val predicate: String => Boolean = s => {
       val matcher = regex.matcher(s)
       matcher.find() && matcher.matches()
     }
+
+    implicit val emailLocalValidate: Validate.Plain[String, MatchEmailLocal] =
+      Validate.fromPredicate(predicate, t => s"$t is a valid email local part", MatchEmailLocal())
 
   }
 
@@ -28,14 +28,14 @@ object string {
   final case class MatchEmailDomainHost()
   object MatchEmailDomainHost {
 
-    implicit def emailDomainHostValidate: Validate.Plain[String, MatchEmailDomainHost] =
-      Validate.fromPredicate(predicate, t => s"$t is a valid email domain host", MatchEmailDomainHost())
-
     private val regex = """^(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$""".r.pattern
     private val predicate: String => Boolean = s => {
       val matcher = regex.matcher(s)
       matcher.find() && matcher.matches()
     }
+
+    implicit val emailDomainHostValidate: Validate.Plain[String, MatchEmailDomainHost] =
+      Validate.fromPredicate(predicate, t => s"$t is a valid email domain host", MatchEmailDomainHost())
 
   }
 
