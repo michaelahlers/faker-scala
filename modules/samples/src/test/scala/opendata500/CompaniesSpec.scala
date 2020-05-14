@@ -1,4 +1,4 @@
-package com.opendata500
+package opendata500
 
 import ahlers.faker.samples._
 import com.softwaremill.diffx.scalatest.DiffMatcher._

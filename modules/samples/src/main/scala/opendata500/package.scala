@@ -1,5 +1,3 @@
-package com
-
 import ahlers.faker.samples._
 import kantan.csv.DecodeError.TypeError
 import kantan.csv._
