@@ -8,16 +8,16 @@ Realistic sample value generators for Scala.
 
 ## Datasets
 
-### Emails
-
-Made available as component parts (local, domain, and comment) with strict validation according to applicable IETF standards (_e.g._, [RFC 5322](https://tools.ietf.org/html/rfc5322)). Synthesized using this library's person name and company generators.
-
 ### Companies
 
 Various parts (_e.g._, name, homepage, locality) of businesses from these sources:
 
 - [Open Data 500 KR](https://www.opendata500.com/kr/)
 - [Open Data 500 US](https://www.opendata500.com/us/)
+
+### Emails
+
+Made available as component parts (local, domain, and comment) with strict validation according to applicable IETF standards (_e.g._, [RFC 5322](https://tools.ietf.org/html/rfc5322)). Synthesized using this library's person name and company generators.
 
 ### Person Names
 
