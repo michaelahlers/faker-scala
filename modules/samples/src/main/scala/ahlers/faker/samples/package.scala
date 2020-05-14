@@ -9,7 +9,7 @@ import io.estatico.newtype.macros.newtype
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
- * @since May 11, 2020
+ * @since May 05, 2020
  */
 package object samples {
 
