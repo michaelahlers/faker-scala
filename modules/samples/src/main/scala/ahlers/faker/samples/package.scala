@@ -37,4 +37,22 @@ package object samples {
   /** @see [[https://en.wikipedia.org/wiki/Email_address#Domain]] */
   @newtype case class EmailDomain(toText: EmailDomainType)
 
+  type PersonNamePrefixType = String Refined (NonEmpty And Trimmed)
+  @newtype case class PersonNamePrefix(toText: PersonNamePrefixType)
+
+  type PersonGivenNameType = String Refined (NonEmpty And Trimmed)
+  @newtype case class PersonGivenName(toText: PersonGivenNameType)
+
+  type PersonMiddleNameType = String Refined (NonEmpty And Trimmed)
+  @newtype case class PersonMiddleName(toText: PersonMiddleNameType)
+
+  type PersonFamilyNameType = String Refined (NonEmpty And Trimmed)
+  @newtype case class PersonFamilyName(toText: PersonFamilyNameType)
+
+  type PersonNicknameType = String Refined (NonEmpty And Trimmed)
+  @newtype case class PersonNickname(toText: PersonNicknameType)
+
+  type PersonNameSuffixType = String Refined (NonEmpty And Trimmed)
+  @newtype case class PersonNameSuffix(toText: PersonNameSuffixType)
+
 }
