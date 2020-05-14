@@ -1,2 +1,2 @@
 name := "faker-scalacheck"
-description := "ScalaCheck instances backed by sample datasets."
+description := "ScalaCheck instances backed by samples."

@@ -8,10 +8,6 @@ libraryDependencies ++=
     "io.estatico" %% "newtype" % "0.4.4" ::
     Nil
 
-libraryDependencies ++=
-  "org.scalacheck" %% "scalacheck" % "1.14.2" % Test ::
-    Nil
-
 libraryDependencies ++= {
   CrossVersion.partialVersion(scalaVersion.value) match {
     case Some((2, 12)) =>

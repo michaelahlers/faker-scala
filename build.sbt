@@ -6,7 +6,10 @@ lazy val `faker` =
     )
 
 lazy val `samples` = project in file("modules") / "samples"
-lazy val `scalacheck` = project in file("modules") / "scalacheck"
+
+lazy val `scalacheck` =
+  (project in file("modules") / "scalacheck")
+    .dependsOn(`samples`)
 
 publish / skip := true
 
