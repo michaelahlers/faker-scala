@@ -19,6 +19,12 @@ Various parts (_e.g._, name, homepage, locality) of businesses from these source
 - [Open Data 500 KR](https://www.opendata500.com/kr/)
 - [Open Data 500 US](https://www.opendata500.com/us/)
 
+### Person Names
+
+As name prefix, given name, middle name, family name, nickname, and name suffix from these sources:
+
+- [Magazin für Computertechnik 40 000 Namen](https://www.heise.de/ct/ftp/07/17/182/)
+
 ## Inspiration
 
 While arbitrary value generation is useful, testing often profits from realistic samples. This library aims to provide generators for email addresses, geographical locations, person names, phone numbers, universal resource identifiers (URI), and more.

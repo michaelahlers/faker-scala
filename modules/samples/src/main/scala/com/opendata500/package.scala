@@ -34,13 +34,13 @@ package object opendata500 {
   val krCompanies: IndexedSeq[Company] =
     Thread.currentThread()
       .getContextClassLoader()
-      .getResourceAsStream("com/opendata500/kr/download/kr_companies.csv")
+      .getResourceAsStream("opendata500.com/kr/download/kr_companies.csv")
       .unsafeReadCsv[IndexedSeq, Company](rfc.withHeader)
 
   val usCompanies: IndexedSeq[Company] =
     Thread.currentThread()
       .getContextClassLoader()
-      .getResourceAsStream("com/opendata500/us/download/us_companies.csv")
+      .getResourceAsStream("opendata500.com/us/download/us_companies.csv")
       .unsafeReadCsv[IndexedSeq, Company](rfc.withHeader)
 
 }
