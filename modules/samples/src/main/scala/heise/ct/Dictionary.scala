@@ -38,10 +38,17 @@ object Dictionary {
             .split("or")
             .map(_.trim())
             .filter(_.nonEmpty)
-            .map(CharacterEncoding(_, character.trim().toInt.toChar))
+            .map(CharacterEncoding(_, character.trim().toInt.toChar.toString))
       }
-      .toSeq
-      .sortBy(_.pattern.length)
+      .toIndexedSeq
+
+  private def decode(x: String): String =
+    encodings
+      .sortBy(_.pattern.size)
+      .foldLeft(x) {
+        case (a, ce) =>
+          a.replaceAllLiterally(ce.pattern, ce.substitution)
+      }
 
   val localeDefinitions: Seq[LocaleDefinition] =
     source
@@ -54,8 +61,7 @@ object Dictionary {
         case Seq(name, index) =>
           LocaleDefinition(LocaleIndex(Refined.unsafeApply(index.indexOf('|'))), LocaleName(Refined.unsafeApply(name.tail.init.trim())))
       }
-      .toSeq
-      .sortBy(_.index)
+      .toIndexedSeq
 
   val names: IndexedSeq[Name] =
     source
@@ -65,11 +71,8 @@ object Dictionary {
       .map { entry =>
         entry.head match {
           case '=' =>
-            entry
-              .slice(3, 29)
-              .trim()
-              .split(' ')
-              .map(encodings.foldRight(_)(_.replace(_))) match {
+            decode(entry.slice(3, 29).trim())
+              .split(' ') match {
               case Array(part) =>
                 Name(NamePart(Refined.unsafeApply(part)))
               case Array(part, equivalentName) =>
@@ -77,9 +80,7 @@ object Dictionary {
             }
           case _ =>
             Name(
-              entry
-                .slice(3, 29)
-                .trim()
+              decode(entry.slice(3, 29).trim())
                 .split('+')
                 .map(part => NamePart(Refined.unsafeApply(part)))
                 .toSeq)

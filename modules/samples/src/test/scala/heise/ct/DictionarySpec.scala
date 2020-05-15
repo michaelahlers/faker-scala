@@ -33,6 +33,9 @@ class DictionarySpec extends AnyWordSpec {
 
     Dictionary.names(27155).should(matchTo(Name(NamePart("Maria da Conceição"))))
 
+    Dictionary.names(48507).should(matchTo(Name(NamePart("Žydronė"))))
+    Dictionary.names(48508).should(matchTo(Name(NamePart("Žydrūnas"))))
+
     Dictionary.names(48527).should(matchTo(Name(NamePart("Zyta"))))
   }
 
