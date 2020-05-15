@@ -8,7 +8,7 @@ import cats.syntax.option._
  */
 case class Name(nameParts: Seq[NamePart], equivalentName: Option[EquivalentName])
 object Name {
-  def apply(nameParts: Seq[NamePart]): Name = Name(nameParts, none)
+  def apply(nameParts: Iterable[NamePart]): Name = Name(nameParts.toSeq, none)
   def apply(namePart: NamePart, nameParts: NamePart*): Name = Name(namePart +: nameParts)
   def apply(namePart: NamePart, equivalentName: EquivalentName): Name = Name(Seq(namePart), equivalentName.some)
 }

@@ -29,7 +29,7 @@ package object ct {
   type EquivalentNameType = String Refined (NonEmpty And Trimmed)
   @newtype case class EquivalentName(toText: EquivalentNameType)
 
-  implicit val OrderingLocaleIndex: Ordering[LocaleIndex] = Ordering.by(_.toInt.value)
-  implicit val OrderingLocaleName: Ordering[LocaleName] = Ordering.by(_.toText.value)
+  implicit private val OrderingLocaleIndex: Ordering[LocaleIndex] = Ordering.by(_.toInt.value)
+  implicit private val OrderingLocaleName: Ordering[LocaleName] = Ordering.by(_.toText.value)
 
 }

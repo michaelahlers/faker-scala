@@ -44,10 +44,10 @@ object Dictionary {
 
   private def decode(x: String): String =
     encodings
-      .sortBy(_.pattern.size)
+      .sortBy(_.pattern.length())
       .foldLeft(x) {
         case (a, ce) =>
-          a.replaceAllLiterally(ce.pattern, ce.substitution)
+          a.replace(ce.pattern, ce.substitution)
       }
 
   val localeDefinitions: Seq[LocaleDefinition] =
@@ -81,9 +81,8 @@ object Dictionary {
           case _ =>
             Name(
               decode(entry.slice(3, 29).trim())
-                .split('+')
-                .map(part => NamePart(Refined.unsafeApply(part)))
-                .toSeq)
+                .split('+').toSeq
+                .map(part => NamePart(Refined.unsafeApply(part))))
         }
       }
       .toIndexedSeq
