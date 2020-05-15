@@ -17,6 +17,9 @@ scalacOptions ++= {
     case Some((2, 13)) =>
       "-Ymacro-annotations" ::
         Nil
+    case Some((2, 12)) =>
+      "-Ypartial-unification" ::
+        Nil
     case _ =>
       Nil
   }
