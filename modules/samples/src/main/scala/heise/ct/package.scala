@@ -20,6 +20,15 @@ package object ct {
   type LocaleNameType = String Refined (NonEmpty And Trimmed)
   @newtype case class LocaleName(toText: LocaleNameType)
 
+  type GivenNameProbabilityType = Int Refined (NonNegative And LessEqual[W.`13`.T])
+  @newtype case class GivenNameProbability(toInt: GivenNameProbabilityType)
+
+  type NamePartType = String Refined (NonEmpty And Trimmed)
+  @newtype case class NamePart(toText: NamePartType)
+
+  type EquivalentNameType = String Refined (NonEmpty And Trimmed)
+  @newtype case class EquivalentName(toText: EquivalentNameType)
+
   implicit val OrderingLocaleIndex: Ordering[LocaleIndex] = Ordering.by(_.toInt.value)
   implicit val OrderingLocaleName: Ordering[LocaleName] = Ordering.by(_.toText.value)
 

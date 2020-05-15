@@ -1,5 +1,6 @@
 package heise.ct
 
+import cats.syntax.option._
 import eu.timepit.refined._
 import eu.timepit.refined.api._
 import eu.timepit.refined.auto._
@@ -55,6 +56,36 @@ object Dictionary {
       }
       .toSeq
       .sortBy(_.index)
+
+  val names: IndexedSeq[Name] =
+    source
+      .getLines()
+      .dropWhile(!_.contains("begin of name list"))
+      .drop(2)
+      .map { entry =>
+        entry.head match {
+          case '=' =>
+            entry
+              .slice(3, 29)
+              .trim()
+              .split(' ')
+              .map(encodings.foldRight(_)(_.replace(_))) match {
+              case Array(part) =>
+                Name(NamePart(Refined.unsafeApply(part)))
+              case Array(part, equivalentName) =>
+                Name(NamePart(Refined.unsafeApply(part)), EquivalentName(Refined.unsafeApply(equivalentName)))
+            }
+          case _ =>
+            Name(
+              entry
+                .slice(3, 29)
+                .trim()
+                .split('+')
+                .map(part => NamePart(Refined.unsafeApply(part)))
+                .toSeq)
+        }
+      }
+      .toIndexedSeq
 
   source.close()
 
