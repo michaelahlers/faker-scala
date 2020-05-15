@@ -1,5 +1,8 @@
 package heise.ct
 
+import eu.timepit.refined._
+import eu.timepit.refined.api._
+import eu.timepit.refined.auto._
 import java.util.zip.ZipInputStream
 
 import scala.io._
@@ -8,7 +11,7 @@ import scala.io._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 13, 2020
  */
-object NameDictionary {
+object Dictionary {
 
   private val source: BufferedSource =
     Source.fromInputStream(
@@ -19,8 +22,7 @@ object NameDictionary {
         while (!(getNextEntry().getName() == "0717-182/nam_dict.txt")) {}
       })(Codec.ISO8859)
 
-  case class Encoding(pattern: String, substitution: Char)
-  val encodings: Seq[Encoding] =
+  val encodings: Seq[CharacterEncoding] =
     source
       .getLines()
       .dropWhile(!_.contains("char set"))
@@ -35,13 +37,12 @@ object NameDictionary {
             .split("or")
             .map(_.trim())
             .filter(_.nonEmpty)
-            .map(Encoding(_, character.trim().toInt.toChar))
+            .map(CharacterEncoding(_, character.trim().toInt.toChar))
       }
       .toSeq
       .sortBy(_.pattern.length)
 
-  case class Locale(position: Int, label: String)
-  val locales: Seq[Locale] =
+  val localeDefinitions: Seq[LocaleDefinition] =
     source
       .getLines()
       .dropWhile(!_.contains("list of countries"))
@@ -49,18 +50,11 @@ object NameDictionary {
       .take(164)
       .sliding(2, 3)
       .map {
-        case Seq(locale, position) =>
-          Locale(position.indexOf('|'), locale.tail.init.trim())
+        case Seq(name, index) =>
+          LocaleDefinition(LocaleIndex(Refined.unsafeApply(index.indexOf('|'))), LocaleName(Refined.unsafeApply(name.tail.init.trim())))
       }
       .toSeq
-      .sortBy(_.position)
-
-  assert(locales.size == 55)
-
-  //source
-  //  .getLines()
-  //  .dropWhile(!_.contains("begin of name list"))
-  //  .drop(2)
+      .sortBy(_.index)
 
   source.close()
 
