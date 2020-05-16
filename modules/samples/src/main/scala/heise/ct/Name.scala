@@ -1,17 +1,18 @@
 package heise.ct
 
+import ahlers.faker.samples._
 import cats.syntax.option._
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 15, 2020
  */
-case class Name(nameParts: Seq[NamePart], equivalentName: Option[EquivalentName], classification: Map[LocaleName, GivenNameProbability])
+case class Name(givenNames: Seq[PersonGivenName], equivalentName: Option[EquivalentName], classification: Map[LocaleName, GivenNameProbability])
 object Name {
 
-  def apply(nameParts: Iterable[NamePart]): Name = Name(nameParts.toSeq, none, Map.empty[LocaleName, GivenNameProbability])
-  def apply(namePart: NamePart, nameParts: NamePart*): Name = Name(namePart +: nameParts)
-  def apply(namePart: NamePart, equivalentName: EquivalentName): Name = Name(Seq(namePart), equivalentName.some, Map.empty[LocaleName, GivenNameProbability])
+  def apply(givenNames: Iterable[PersonGivenName]): Name = Name(givenNames.toSeq, none, Map.empty[LocaleName, GivenNameProbability])
+  def apply(givenName: PersonGivenName, givenNames: PersonGivenName*): Name = Name(givenName +: givenNames)
+  def apply(givenName: PersonGivenName, equivalentName: EquivalentName): Name = Name(Seq(givenName), equivalentName.some, Map.empty[LocaleName, GivenNameProbability])
 
   implicit class Ops(val name: Name) extends AnyVal {
     import name._

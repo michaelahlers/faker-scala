@@ -1,5 +1,6 @@
 package heise.ct
 
+import ahlers.faker.samples.PersonGivenName
 import com.softwaremill.diffx.scalatest.DiffMatcher._
 import eu.timepit.refined.auto._
 import org.scalatest.matchers.should.Matchers._
@@ -27,24 +28,24 @@ class DictionarySpec extends AnyWordSpec {
     Dictionary.names.size should be(48528)
 
     Dictionary.names(0).should(
-      matchTo(Name(NamePart("Aad"))
+      matchTo(Name(PersonGivenName("Aad"))
         .withClassifications(LocaleName("the Netherlands") -> GivenNameProbability(0x4))))
 
     Dictionary.names(3).should(
-      matchTo(Name(NamePart("Ådne"))
+      matchTo(Name(PersonGivenName("Ådne"))
         .withClassifications(LocaleName("Norway") -> GivenNameProbability(0x1))))
 
     Dictionary.names(95).should(
-      matchTo(Name(NamePart("Abdel"), NamePart("Hafiz"))
+      matchTo(Name(PersonGivenName("Abdel"), PersonGivenName("Hafiz"))
         .withClassifications(LocaleName("Arabia/Persia") -> GivenNameProbability(0x2))))
 
     Dictionary.names(186).should(
-      matchTo(Name(NamePart("Abe"), EquivalentName("Abraham"))
+      matchTo(Name(PersonGivenName("Abe"), EquivalentName("Abraham"))
         .withClassifications(LocaleName("U.S.A.") -> GivenNameProbability(0x1))))
 
     Dictionary.names(19982).should(
       matchTo(
-        Name(NamePart("Jane"))
+        Name(PersonGivenName("Jane"))
           .withClassifications(
             LocaleName("Great Britain") -> GivenNameProbability(0x7),
             LocaleName("Ireland") -> GivenNameProbability(0x6),
@@ -61,12 +62,12 @@ class DictionarySpec extends AnyWordSpec {
           )))
 
     Dictionary.names(27155).should(
-      matchTo(Name(NamePart("Maria da Conceição"))
+      matchTo(Name(PersonGivenName("Maria da Conceição"))
         .withClassifications(LocaleName("Portugal") -> GivenNameProbability(0x3))))
 
     Dictionary.names(48173).should(
       matchTo(
-        Name(NamePart("Zina"))
+        Name(PersonGivenName("Zina"))
           .withClassifications(
             LocaleName("U.S.A.") -> GivenNameProbability(0x1),
             LocaleName("Italy") -> GivenNameProbability(0x1),
@@ -85,15 +86,15 @@ class DictionarySpec extends AnyWordSpec {
           )))
 
     Dictionary.names(48507).should(
-      matchTo(Name(NamePart("Žydronė"))
+      matchTo(Name(PersonGivenName("Žydronė"))
         .withClassifications(LocaleName("Lithuania") -> GivenNameProbability(0x1))))
 
     Dictionary.names(48508).should(
-      matchTo(Name(NamePart("Žydrūnas"))
+      matchTo(Name(PersonGivenName("Žydrūnas"))
         .withClassifications(LocaleName("Lithuania") -> GivenNameProbability(0x5))))
 
     Dictionary.names(48527).should(
-      matchTo(Name(NamePart("Zyta"))
+      matchTo(Name(PersonGivenName("Zyta"))
         .withClassifications(LocaleName("Poland") -> GivenNameProbability(0x2))))
   }
 

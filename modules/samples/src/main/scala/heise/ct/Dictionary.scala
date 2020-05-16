@@ -6,6 +6,8 @@ import eu.timepit.refined.api._
 import eu.timepit.refined.auto._
 import java.util.zip.ZipInputStream
 
+import ahlers.faker.samples.PersonGivenName
+
 import scala.io._
 
 /**
@@ -91,16 +93,16 @@ object Dictionary {
           case '=' =>
             decode(entry.slice(3, 29).trim())
               .split(' ') match {
-              case Array(part) =>
-                Name(Seq(NamePart(Refined.unsafeApply(part))), none, classifications)
-              case Array(part, equivalentName) =>
-                Name(Seq(NamePart(Refined.unsafeApply(part))), EquivalentName(Refined.unsafeApply(equivalentName)).some, classifications)
+              case Array(givenName) =>
+                Name(Seq(PersonGivenName(Refined.unsafeApply(givenName))), none, classifications)
+              case Array(givenName, equivalentName) =>
+                Name(Seq(PersonGivenName(Refined.unsafeApply(givenName))), EquivalentName(Refined.unsafeApply(equivalentName)).some, classifications)
             }
           case _ =>
             Name(
               decode(entry.slice(3, 29).trim())
                 .split('+').toSeq
-                .map(part => NamePart(Refined.unsafeApply(part))),
+                .map(givenName => PersonGivenName(Refined.unsafeApply(givenName))),
               none,
               classifications)
         }

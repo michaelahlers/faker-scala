@@ -23,9 +23,6 @@ package object ct {
   type GivenNameProbabilityType = Int Refined (NonNegative And LessEqual[W.`13`.T])
   @newtype case class GivenNameProbability(toInt: GivenNameProbabilityType)
 
-  type NamePartType = String Refined (NonEmpty And Trimmed)
-  @newtype case class NamePart(toText: NamePartType)
-
   type EquivalentNameType = String Refined (NonEmpty And Trimmed)
   @newtype case class EquivalentName(toText: EquivalentNameType)
 
