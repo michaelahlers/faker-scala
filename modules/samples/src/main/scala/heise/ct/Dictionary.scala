@@ -54,7 +54,7 @@ object Dictionary {
 
   val localeDefinitions: Seq[LocaleDefinition] = {
     import Locales._
-    val byLabel: Map[String, Locale] = Map(
+    val localeByLabel: Map[String, Locale] = Map(
       "Great Britain" -> `Great Britain`,
       "Ireland" -> Ireland,
       "U.S.A." -> `United States`,
@@ -122,18 +122,31 @@ object Dictionary {
         case Seq(name, index) =>
           LocaleDefinition(
             LocaleIndex(Refined.unsafeApply(index.indexOf('|') - 30)),
-            byLabel(name.tail.init.trim())
+            localeByLabel(name.tail.init.trim())
           )
       }
       .toIndexedSeq
   }
 
-  val names: IndexedSeq[ClassifiedName] =
+  val names: IndexedSeq[ClassifiedName] = {
+    import Genders._
+    val genderByLabel: Map[String, Gender] = Map(
+      "M" -> Male,
+      "1M" -> FirstMale,
+      "?M" -> MostlyMale,
+      "F" -> Female,
+      "1F" -> FirstFemale,
+      "?F" -> MostlyFemale,
+      "?" -> Unisex
+    )
+
     source
       .getLines()
       .dropWhile(!_.contains("begin of name list"))
       .drop(2)
       .map { entry =>
+        val gender = genderByLabel.get(entry.take(2).trim())
+
         val classifications =
           localeDefinitions
             .flatMap {
@@ -148,16 +161,17 @@ object Dictionary {
             }
             .toMap
 
-        entry.head match {
-          case '=' =>
+        gender match {
+          case None =>
             EquivalentNames(
               decode(entry.slice(3, 29).trim())
                 .split(' ')
                 .map(givenName => PersonGivenName(Refined.unsafeApply(givenName)))
                 .toSet,
               classifications)
-          case _ =>
-            Name(
+          case Some(gender) =>
+            GenderedName(
+              gender,
               decode(entry.slice(3, 29).trim())
                 .split('+').toSeq
                 .map(givenName => PersonGivenName(Refined.unsafeApply(givenName))),
@@ -165,6 +179,7 @@ object Dictionary {
         }
       }
       .toIndexedSeq
+  }
 
   source.close()
 

@@ -26,85 +26,90 @@ class DictionarySpec extends AnyWordSpec {
   }
 
   "Locales" in {
+    import Locales._
+
     Dictionary.localeDefinitions.size should be(55)
 
-    Dictionary.localeDefinitions(0).should(matchTo(LocaleDefinition(LocaleIndex(0), Locales.`Great Britain`)))
-    Dictionary.localeDefinitions(20).should(matchTo(LocaleDefinition(LocaleIndex(20), Locales.Estonia)))
-    Dictionary.localeDefinitions(54).should(matchTo(LocaleDefinition(LocaleIndex(54), Locales.Other)))
+    Dictionary.localeDefinitions(0).should(matchTo(LocaleDefinition(LocaleIndex(0), `Great Britain`)))
+    Dictionary.localeDefinitions(20).should(matchTo(LocaleDefinition(LocaleIndex(20), Estonia)))
+    Dictionary.localeDefinitions(54).should(matchTo(LocaleDefinition(LocaleIndex(54), Other)))
   }
 
   "Names" in {
+    import Genders._
+    import Locales._
+
     Dictionary.names.size should be(48528)
 
     Dictionary.names(0).should(
-      matchTo(Name(PersonGivenName("Aad"))
-        .withClassifications(Locales.Netherlands -> GivenNameProbability(0x4)): ClassifiedName))
+      matchTo(GenderedName(Male, PersonGivenName("Aad"))
+        .withClassifications(Netherlands -> GivenNameProbability(0x4)): ClassifiedName))
 
     Dictionary.names(3).should(
-      matchTo(Name(PersonGivenName("Ådne"))
-        .withClassifications(Locales.Norway -> GivenNameProbability(0x1)): ClassifiedName))
+      matchTo(GenderedName(Male, PersonGivenName("Ådne"))
+        .withClassifications(Norway -> GivenNameProbability(0x1)): ClassifiedName))
 
     Dictionary.names(95).should(
-      matchTo(Name(PersonGivenName("Abdel"), PersonGivenName("Hafiz"))
-        .withClassifications(Locales.`Arabia/Persia` -> GivenNameProbability(0x2)): ClassifiedName))
+      matchTo(GenderedName(Male, PersonGivenName("Abdel"), PersonGivenName("Hafiz"))
+        .withClassifications(`Arabia/Persia` -> GivenNameProbability(0x2)): ClassifiedName))
 
     Dictionary.names(186).should(
       matchTo(EquivalentNames(PersonGivenName("Abe"), PersonGivenName("Abraham"))
-        .withClassifications(Locales.`United States` -> GivenNameProbability(0x1)): ClassifiedName))
+        .withClassifications(`United States` -> GivenNameProbability(0x1)): ClassifiedName))
 
     Dictionary.names(19982).should(
       matchTo(
-        Name(PersonGivenName("Jane"))
+        GenderedName(Female, PersonGivenName("Jane"))
           .withClassifications(
-            Locales.`Great Britain` -> GivenNameProbability(0x7),
-            Locales.Ireland -> GivenNameProbability(0x6),
-            Locales.`United States` -> GivenNameProbability(0x6),
-            Locales.Malta -> GivenNameProbability(0x6),
-            Locales.Belgium -> GivenNameProbability(0x1),
-            Locales.Netherlands -> GivenNameProbability(0x2),
-            Locales.Austria -> GivenNameProbability(0x2),
-            Locales.Swiss -> GivenNameProbability(0x3),
-            Locales.Denmark -> GivenNameProbability(0x7),
-            Locales.Norway -> GivenNameProbability(0x3),
-            Locales.Sweden -> GivenNameProbability(0x3),
-            Locales.Estonia -> GivenNameProbability(0x6)
+            `Great Britain` -> GivenNameProbability(0x7),
+            Ireland -> GivenNameProbability(0x6),
+            `United States` -> GivenNameProbability(0x6),
+            Malta -> GivenNameProbability(0x6),
+            Belgium -> GivenNameProbability(0x1),
+            Netherlands -> GivenNameProbability(0x2),
+            Austria -> GivenNameProbability(0x2),
+            Swiss -> GivenNameProbability(0x3),
+            Denmark -> GivenNameProbability(0x7),
+            Norway -> GivenNameProbability(0x3),
+            Sweden -> GivenNameProbability(0x3),
+            Estonia -> GivenNameProbability(0x6)
           ): ClassifiedName))
 
     Dictionary.names(27155).should(
-      matchTo(Name(PersonGivenName("Maria da Conceição"))
-        .withClassifications(Locales.Portugal -> GivenNameProbability(0x3)): ClassifiedName))
+      matchTo(GenderedName(Female, PersonGivenName("Maria da Conceição"))
+        .withClassifications(Portugal -> GivenNameProbability(0x3)): ClassifiedName))
 
     Dictionary.names(48173).should(
       matchTo(
-        Name(PersonGivenName("Zina"))
+        GenderedName(Female, PersonGivenName("Zina"))
           .withClassifications(
-            Locales.`United States` -> GivenNameProbability(0x1),
-            Locales.Italy -> GivenNameProbability(0x1),
-            Locales.Lithuania -> GivenNameProbability(0x1),
-            Locales.`Czech Republic` -> GivenNameProbability(0x1),
-            Locales.Romania -> GivenNameProbability(0x3),
-            Locales.Bulgaria -> GivenNameProbability(0x1),
-            Locales.`Bosnia/Herzegovina` -> GivenNameProbability(0x1),
-            Locales.Albania -> GivenNameProbability(0x1),
-            Locales.Greece -> GivenNameProbability(0x1),
-            Locales.Belarus -> GivenNameProbability(0x2),
-            Locales.Moldova -> GivenNameProbability(0x3),
-            Locales.Armenia -> GivenNameProbability(0x2),
-            Locales.`Kazakhstan/Uzbekistan` -> GivenNameProbability(0x2),
-            Locales.`Arabia/Persia` -> GivenNameProbability(0x4)
+            `United States` -> GivenNameProbability(0x1),
+            Italy -> GivenNameProbability(0x1),
+            Lithuania -> GivenNameProbability(0x1),
+            `Czech Republic` -> GivenNameProbability(0x1),
+            Romania -> GivenNameProbability(0x3),
+            Bulgaria -> GivenNameProbability(0x1),
+            `Bosnia/Herzegovina` -> GivenNameProbability(0x1),
+            Albania -> GivenNameProbability(0x1),
+            Greece -> GivenNameProbability(0x1),
+            Belarus -> GivenNameProbability(0x2),
+            Moldova -> GivenNameProbability(0x3),
+            Armenia -> GivenNameProbability(0x2),
+            `Kazakhstan/Uzbekistan` -> GivenNameProbability(0x2),
+            `Arabia/Persia` -> GivenNameProbability(0x4)
           ): ClassifiedName))
 
     Dictionary.names(48507).should(
-      matchTo(Name(PersonGivenName("Žydronė"))
-        .withClassifications(Locales.Lithuania -> GivenNameProbability(0x1)): ClassifiedName))
+      matchTo(GenderedName(Female, PersonGivenName("Žydronė"))
+        .withClassifications(Lithuania -> GivenNameProbability(0x1)): ClassifiedName))
 
     Dictionary.names(48508).should(
-      matchTo(Name(PersonGivenName("Žydrūnas"))
-        .withClassifications(Locales.Lithuania -> GivenNameProbability(0x5)): ClassifiedName))
+      matchTo(GenderedName(Male, PersonGivenName("Žydrūnas"))
+        .withClassifications(Lithuania -> GivenNameProbability(0x5)): ClassifiedName))
 
     Dictionary.names(48527).should(
-      matchTo(Name(PersonGivenName("Zyta"))
-        .withClassifications(Locales.Poland -> GivenNameProbability(0x2)): ClassifiedName))
+      matchTo(GenderedName(Female, PersonGivenName("Zyta"))
+        .withClassifications(Poland -> GivenNameProbability(0x2)): ClassifiedName))
   }
 
 }

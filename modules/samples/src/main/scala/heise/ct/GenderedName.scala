@@ -23,16 +23,16 @@ object EquivalentNames {
 
 }
 
-case class Name(givenNames: Seq[PersonGivenName], classification: Map[Locale, GivenNameProbability]) extends ClassifiedName
-object Name {
+case class GenderedName(gender: Gender, givenNames: Seq[PersonGivenName], classification: Map[Locale, GivenNameProbability]) extends ClassifiedName
+object GenderedName {
 
-  def apply(givenNames: Iterable[PersonGivenName]): Name = Name(givenNames.toSeq, Map.empty[Locale, GivenNameProbability])
-  def apply(givenName: PersonGivenName, givenNames: PersonGivenName*): Name = Name(givenName +: givenNames)
+  def apply(gender: Gender, givenNames: Iterable[PersonGivenName]): GenderedName = GenderedName(gender, givenNames.toSeq, Map.empty[Locale, GivenNameProbability])
+  def apply(gender: Gender, givenName: PersonGivenName, givenNames: PersonGivenName*): GenderedName = GenderedName(gender, givenName +: givenNames)
 
-  implicit class Ops(val name: Name) extends AnyVal {
+  implicit class Ops(val name: GenderedName) extends AnyVal {
     import name._
-    def withClassifications(classification: Map[Locale, GivenNameProbability]): Name = copy(classification = classification)
-    def withClassifications(classification: (Locale, GivenNameProbability)*): Name = withClassifications(classification.toMap)
+    def withClassifications(classification: Map[Locale, GivenNameProbability]): GenderedName = copy(classification = classification)
+    def withClassifications(classification: (Locale, GivenNameProbability)*): GenderedName = withClassifications(classification.toMap)
   }
 
 }
