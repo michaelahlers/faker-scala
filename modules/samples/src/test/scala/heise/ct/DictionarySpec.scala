@@ -14,6 +14,15 @@ class DictionarySpec extends AnyWordSpec {
 
   "Encodings" in {
     Dictionary.encodings.size should be(79)
+
+    Dictionary.encodings(0).should(matchTo(CharacterEncoding("<A/>", "Ā")))
+
+    Dictionary.encodings(61).should(matchTo(CharacterEncoding("\u009A", "š")))
+    Dictionary.encodings(62).should(matchTo(CharacterEncoding("<s^>", "š")))
+    Dictionary.encodings(63).should(matchTo(CharacterEncoding("<sch>", "š")))
+    Dictionary.encodings(64).should(matchTo(CharacterEncoding("<sh>", "š")))
+
+    Dictionary.encodings(78).should(matchTo(CharacterEncoding("<ß>", "ẞ")))
   }
 
   "Locales" in {
