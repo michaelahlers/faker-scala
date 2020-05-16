@@ -63,7 +63,7 @@ object Dictionary {
         case Seq(name, index) =>
           LocaleDefinition(
             LocaleIndex(Refined.unsafeApply(index.indexOf('|') - 30)),
-            LocaleName(Refined.unsafeApply(name.tail.init.trim()))
+            LocaleName.byLabel(name.tail.init.trim())
           )
       }
       .toIndexedSeq
