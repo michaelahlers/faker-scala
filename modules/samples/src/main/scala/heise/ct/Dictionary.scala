@@ -59,9 +59,13 @@ object Dictionary {
       .sliding(2, 3)
       .map {
         case Seq(name, index) =>
-          LocaleDefinition(LocaleIndex(Refined.unsafeApply(index.indexOf('|'))), LocaleName(Refined.unsafeApply(name.tail.init.trim())))
+          LocaleDefinition(
+            LocaleIndex(Refined.unsafeApply(index.indexOf('|') - 30)),
+            LocaleName(Refined.unsafeApply(name.tail.init.trim()))
+          )
       }
       .toIndexedSeq
+      .sortBy(_.index.toInt.value)
 
   val names: IndexedSeq[Name] =
     source
@@ -69,20 +73,36 @@ object Dictionary {
       .dropWhile(!_.contains("begin of name list"))
       .drop(2)
       .map { entry =>
+        val classifications =
+          localeDefinitions
+            .flatMap {
+              case LocaleDefinition(index, name) =>
+                Option(entry.charAt(index.toInt + 30))
+                  .map(_.toString.trim())
+                  .filter(_.nonEmpty)
+                  .map(Integer.parseInt(_, 16))
+                  .map { probability =>
+                    (name, GivenNameProbability(Refined.unsafeApply(probability)))
+                  }
+            }
+            .toMap
+
         entry.head match {
           case '=' =>
             decode(entry.slice(3, 29).trim())
               .split(' ') match {
               case Array(part) =>
-                Name(NamePart(Refined.unsafeApply(part)))
+                Name(Seq(NamePart(Refined.unsafeApply(part))), none, classifications)
               case Array(part, equivalentName) =>
-                Name(NamePart(Refined.unsafeApply(part)), EquivalentName(Refined.unsafeApply(equivalentName)))
+                Name(Seq(NamePart(Refined.unsafeApply(part))), EquivalentName(Refined.unsafeApply(equivalentName)).some, classifications)
             }
           case _ =>
             Name(
               decode(entry.slice(3, 29).trim())
                 .split('+').toSeq
-                .map(part => NamePart(Refined.unsafeApply(part))))
+                .map(part => NamePart(Refined.unsafeApply(part))),
+              none,
+              classifications)
         }
       }
       .toIndexedSeq
