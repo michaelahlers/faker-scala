@@ -14,3 +14,5 @@ lazy val `scalacheck` =
 publish / skip := true
 
 ThisBuild / scalafmtOnCompile := true
+
+ThisBuild / Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
