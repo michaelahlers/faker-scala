@@ -164,9 +164,8 @@ object Dictionary {
           case None =>
             EquivalentNames(
               decodeName(entry.slice(3, 29).trim())
-                .split(' ')
-                .map(givenName => PersonGivenName(Refined.unsafeApply(givenName)))
-                .toSet,
+                .split(' ').toSet[String]
+                .map(givenName => PersonGivenName(Refined.unsafeApply(givenName))),
               probabilityByLocale)
           case Some(gender) =>
             GenderedName(
