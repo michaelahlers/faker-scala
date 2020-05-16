@@ -52,9 +52,9 @@ object Dictionary {
           a.replace(ce.pattern, ce.substitution)
       }
 
-  val localeDefinitions: Seq[LocaleDefinition] = {
+  private val localeByLabel: Map[String, Locale] = {
     import Locales._
-    val localeByLabel: Map[String, Locale] = Map(
+    Map(
       "Great Britain" -> `Great Britain`,
       "Ireland" -> Ireland,
       "U.S.A." -> `United States`,
@@ -111,7 +111,9 @@ object Dictionary {
       "Vietnam" -> Vietnam,
       "other countries" -> Other
     )
+  }
 
+  private[ct] val localeByIndex: Map[Int, Locale] =
     source
       .getLines()
       .dropWhile(!_.contains("list of countries"))
@@ -119,18 +121,14 @@ object Dictionary {
       .take(164)
       .sliding(2, 3)
       .map {
-        case Seq(name, index) =>
-          LocaleDefinition(
-            LocaleIndex(Refined.unsafeApply(index.indexOf('|') - 30)),
-            localeByLabel(name.tail.init.trim())
-          )
+        case Seq(label, index) =>
+          (index.indexOf('|') - 30, localeByLabel(label.tail.init.trim()))
       }
-      .toIndexedSeq
-  }
+      .toMap
 
-  val names: IndexedSeq[ClassifiedName] = {
+  private[ct] val genderByLabel: Map[String, Gender] = {
     import Genders._
-    val genderByLabel: Map[String, Gender] = Map(
+    Map(
       "M" -> Male,
       "1M" -> FirstMale,
       "?M" -> MostlyMale,
@@ -139,47 +137,47 @@ object Dictionary {
       "?F" -> MostlyFemale,
       "?" -> Unisex
     )
+  }
 
+  val names: IndexedSeq[ClassifiedName] =
     source
       .getLines()
       .dropWhile(!_.contains("begin of name list"))
       .drop(2)
       .map { entry =>
-        val gender = genderByLabel.get(entry.take(2).trim())
+        val genderO: Option[Gender] = genderByLabel.get(entry.take(2).trim())
 
-        val classifications =
-          localeDefinitions
+        val probabilityByLocale: Map[Locale, LocaleProbability] =
+          localeByIndex
             .flatMap {
-              case LocaleDefinition(index, name) =>
+              case (index, name) =>
                 Option(entry.charAt(index.toInt + 30))
                   .map(_.toString.trim())
                   .filter(_.nonEmpty)
                   .map(Integer.parseInt(_, 16))
                   .map { probability =>
-                    (name, GivenNameProbability(Refined.unsafeApply(probability)))
+                    (name, LocaleProbability(Refined.unsafeApply(probability)))
                   }
             }
-            .toMap
 
-        gender match {
+        genderO match {
           case None =>
             EquivalentNames(
               decode(entry.slice(3, 29).trim())
                 .split(' ')
                 .map(givenName => PersonGivenName(Refined.unsafeApply(givenName)))
                 .toSet,
-              classifications)
+              probabilityByLocale)
           case Some(gender) =>
             GenderedName(
               gender,
               decode(entry.slice(3, 29).trim())
                 .split('+').toSeq
                 .map(givenName => PersonGivenName(Refined.unsafeApply(givenName))),
-              classifications)
+              probabilityByLocale)
         }
       }
       .toIndexedSeq
-  }
 
   source.close()
 
