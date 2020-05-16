@@ -12,20 +12,20 @@ import org.scalatest.wordspec._
  */
 class DictionarySpec extends AnyWordSpec {
 
-  "Encodings" in {
-    Dictionary.encodings.size should be(79)
+  "Character encodings" in {
+    Dictionary.characterEncodings.size should be(79)
 
-    Dictionary.encodings(0).should(matchTo(CharacterEncoding("<A/>", "Ā")))
+    Dictionary.characterEncodings(0).should(matchTo(CharacterEncoding("<A/>", "Ā")))
 
-    Dictionary.encodings(61).should(matchTo(CharacterEncoding("\u009A", "š")))
-    Dictionary.encodings(62).should(matchTo(CharacterEncoding("<s^>", "š")))
-    Dictionary.encodings(63).should(matchTo(CharacterEncoding("<sch>", "š")))
-    Dictionary.encodings(64).should(matchTo(CharacterEncoding("<sh>", "š")))
+    Dictionary.characterEncodings(61).should(matchTo(CharacterEncoding("\u009A", "š")))
+    Dictionary.characterEncodings(62).should(matchTo(CharacterEncoding("<s^>", "š")))
+    Dictionary.characterEncodings(63).should(matchTo(CharacterEncoding("<sch>", "š")))
+    Dictionary.characterEncodings(64).should(matchTo(CharacterEncoding("<sh>", "š")))
 
-    Dictionary.encodings(78).should(matchTo(CharacterEncoding("<ß>", "ẞ")))
+    Dictionary.characterEncodings(78).should(matchTo(CharacterEncoding("<ß>", "ẞ")))
   }
 
-  "Locales" in {
+  "Locale by index" in {
     import Locales._
 
     Dictionary.localeByIndex.size should be(55)
@@ -35,29 +35,29 @@ class DictionarySpec extends AnyWordSpec {
     Dictionary.localeByIndex(54).should(be(Other))
   }
 
-  "Names" in {
+  "Classified names" in {
     import Genders._
     import Locales._
 
-    Dictionary.names.size should be(48528)
+    Dictionary.classifiedNames.size should be(48528)
 
-    Dictionary.names(0).should(
+    Dictionary.classifiedNames(0).should(
       matchTo(GenderedName(Male, PersonGivenName("Aad"))
         .withProbabilities(Netherlands -> LocaleProbability(0x4)): ClassifiedName))
 
-    Dictionary.names(3).should(
+    Dictionary.classifiedNames(3).should(
       matchTo(GenderedName(Male, PersonGivenName("Ådne"))
         .withProbabilities(Norway -> LocaleProbability(0x1)): ClassifiedName))
 
-    Dictionary.names(95).should(
+    Dictionary.classifiedNames(95).should(
       matchTo(GenderedName(Male, PersonGivenName("Abdel"), PersonGivenName("Hafiz"))
         .withProbabilities(`Arabia/Persia` -> LocaleProbability(0x2)): ClassifiedName))
 
-    Dictionary.names(186).should(
+    Dictionary.classifiedNames(186).should(
       matchTo(EquivalentNames(PersonGivenName("Abe"), PersonGivenName("Abraham"))
         .withProbabilities(`United States` -> LocaleProbability(0x1)): ClassifiedName))
 
-    Dictionary.names(19982).should(
+    Dictionary.classifiedNames(19982).should(
       matchTo(
         GenderedName(Female, PersonGivenName("Jane"))
           .withProbabilities(
@@ -75,11 +75,11 @@ class DictionarySpec extends AnyWordSpec {
             Estonia -> LocaleProbability(0x6)
           ): ClassifiedName))
 
-    Dictionary.names(27155).should(
+    Dictionary.classifiedNames(27155).should(
       matchTo(GenderedName(Female, PersonGivenName("Maria da Conceição"))
         .withProbabilities(Portugal -> LocaleProbability(0x3)): ClassifiedName))
 
-    Dictionary.names(48173).should(
+    Dictionary.classifiedNames(48173).should(
       matchTo(
         GenderedName(Female, PersonGivenName("Zina"))
           .withProbabilities(
@@ -99,15 +99,15 @@ class DictionarySpec extends AnyWordSpec {
             `Arabia/Persia` -> LocaleProbability(0x4)
           ): ClassifiedName))
 
-    Dictionary.names(48507).should(
+    Dictionary.classifiedNames(48507).should(
       matchTo(GenderedName(Female, PersonGivenName("Žydronė"))
         .withProbabilities(Lithuania -> LocaleProbability(0x1)): ClassifiedName))
 
-    Dictionary.names(48508).should(
+    Dictionary.classifiedNames(48508).should(
       matchTo(GenderedName(Male, PersonGivenName("Žydrūnas"))
         .withProbabilities(Lithuania -> LocaleProbability(0x5)): ClassifiedName))
 
-    Dictionary.names(48527).should(
+    Dictionary.classifiedNames(48527).should(
       matchTo(GenderedName(Female, PersonGivenName("Zyta"))
         .withProbabilities(Poland -> LocaleProbability(0x2)): ClassifiedName))
   }

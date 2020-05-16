@@ -25,7 +25,7 @@ object Dictionary {
         while (!(getNextEntry().getName() == "0717-182/nam_dict.txt")) {}
       })(Codec.ISO8859)
 
-  val encodings: Seq[CharacterEncoding] =
+  private[ct] val characterEncodings: Seq[CharacterEncoding] =
     source
       .getLines()
       .dropWhile(!_.contains("char set"))
@@ -44,8 +44,8 @@ object Dictionary {
       }
       .toIndexedSeq
 
-  private def decode(x: String): String =
-    encodings
+  private def decodeName(x: String): String =
+    characterEncodings
       .sortBy(_.pattern.length())
       .foldLeft(x) {
         case (a, ce) =>
@@ -139,7 +139,7 @@ object Dictionary {
     )
   }
 
-  val names: IndexedSeq[ClassifiedName] =
+  val classifiedNames: IndexedSeq[ClassifiedName] =
     source
       .getLines()
       .dropWhile(!_.contains("begin of name list"))
@@ -163,7 +163,7 @@ object Dictionary {
         genderO match {
           case None =>
             EquivalentNames(
-              decode(entry.slice(3, 29).trim())
+              decodeName(entry.slice(3, 29).trim())
                 .split(' ')
                 .map(givenName => PersonGivenName(Refined.unsafeApply(givenName)))
                 .toSet,
@@ -171,7 +171,7 @@ object Dictionary {
           case Some(gender) =>
             GenderedName(
               gender,
-              decode(entry.slice(3, 29).trim())
+              decodeName(entry.slice(3, 29).trim())
                 .split('+').toSeq
                 .map(givenName => PersonGivenName(Refined.unsafeApply(givenName))),
               probabilityByLocale)
