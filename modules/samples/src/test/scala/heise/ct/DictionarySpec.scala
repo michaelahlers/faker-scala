@@ -42,6 +42,24 @@ class DictionarySpec extends AnyWordSpec {
       matchTo(Name(NamePart("Abe"), EquivalentName("Abraham"))
         .withClassifications(LocaleName("U.S.A.") -> GivenNameProbability(0x1))))
 
+    Dictionary.names(19982).should(
+      matchTo(
+        Name(NamePart("Jane"))
+          .withClassifications(
+            LocaleName("Great Britain") -> GivenNameProbability(0x7),
+            LocaleName("Ireland") -> GivenNameProbability(0x6),
+            LocaleName("U.S.A.") -> GivenNameProbability(0x6),
+            LocaleName("Malta") -> GivenNameProbability(0x6),
+            LocaleName("Belgium") -> GivenNameProbability(0x1),
+            LocaleName("the Netherlands") -> GivenNameProbability(0x2),
+            LocaleName("Austria") -> GivenNameProbability(0x2),
+            LocaleName("Swiss") -> GivenNameProbability(0x3),
+            LocaleName("Denmark") -> GivenNameProbability(0x7),
+            LocaleName("Norway") -> GivenNameProbability(0x3),
+            LocaleName("Sweden") -> GivenNameProbability(0x3),
+            LocaleName("Estonia") -> GivenNameProbability(0x6)
+          )))
+
     Dictionary.names(27155).should(
       matchTo(Name(NamePart("Maria da Conceição"))
         .withClassifications(LocaleName("Portugal") -> GivenNameProbability(0x3))))
