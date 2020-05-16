@@ -52,7 +52,66 @@ object Dictionary {
           a.replace(ce.pattern, ce.substitution)
       }
 
-  val localeDefinitions: Seq[LocaleDefinition] =
+  val localeDefinitions: Seq[LocaleDefinition] = {
+    import Locales._
+    val byLabel: Map[String, Locale] = Map(
+      "Great Britain" -> `Great Britain`,
+      "Ireland" -> Ireland,
+      "U.S.A." -> `United States`,
+      "Italy" -> Italy,
+      "Malta" -> Malta,
+      "Portugal" -> Portugal,
+      "Spain" -> Spain,
+      "France" -> France,
+      "Belgium" -> Belgium,
+      "Luxembourg" -> Luxembourg,
+      "the Netherlands" -> Netherlands,
+      "East Frisia" -> `East Frisia`,
+      "Germany" -> Germany,
+      "Austria" -> Austria,
+      "Swiss" -> Swiss,
+      "Iceland" -> Iceland,
+      "Denmark" -> Denmark,
+      "Norway" -> Norway,
+      "Sweden" -> Sweden,
+      "Finland" -> Finland,
+      "Estonia" -> Estonia,
+      "Latvia" -> Latvia,
+      "Lithuania" -> Lithuania,
+      "Poland" -> Poland,
+      "Czech Republic" -> `Czech Republic`,
+      "Slovakia" -> Slovakia,
+      "Hungary" -> Hungary,
+      "Romania" -> Romania,
+      "Bulgaria" -> Bulgaria,
+      "Bosnia and Herzegovina" -> `Bosnia/Herzegovina`,
+      "Croatia" -> Croatia,
+      "Kosovo" -> Kosovo,
+      "Macedonia" -> Macedonia,
+      "Montenegro" -> Montenegro,
+      "Serbia" -> Serbia,
+      "Slovenia" -> Slovenia,
+      "Albania" -> Albania,
+      "Greece" -> Greece,
+      "Russia" -> Russia,
+      "Belarus" -> Belarus,
+      "Moldova" -> Moldova,
+      "Ukraine" -> Ukraine,
+      "Armenia" -> Armenia,
+      "Azerbaijan" -> Azerbaijan,
+      "Georgia" -> Georgia,
+      "Kazakhstan/Uzbekistan,etc." -> `Kazakhstan/Uzbekistan`,
+      "Turkey" -> Turkey,
+      "Arabia/Persia" -> `Arabia/Persia`,
+      "Israel" -> Israel,
+      "China" -> China,
+      "India/Sri Lanka" -> `India/Sri Lanka`,
+      "Japan" -> Japan,
+      "Korea" -> Korea,
+      "Vietnam" -> Vietnam,
+      "other countries" -> Other
+    )
+
     source
       .getLines()
       .dropWhile(!_.contains("list of countries"))
@@ -63,13 +122,13 @@ object Dictionary {
         case Seq(name, index) =>
           LocaleDefinition(
             LocaleIndex(Refined.unsafeApply(index.indexOf('|') - 30)),
-            LocaleName.byLabel(name.tail.init.trim())
+            byLabel(name.tail.init.trim())
           )
       }
       .toIndexedSeq
-      .sortBy(_.index.toInt.value)
+  }
 
-  val names: IndexedSeq[Name] =
+  val names: IndexedSeq[ClassifiedName] =
     source
       .getLines()
       .dropWhile(!_.contains("begin of name list"))
@@ -91,19 +150,17 @@ object Dictionary {
 
         entry.head match {
           case '=' =>
-            decode(entry.slice(3, 29).trim())
-              .split(' ') match {
-              case Array(givenName) =>
-                Name(Seq(PersonGivenName(Refined.unsafeApply(givenName))), none, classifications)
-              case Array(givenName, equivalentName) =>
-                Name(Seq(PersonGivenName(Refined.unsafeApply(givenName))), EquivalentName(Refined.unsafeApply(equivalentName)).some, classifications)
-            }
+            EquivalentNames(
+              decode(entry.slice(3, 29).trim())
+                .split(' ')
+                .map(givenName => PersonGivenName(Refined.unsafeApply(givenName)))
+                .toSet,
+              classifications)
           case _ =>
             Name(
               decode(entry.slice(3, 29).trim())
                 .split('+').toSeq
                 .map(givenName => PersonGivenName(Refined.unsafeApply(givenName))),
-              none,
               classifications)
         }
       }
