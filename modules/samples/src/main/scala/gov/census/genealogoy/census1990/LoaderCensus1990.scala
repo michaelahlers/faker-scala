@@ -9,9 +9,9 @@ import scala.io.Source
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 16, 2020
  */
-object ClassifiedFamilyNames {
+object LoaderCensus1990 {
 
-  def read(): IndexedSeq[ClassifiedFamilyName] = {
+  def familyNames(): IndexedSeq[ClassifiedFamilyName] = {
     val source =
       Source.fromInputStream(
         Thread.currentThread()
