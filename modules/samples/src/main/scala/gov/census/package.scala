@@ -4,6 +4,12 @@ import java.io.InputStream
 import java.util.zip.ZipInputStream
 
 import ahlers.faker.samples._
+import eu.timepit.refined.api._
+import eu.timepit.refined.boolean._
+import eu.timepit.refined.collection._
+import eu.timepit.refined.numeric._
+import eu.timepit.refined.string._
+import io.estatico.newtype.macros.newtype
 import kantan.csv.DecodeError.TypeError
 import kantan.csv._
 import kantan.csv.generic._
@@ -16,8 +22,22 @@ import kantan.csv.refined._
  */
 package object census {
 
+  type NameCountType = Int Refined Positive
+  @newtype case class NameCount(toIht: NameCountType)
+
+  type NameRankType = Int Refined Positive
+  @newtype case class NameRank(toIht: NameRankType)
+
   implicit private val CellDecoderPersonFamilyName: CellDecoder[PersonFamilyName] =
     PersonFamilyName.deriving[CellDecoder]
+      .contramapEncoded[String](_.trim())
+
+  implicit private val CellDecoderNameCount: CellDecoder[NameCount] =
+    NameCount.deriving[CellDecoder]
+      .contramapEncoded[String](_.trim())
+
+  implicit private val CellDecoderNameRank: CellDecoder[NameRank] =
+    NameRank.deriving[CellDecoder]
       .contramapEncoded[String](_.trim())
 
   val classifiedNames: IndexedSeq[ClassifiedName] = {

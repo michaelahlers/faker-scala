@@ -14,7 +14,7 @@ class SurnamesSpec extends AnyWordSpec {
 
   "Frequently Occurring Surnames from the Census 2000" in {
     classifiedNames.size.should(be(151671))
-    classifiedNames(0).should(matchTo(ClassifiedName(PersonFamilyName("SMITH"))))
-    classifiedNames(151670).should(matchTo(ClassifiedName(PersonFamilyName("ZUSI"))))
+    classifiedNames(0).should(matchTo(ClassifiedName(PersonFamilyName("SMITH"), NameRank(1), NameCount(2376206))))
+    classifiedNames(151670).should(matchTo(ClassifiedName(PersonFamilyName("ZUSI"), NameRank(150436), NameCount(100))))
   }
 }
