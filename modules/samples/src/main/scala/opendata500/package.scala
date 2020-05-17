@@ -11,14 +11,14 @@ import kantan.csv.refined._
  */
 package object opendata500 {
 
-  implicit private val CellDecoderCompanyId: CellDecoder[CompanyId] = CompanyId.deriving
+  implicit private[opendata500] val CellDecoderCompanyId: CellDecoder[CompanyId] = CompanyId.deriving
 
-  implicit private val CellDecoderCompanyName: CellDecoder[CompanyName] =
+  implicit private[opendata500] val CellDecoderCompanyName: CellDecoder[CompanyName] =
     CompanyName.deriving[CellDecoder]
       .contramapEncoded[String](_.trim())
 
   /** Excludes values known to be invalid. */
-  implicit private val CellDecoderCompanyWebsites: CellDecoder[Seq[CompanyWebsite]] =
+  implicit private[opendata500] val CellDecoderCompanyWebsites: CellDecoder[Seq[CompanyWebsite]] =
     CompanyWebsite.deriving[CellDecoder]
       .contramapEncoded[String](_.trim())
       .map(Seq(_))
@@ -28,17 +28,5 @@ package object opendata500 {
               message.contains("http://H^8UDCC3>F8.6{.kr/") =>
           Seq()
       }
-
-  val krCompanies: IndexedSeq[Company] =
-    Thread.currentThread()
-      .getContextClassLoader()
-      .getResourceAsStream("opendata500.com/kr/download/kr_companies.csv")
-      .unsafeReadCsv[IndexedSeq, Company](rfc.withHeader)
-
-  val usCompanies: IndexedSeq[Company] =
-    Thread.currentThread()
-      .getContextClassLoader()
-      .getResourceAsStream("opendata500.com/us/download/us_companies.csv")
-      .unsafeReadCsv[IndexedSeq, Company](rfc.withHeader)
 
 }

@@ -10,9 +10,11 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 11, 2020
  */
-class CompaniesSpec extends AnyWordSpec {
+class OpenData500Spec extends AnyWordSpec {
 
-  "Open Data 500 Korean companies dataset" in {
+  "Companies (Korean)" in {
+    val krCompanies = OpenData500Loader.krCompanies()
+
     krCompanies.size should be(301)
 
     krCompanies(0) should {
@@ -53,6 +55,8 @@ class CompaniesSpec extends AnyWordSpec {
   }
 
   "Open Data 500 United States companies dataset" in {
+    val usCompanies = OpenData500Loader.usCompanies()
+
     usCompanies.size should be(529)
 
     usCompanies(0) should {

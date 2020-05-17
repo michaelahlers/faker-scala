@@ -28,28 +28,16 @@ package object census2000 {
   type NameRankType = Int Refined Positive
   @newtype case class NameRank(toIht: NameRankType)
 
-  implicit private val CellDecoderPersonFamilyName: CellDecoder[PersonFamilyName] =
+  implicit private[census2000] val CellDecoderPersonFamilyName: CellDecoder[PersonFamilyName] =
     PersonFamilyName.deriving[CellDecoder]
       .contramapEncoded[String](_.trim())
 
-  implicit private val CellDecoderNameCount: CellDecoder[NameCount] =
+  implicit private[census2000] val CellDecoderNameCount: CellDecoder[NameCount] =
     NameCount.deriving[CellDecoder]
       .contramapEncoded[String](_.trim())
 
-  implicit private val CellDecoderNameRank: CellDecoder[NameRank] =
+  implicit private[census2000] val CellDecoderNameRank: CellDecoder[NameRank] =
     NameRank.deriving[CellDecoder]
       .contramapEncoded[String](_.trim())
 
-  val classifiedNames: IndexedSeq[ClassifiedName] = {
-    val source: InputStream =
-      new ZipInputStream(
-        Thread.currentThread()
-          .getContextClassLoader()
-          .getResourceAsStream("www2.census.gov/topics/genealogy/2000surnames/names.zip")) {
-        while (!(getNextEntry().getName() == "app_c.csv")) {}
-      }
-
-    try source.unsafeReadCsv[IndexedSeq, ClassifiedName](rfc.withHeader)
-    finally source.close()
-  }
 }
