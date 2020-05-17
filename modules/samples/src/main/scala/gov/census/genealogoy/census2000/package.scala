@@ -1,4 +1,4 @@
-package gov
+package gov.census.genealogoy
 
 import java.io.InputStream
 import java.util.zip.ZipInputStream
@@ -20,7 +20,7 @@ import kantan.csv.refined._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 16, 2020
  */
-package object census {
+package object census2000 {
 
   type NameCountType = Int Refined Positive
   @newtype case class NameCount(toIht: NameCountType)

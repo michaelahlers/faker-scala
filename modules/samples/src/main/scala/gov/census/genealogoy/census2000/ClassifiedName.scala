@@ -1,4 +1,4 @@
-package gov.census
+package gov.census.genealogoy.census2000
 
 import ahlers.faker.samples._
 
