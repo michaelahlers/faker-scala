@@ -1,6 +1,6 @@
 package heise.ct
 
-import ahlers.faker.samples.PersonGivenName
+import ahlers.faker.samples._
 import com.softwaremill.diffx.scalatest.DiffMatcher._
 import eu.timepit.refined.auto._
 import org.scalatest.matchers.should.Matchers._
