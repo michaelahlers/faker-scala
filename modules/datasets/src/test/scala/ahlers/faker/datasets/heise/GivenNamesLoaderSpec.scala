@@ -3,6 +3,7 @@ package ahlers.faker.datasets.heise
 import ahlers.faker.models._
 import com.softwaremill.diffx.scalatest.DiffMatcher._
 import eu.timepit.refined.auto._
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec._
 
@@ -10,54 +11,63 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 14, 2020
  */
-class GivenNamesLoaderSpec extends AnyWordSpec {
+class GivenNamesLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
+
+  val loader = GivenNamesLoader()
+
+  override def afterAll(): Unit = {
+    super.afterAll()
+    loader.close()
+  }
 
   "Character encodings" in {
-    GivenNamesLoader.characterEncodings.size should be(79)
+    loader.characterEncodings.size should be(79)
 
-    GivenNamesLoader.characterEncodings(0).should(matchTo(CharacterEncoding("<A/>", "Ā")))
+    loader.characterEncodings(0).should(matchTo(CharacterEncoding("<A/>", "Ā")))
 
-    GivenNamesLoader.characterEncodings(61).should(matchTo(CharacterEncoding("\u009A", "š")))
-    GivenNamesLoader.characterEncodings(62).should(matchTo(CharacterEncoding("<s^>", "š")))
-    GivenNamesLoader.characterEncodings(63).should(matchTo(CharacterEncoding("<sch>", "š")))
-    GivenNamesLoader.characterEncodings(64).should(matchTo(CharacterEncoding("<sh>", "š")))
+    loader.characterEncodings(61).should(matchTo(CharacterEncoding("\u009A", "š")))
+    loader.characterEncodings(62).should(matchTo(CharacterEncoding("<s^>", "š")))
+    loader.characterEncodings(63).should(matchTo(CharacterEncoding("<sch>", "š")))
+    loader.characterEncodings(64).should(matchTo(CharacterEncoding("<sh>", "š")))
 
-    GivenNamesLoader.characterEncodings(78).should(matchTo(CharacterEncoding("<ß>", "ẞ")))
+    loader.characterEncodings(78).should(matchTo(CharacterEncoding("<ß>", "ẞ")))
   }
 
   "Locale by index" in {
     import Locales._
 
-    GivenNamesLoader.localeByIndex.size should be(55)
+    loader.localeByIndex.size should be(55)
 
-    GivenNamesLoader.localeByIndex(0).should(be(`Great Britain`))
-    GivenNamesLoader.localeByIndex(20).should(be(Estonia))
-    GivenNamesLoader.localeByIndex(54).should(be(Other))
+    loader.localeByIndex(0).should(be(`Great Britain`))
+    loader.localeByIndex(20).should(be(Estonia))
+    loader.localeByIndex(54).should(be(Other))
   }
 
-  "Classified names" in {
+  "Given names" in {
     import Genders._
     import Locales._
 
-    GivenNamesLoader.classifiedNames.size should be(48528)
+    val givenNames = loader.givenNames().toIndexedSeq
 
-    GivenNamesLoader.classifiedNames(0).should(
+    givenNames.size should be(48528)
+
+    givenNames(0).should(
       matchTo(GenderedName(Male, PersonGivenName("Aad"))
         .withProbabilities(Netherlands -> LocaleProbability(0x4)): ClassifiedName))
 
-    GivenNamesLoader.classifiedNames(3).should(
+    givenNames(3).should(
       matchTo(GenderedName(Male, PersonGivenName("Ådne"))
         .withProbabilities(Norway -> LocaleProbability(0x1)): ClassifiedName))
 
-    GivenNamesLoader.classifiedNames(95).should(
+    givenNames(95).should(
       matchTo(GenderedName(Male, PersonGivenName("Abdel"), PersonGivenName("Hafiz"))
         .withProbabilities(`Arabia/Persia` -> LocaleProbability(0x2)): ClassifiedName))
 
-    GivenNamesLoader.classifiedNames(186).should(
+    givenNames(186).should(
       matchTo(EquivalentNames(PersonGivenName("Abe"), PersonGivenName("Abraham"))
         .withProbabilities(`United States` -> LocaleProbability(0x1)): ClassifiedName))
 
-    GivenNamesLoader.classifiedNames(19982).should(
+    givenNames(19982).should(
       matchTo(
         GenderedName(Female, PersonGivenName("Jane"))
           .withProbabilities(
@@ -75,11 +85,11 @@ class GivenNamesLoaderSpec extends AnyWordSpec {
             Estonia -> LocaleProbability(0x6)
           ): ClassifiedName))
 
-    GivenNamesLoader.classifiedNames(27155).should(
+    givenNames(27155).should(
       matchTo(GenderedName(Female, PersonGivenName("Maria da Conceição"))
         .withProbabilities(Portugal -> LocaleProbability(0x3)): ClassifiedName))
 
-    GivenNamesLoader.classifiedNames(48173).should(
+    givenNames(48173).should(
       matchTo(
         GenderedName(Female, PersonGivenName("Zina"))
           .withProbabilities(
@@ -99,17 +109,20 @@ class GivenNamesLoaderSpec extends AnyWordSpec {
             `Arabia/Persia` -> LocaleProbability(0x4)
           ): ClassifiedName))
 
-    GivenNamesLoader.classifiedNames(48507).should(
+    givenNames(48507).should(
       matchTo(GenderedName(Female, PersonGivenName("Žydronė"))
         .withProbabilities(Lithuania -> LocaleProbability(0x1)): ClassifiedName))
 
-    GivenNamesLoader.classifiedNames(48508).should(
+    givenNames(48508).should(
       matchTo(GenderedName(Male, PersonGivenName("Žydrūnas"))
         .withProbabilities(Lithuania -> LocaleProbability(0x5)): ClassifiedName))
 
-    GivenNamesLoader.classifiedNames(48527).should(
+    givenNames(48527).should(
       matchTo(GenderedName(Female, PersonGivenName("Zyta"))
         .withProbabilities(Poland -> LocaleProbability(0x2)): ClassifiedName))
+
+    loader.givenNames().size.should(be(0))
+
   }
 
 }

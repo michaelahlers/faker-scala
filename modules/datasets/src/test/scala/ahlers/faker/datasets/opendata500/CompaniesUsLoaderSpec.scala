@@ -3,6 +3,7 @@ package ahlers.faker.datasets.opendata500
 import ahlers.faker.models._
 import com.softwaremill.diffx.scalatest.DiffMatcher._
 import eu.timepit.refined.auto._
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec._
 
@@ -10,56 +11,21 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 11, 2020
  */
-class OpenData500Spec extends AnyWordSpec {
+class CompaniesUsLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
 
-  "Companies (Korean)" in {
-    val krCompanies = OpenData500Loader.krCompanies()
+  val loader = CompaniesUsLoader()
 
-    krCompanies.size should be(301)
-
-    krCompanies(0) should {
-      matchTo(
-        Company(
-          CompanyId("-airblack-inc"),
-          CompanyName("airblack Inc."),
-          Seq(CompanyWebsite("www.airblack.com"))
-        ))
-    }
-
-    krCompanies(99) should {
-      matchTo(
-        Company(
-          CompanyId("i-s-m-s-"),
-          CompanyName("I S M S"),
-          Seq(CompanyWebsite("http://www.isms.re.kr"))
-        ))
-    }
-
-    krCompanies(199) should {
-      matchTo(
-        Company(
-          CompanyId("onycom-"),
-          CompanyName("onycom"),
-          Seq(CompanyWebsite("http://www.onycom.com"))
-        ))
-    }
-
-    krCompanies(299) should {
-      matchTo(
-        Company(
-          CompanyId("ywmobile"),
-          CompanyName("YWMobile"),
-          Seq(CompanyWebsite("http://www.evercon.me/homepage/index.html"))
-        ))
-    }
+  override def afterAll(): Unit = {
+    super.afterAll()
+    loader.close()
   }
 
-  "Open Data 500 United States companies dataset" in {
-    val usCompanies = OpenData500Loader.usCompanies()
+  "Companies (United States)" in {
+    val companies = loader.companies().toIndexedSeq
 
-    usCompanies.size should be(529)
+    companies.size should be(529)
 
-    usCompanies(0) should {
+    companies(0) should {
       matchTo(
         Company(
           CompanyId("3-round-stones-inc"),
@@ -68,7 +34,7 @@ class OpenData500Spec extends AnyWordSpec {
         ))
     }
 
-    usCompanies(99) should {
+    companies(99) should {
       matchTo(
         Company(
           CompanyId("cloudspyre"),
@@ -77,7 +43,7 @@ class OpenData500Spec extends AnyWordSpec {
         ))
     }
 
-    usCompanies(199) should {
+    companies(199) should {
       matchTo(
         Company(
           CompanyId("govtribe"),
@@ -86,7 +52,7 @@ class OpenData500Spec extends AnyWordSpec {
         ))
     }
 
-    usCompanies(299) should {
+    companies(299) should {
       matchTo(
         Company(
           CompanyId("mhealthcoach"),
@@ -95,7 +61,7 @@ class OpenData500Spec extends AnyWordSpec {
         ))
     }
 
-    usCompanies(399) should {
+    companies(399) should {
       matchTo(
         Company(
           CompanyId("reed-elsevier"),
@@ -104,7 +70,7 @@ class OpenData500Spec extends AnyWordSpec {
         ))
     }
 
-    usCompanies(499) should {
+    companies(499) should {
       matchTo(
         Company(
           CompanyId("walk-score"),
@@ -112,6 +78,8 @@ class OpenData500Spec extends AnyWordSpec {
           Seq(CompanyWebsite("www.walkscore.com"))
         ))
     }
+
+    //CompaniesUsLoader.companies().size.should(be(0))
   }
 
 }

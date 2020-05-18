@@ -14,7 +14,7 @@ import scala.io._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 13, 2020
  */
-object GivenNamesLoader {
+class GivenNamesLoader {
 
   private val source: BufferedSource =
     Source.fromInputStream(
@@ -139,7 +139,7 @@ object GivenNamesLoader {
     )
   }
 
-  val classifiedNames: IndexedSeq[ClassifiedName] =
+  def givenNames(): Iterator[ClassifiedName] =
     source
       .getLines()
       .dropWhile(!_.contains("begin of name list"))
@@ -176,8 +176,11 @@ object GivenNamesLoader {
               probabilityByLocale)
         }
       }
-      .toIndexedSeq
 
-  source.close()
+  def close(): Unit = source.close()
 
+}
+
+object GivenNamesLoader {
+  def apply(): GivenNamesLoader = new GivenNamesLoader
 }

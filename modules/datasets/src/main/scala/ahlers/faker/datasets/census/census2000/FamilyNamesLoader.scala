@@ -20,19 +20,23 @@ import kantan.csv.refined._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 17, 2020
  */
-object LoaderCensus2000 {
+class FamilyNamesLoader {
 
-  def familyNames(): IndexedSeq[ClassifiedName] = {
-    val source: InputStream =
-      new ZipInputStream(
-        Thread.currentThread()
-          .getContextClassLoader()
-          .getResourceAsStream("www2.census.gov/topics/genealogy/2000surnames/names.zip")) {
-        while (!(getNextEntry().getName() == "app_c.csv")) {}
-      }
+  private val source: InputStream =
+    new ZipInputStream(
+      Thread.currentThread()
+        .getContextClassLoader()
+        .getResourceAsStream("www2.census.gov/topics/genealogy/2000surnames/names.zip")) {
+      while (!(getNextEntry().getName() == "app_c.csv")) {}
+    }
 
-    try source.unsafeReadCsv[IndexedSeq, ClassifiedName](rfc.withHeader)
-    finally source.close()
-  }
+  def familyNames(): Iterator[ClassifiedName] =
+    source.unsafeReadCsv[Iterator, ClassifiedName](rfc.withHeader)
 
+  def close(): Unit = source.close()
+
+}
+
+object FamilyNamesLoader {
+  def apply(): FamilyNamesLoader = new FamilyNamesLoader
 }
