@@ -1,5 +1,7 @@
 package ahlers.faker.datasets.census.census1990
 
+import java.io.Closeable
+
 import ahlers.faker.models._
 import eu.timepit.refined.api.Refined
 
@@ -9,7 +11,7 @@ import scala.io.Source
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 16, 2020
  */
-class GivenNamesMaleLoader {
+class GivenNamesMaleLoader extends Closeable {
 
   private val source =
     Source.fromInputStream(
@@ -33,7 +35,7 @@ class GivenNamesMaleLoader {
       }
   }
 
-  def close(): Unit = source.close()
+  override def close(): Unit = source.close()
 
 }
 
