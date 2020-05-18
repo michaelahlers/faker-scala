@@ -1,15 +1,15 @@
 lazy val `faker` =
   (project in file("."))
     .aggregate(
-      `samples`,
+      `datasets`,
       `scalacheck`
     )
 
-lazy val `samples` = project in file("modules") / "samples"
+lazy val `datasets` = project in file("modules") / "datasets"
 
 lazy val `scalacheck` =
   (project in file("modules") / "scalacheck")
-    .dependsOn(`samples`)
+    .dependsOn(`datasets`)
 
 publish / skip := true
 
