@@ -11,18 +11,17 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 16, 2020
  */
-class GivenNamesFemaleLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
+class GivenNamesFemaleLoaderSpec extends FixtureAnyWordSpec {
 
-  val loader = GivenNamesFemaleLoader()
-
-  override def afterAll(): Unit = {
-    super.afterAll()
-    loader.close()
+  override type FixtureParam = IndexedSeq[ClassifiedGivenName]
+  override protected def withFixture(test: OneArgTest) = {
+    val loader = GivenNamesFemaleLoader()
+    try withFixture(test.toNoArgTest(loader.toIndexedSeq))
+    finally loader.close()
   }
 
-  "Given names (female)" in {
+  "Given names (female)" in { givenNames =>
     import Gender._
-    val givenNames = loader.toIndexedSeq
     givenNames.size.should(be(4275))
     givenNames(0).should(matchTo(ClassifiedGivenName(Female, PersonGivenName("MARY"), NameRank(1))))
     givenNames(4274).should(matchTo(ClassifiedGivenName(Female, PersonGivenName("ALLYN"), NameRank(4275))))

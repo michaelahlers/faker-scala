@@ -31,7 +31,7 @@ class GivenNameIterator extends Iterator[ClassifiedName] with Closeable {
 
   override def close(): Unit = source.close()
 
-  private[heise] val characterEncodings: Seq[CharacterEncoding] =
+  val characterEncodings: Seq[CharacterEncoding] =
     lines
       .dropWhile(!_.contains("char set"))
       .drop(6)
@@ -57,7 +57,7 @@ class GivenNameIterator extends Iterator[ClassifiedName] with Closeable {
           a.replace(ce.pattern, ce.substitution)
       }
 
-  private val localeByLabel: Map[String, Locale] = {
+  val localeByLabel: Map[String, Locale] = {
     import Locales._
     Map(
       "Great Britain" -> `Great Britain`,
@@ -118,7 +118,7 @@ class GivenNameIterator extends Iterator[ClassifiedName] with Closeable {
     )
   }
 
-  private[heise] val localeByIndex: Map[Int, Locale] =
+  val localeByIndex: Map[Int, Locale] =
     lines
       .dropWhile(!_.contains("list of countries"))
       .drop(7)
@@ -130,7 +130,7 @@ class GivenNameIterator extends Iterator[ClassifiedName] with Closeable {
       }
       .toMap
 
-  private[heise] val genderByLabel: Map[String, Gender] = {
+  val genderByLabel: Map[String, Gender] = {
     import Genders._
     Map(
       "M" -> Male,

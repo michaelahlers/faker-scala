@@ -11,17 +11,16 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 16, 2020
  */
-class FamilyNamesLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
+class FamilyNamesLoaderSpec extends FixtureAnyWordSpec {
 
-  val loader = FamilyNamesLoader()
-
-  override def afterAll(): Unit = {
-    super.afterAll()
-    loader.close()
+  override type FixtureParam = IndexedSeq[ClassifiedFamilyName]
+  override protected def withFixture(test: OneArgTest) = {
+    val loader = FamilyNamesLoader()
+    try withFixture(test.toNoArgTest(loader.toIndexedSeq))
+    finally loader.close()
   }
 
-  "Family names" in {
-    val familyNames = loader.toIndexedSeq
+  "Family names" in { familyNames =>
     familyNames.size.should(be(88799))
     familyNames(0).should(matchTo(ClassifiedFamilyName(PersonFamilyName("SMITH"), NameRank(1))))
     familyNames(88798).should(matchTo(ClassifiedFamilyName(PersonFamilyName("AALDERINK"), NameRank(88799))))

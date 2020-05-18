@@ -1,5 +1,6 @@
 package ahlers.faker.datasets.heise
 
+import ahlers.faker.datasets.census.census1990.ClassifiedGivenName
 import ahlers.faker.models._
 import com.softwaremill.diffx.scalatest.DiffMatcher._
 import eu.timepit.refined.auto._
@@ -11,16 +12,16 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 14, 2020
  */
-class GivenNameIteratorSpec extends AnyWordSpec with BeforeAndAfterAll {
+class GivenNameIteratorSpec extends FixtureAnyWordSpec {
 
-  val loader = GivenNameIterator()
-
-  override def afterAll(): Unit = {
-    super.afterAll()
-    loader.close()
+  override type FixtureParam = GivenNameIterator
+  override protected def withFixture(test: OneArgTest) = {
+    val loader = GivenNameIterator()
+    try withFixture(test.toNoArgTest(loader))
+    finally loader.close()
   }
 
-  "Character encodings" in {
+  "Character encodings" in { loader =>
     loader.characterEncodings.size should be(79)
 
     loader.characterEncodings(0).should(matchTo(CharacterEncoding("<A/>", "Ā")))
@@ -33,7 +34,7 @@ class GivenNameIteratorSpec extends AnyWordSpec with BeforeAndAfterAll {
     loader.characterEncodings(78).should(matchTo(CharacterEncoding("<ß>", "ẞ")))
   }
 
-  "Locale by index" in {
+  "Locale by index" in { loader =>
     import Locales._
 
     loader.localeByIndex.size should be(55)
@@ -43,7 +44,7 @@ class GivenNameIteratorSpec extends AnyWordSpec with BeforeAndAfterAll {
     loader.localeByIndex(54).should(be(Other))
   }
 
-  "Given names" in {
+  "Given names" in { loader =>
     import Genders._
     import Locales._
 

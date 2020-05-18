@@ -11,57 +11,49 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 11, 2020
  */
-class CompanyKrIteratorSpec extends AnyWordSpec with BeforeAndAfterAll {
+class CompanyKrIteratorSpec extends FixtureAnyWordSpec {
 
-  val loader = CompanyKrIterator()
-
-  override def afterAll(): Unit = {
-    super.afterAll()
-    loader.close()
+  override type FixtureParam = IndexedSeq[Company]
+  override protected def withFixture(test: OneArgTest) = {
+    val loader = CompanyKrIterator()
+    try withFixture(test.toNoArgTest(loader.toIndexedSeq))
+    finally loader.close()
   }
 
-  "Companies (Korean)" in {
-    val companies = loader.toIndexedSeq
-
+  "Companies (Korean)" in { companies =>
     companies.size.should(be(301))
 
-    companies(0) should {
+    companies(0).should(
       matchTo(
         Company(
           CompanyId("-airblack-inc"),
           CompanyName("airblack Inc."),
           Seq(CompanyWebsite("www.airblack.com"))
-        ))
-    }
+        )))
 
-    companies(99) should {
+    companies(99).should(
       matchTo(
         Company(
           CompanyId("i-s-m-s-"),
           CompanyName("I S M S"),
           Seq(CompanyWebsite("http://www.isms.re.kr"))
-        ))
-    }
+        )))
 
-    companies(199) should {
+    companies(199).should(
       matchTo(
         Company(
           CompanyId("onycom-"),
           CompanyName("onycom"),
           Seq(CompanyWebsite("http://www.onycom.com"))
-        ))
-    }
+        )))
 
-    companies(299) should {
+    companies(299).should(
       matchTo(
         Company(
           CompanyId("ywmobile"),
           CompanyName("YWMobile"),
           Seq(CompanyWebsite("http://www.evercon.me/homepage/index.html"))
-        ))
-    }
-
-    //loader.companies().size.should(be(0))
+        )))
   }
 
 }
