@@ -11,7 +11,7 @@ import scala.io.Source
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 16, 2020
  */
-class GivenNamesFemaleLoader extends Iterator[ClassifiedGivenName] with Closeable {
+class GivenNamesFemaleIterator extends Iterator[ClassifiedGivenName] with Closeable {
 
   private val source =
     Source.fromInputStream(
@@ -39,6 +39,6 @@ class GivenNamesFemaleLoader extends Iterator[ClassifiedGivenName] with Closeabl
 
 }
 
-object GivenNamesFemaleLoader {
-  def apply(): GivenNamesFemaleLoader = new GivenNamesFemaleLoader
+object GivenNamesFemaleIterator {
+  def apply(): GivenNamesFemaleIterator = new GivenNamesFemaleIterator
 }

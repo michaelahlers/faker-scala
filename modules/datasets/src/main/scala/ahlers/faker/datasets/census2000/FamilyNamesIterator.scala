@@ -21,7 +21,7 @@ import kantan.csv.refined._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 17, 2020
  */
-class FamilyNamesLoader extends Iterator[ClassifiedName] with Closeable {
+class FamilyNamesIterator extends Iterator[ClassifiedName] with Closeable {
 
   private val source =
     new ZipInputStream(
@@ -41,6 +41,6 @@ class FamilyNamesLoader extends Iterator[ClassifiedName] with Closeable {
 
 }
 
-object FamilyNamesLoader {
-  def apply(): FamilyNamesLoader = new FamilyNamesLoader
+object FamilyNamesIterator {
+  def apply(): FamilyNamesIterator = new FamilyNamesIterator
 }

@@ -11,11 +11,11 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 16, 2020
  */
-class FamilyNamesLoaderSpec extends FixtureAnyWordSpec {
+class FamilyNamesIteratorSpec extends FixtureAnyWordSpec {
 
   override type FixtureParam = IndexedSeq[ClassifiedName]
   override protected def withFixture(test: OneArgTest) = {
-    val loader = FamilyNamesLoader()
+    val loader = FamilyNamesIterator()
     try withFixture(test.toNoArgTest(loader.toIndexedSeq))
     finally loader.close()
   }
