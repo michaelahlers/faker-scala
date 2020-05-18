@@ -1,6 +1,6 @@
 package ahlers.faker
 
-import ahlers.refined.string._
+import ahlers.faker.refined.string._
 import eu.timepit.refined.api._
 import eu.timepit.refined.boolean._
 import eu.timepit.refined.collection._

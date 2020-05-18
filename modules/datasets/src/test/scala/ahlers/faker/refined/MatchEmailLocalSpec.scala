@@ -1,6 +1,6 @@
-package ahlers.refined
+package ahlers.faker.refined
 
-import ahlers.refined.string._
+import string._
 import org.scalatestplus.scalacheck._
 import com.softwaremill.diffx.scalatest.DiffMatcher._
 import eu.timepit.refined.api._

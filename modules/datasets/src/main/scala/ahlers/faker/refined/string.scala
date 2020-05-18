@@ -1,4 +1,4 @@
-package ahlers.refined
+package ahlers.faker.refined
 
 import eu.timepit.refined.api._
 import eu.timepit.refined.string._
