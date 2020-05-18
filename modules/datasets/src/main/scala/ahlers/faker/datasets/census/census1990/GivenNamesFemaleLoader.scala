@@ -11,7 +11,7 @@ import scala.io.Source
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 16, 2020
  */
-class GivenNamesFemaleLoader extends Closeable {
+class GivenNamesFemaleLoader extends Iterator[ClassifiedGivenName] with Closeable {
 
   private val source =
     Source.fromInputStream(
@@ -19,23 +19,23 @@ class GivenNamesFemaleLoader extends Closeable {
         .getContextClassLoader()
         .getResourceAsStream("www2.census.gov/topics/genealogy/1990surnames/dist.female.first"))
 
-  def givenNames(): Iterator[ClassifiedGivenName] = {
+  final override def close(): Unit = source.close()
+
+  private val lines = source.getLines()
+
+  override def hasNext = lines.hasNext
+
+  override def next() = {
     import Gender._
-
-    source
-      .getLines()
-      .map { row =>
-        val name = row.slice(0, 15).trim()
-        val rank = row.slice(29, 34).trim().toInt
-        ClassifiedGivenName(
-          Female,
-          PersonGivenName(Refined.unsafeApply(name)),
-          NameRank(Refined.unsafeApply(rank))
-        )
-      }
+    val row = lines.next()
+    val name = row.slice(0, 15).trim()
+    val rank = row.slice(29, 34).trim().toInt
+    ClassifiedGivenName(
+      Female,
+      PersonGivenName(Refined.unsafeApply(name)),
+      NameRank(Refined.unsafeApply(rank))
+    )
   }
-
-  override def close(): Unit = source.close()
 
 }
 

@@ -1,5 +1,6 @@
 package ahlers.faker.datasets.census.census2000
 
+import java.io.Closeable
 import java.io.InputStream
 import java.util.zip.ZipInputStream
 
@@ -20,9 +21,9 @@ import kantan.csv.refined._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 17, 2020
  */
-class FamilyNamesLoader {
+class FamilyNamesLoader extends Iterator[ClassifiedName] with Closeable {
 
-  private val source: InputStream =
+  private val source =
     new ZipInputStream(
       Thread.currentThread()
         .getContextClassLoader()
@@ -30,10 +31,13 @@ class FamilyNamesLoader {
       while (!(getNextEntry().getName() == "app_c.csv")) {}
     }
 
-  def familyNames(): Iterator[ClassifiedName] =
-    source.unsafeReadCsv[Iterator, ClassifiedName](rfc.withHeader)
+  private val reader: CsvReader[ClassifiedName] =
+    source.asUnsafeCsvReader[ClassifiedName](rfc.withHeader)
 
-  def close(): Unit = source.close()
+  final override def close(): Unit = reader.close()
+
+  override def hasNext = reader.hasNext
+  override def next() = reader.next()
 
 }
 

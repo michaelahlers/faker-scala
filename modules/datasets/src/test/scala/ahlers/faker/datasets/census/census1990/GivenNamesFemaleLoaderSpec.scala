@@ -22,7 +22,7 @@ class GivenNamesFemaleLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
 
   "Given names (female)" in {
     import Gender._
-    val givenNames = loader.givenNames().toIndexedSeq
+    val givenNames = loader.toIndexedSeq
     givenNames.size.should(be(4275))
     givenNames(0).should(matchTo(ClassifiedGivenName(Female, PersonGivenName("MARY"), NameRank(1))))
     givenNames(4274).should(matchTo(ClassifiedGivenName(Female, PersonGivenName("ALLYN"), NameRank(4275))))

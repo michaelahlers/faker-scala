@@ -21,7 +21,7 @@ class FamilyNamesLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
   }
 
   "Family names" in {
-    val familyNames = loader.familyNames().toIndexedSeq
+    val familyNames = loader.toIndexedSeq
     familyNames.size.should(be(88799))
     familyNames(0).should(matchTo(ClassifiedFamilyName(PersonFamilyName("SMITH"), NameRank(1))))
     familyNames(88798).should(matchTo(ClassifiedFamilyName(PersonFamilyName("AALDERINK"), NameRank(88799))))
