@@ -1,4 +1,4 @@
-package ahlers.faker.datasets.census.census1990
+package ahlers.faker.datasets.census1990
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>

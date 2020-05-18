@@ -1,4 +1,4 @@
-package ahlers.faker.datasets.census.census2000
+package ahlers.faker.datasets.census2000
 
 import java.io.Closeable
 import java.io.InputStream

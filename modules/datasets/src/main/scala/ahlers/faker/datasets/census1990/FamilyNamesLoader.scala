@@ -1,4 +1,4 @@
-package ahlers.faker.datasets.census.census1990
+package ahlers.faker.datasets.census1990
 
 import java.io.Closeable
 
@@ -11,13 +11,13 @@ import scala.io.Source
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 16, 2020
  */
-class GivenNamesMaleLoader extends Iterator[ClassifiedGivenName] with Closeable {
+class FamilyNamesLoader extends Iterator[ClassifiedFamilyName] with Closeable {
 
   private val source =
     Source.fromInputStream(
       Thread.currentThread()
         .getContextClassLoader()
-        .getResourceAsStream("www2.census.gov/topics/genealogy/1990surnames/dist.male.first"))
+        .getResourceAsStream("www2.census.gov/topics/genealogy/1990surnames/dist.all.last"))
 
   final override def close(): Unit = source.close()
 
@@ -25,21 +25,18 @@ class GivenNamesMaleLoader extends Iterator[ClassifiedGivenName] with Closeable 
 
   override def hasNext = lines.hasNext
 
-  def next() = {
-    import Gender._
-
+  override def next() = {
     val row = lines.next()
     val name = row.slice(0, 15).trim()
     val rank = row.slice(29, 34).trim().toInt
-    ClassifiedGivenName(
-      Male,
-      PersonGivenName(Refined.unsafeApply(name)),
+    ClassifiedFamilyName(
+      PersonFamilyName(Refined.unsafeApply(name)),
       NameRank(Refined.unsafeApply(rank))
     )
   }
 
 }
 
-object GivenNamesMaleLoader {
-  def apply(): GivenNamesMaleLoader = new GivenNamesMaleLoader
+object FamilyNamesLoader {
+  def apply(): FamilyNamesLoader = new FamilyNamesLoader
 }

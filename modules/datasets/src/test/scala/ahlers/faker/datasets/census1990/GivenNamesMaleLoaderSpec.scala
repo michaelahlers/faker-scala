@@ -1,4 +1,4 @@
-package ahlers.faker.datasets.census.census1990
+package ahlers.faker.datasets.census1990
 
 import ahlers.faker.models._
 import com.softwaremill.diffx.scalatest.DiffMatcher._

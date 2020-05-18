@@ -1,4 +1,4 @@
-package ahlers.faker.datasets.census.census1990
+package ahlers.faker.datasets.census1990
 
 import ahlers.faker.models._
 

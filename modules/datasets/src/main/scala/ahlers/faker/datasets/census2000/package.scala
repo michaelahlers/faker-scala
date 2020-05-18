@@ -1,4 +1,4 @@
-package ahlers.faker.datasets.census
+package ahlers.faker.datasets
 
 import java.io.InputStream
 import java.util.zip.ZipInputStream

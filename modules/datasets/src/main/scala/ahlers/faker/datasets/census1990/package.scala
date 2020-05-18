@@ -1,4 +1,4 @@
-package ahlers.faker.datasets.census
+package ahlers.faker.datasets
 
 import eu.timepit.refined.api._
 import eu.timepit.refined.numeric._

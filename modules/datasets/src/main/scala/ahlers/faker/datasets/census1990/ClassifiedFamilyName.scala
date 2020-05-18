@@ -1,4 +1,4 @@
-package ahlers.faker.datasets.census.census2000
+package ahlers.faker.datasets.census1990
 
 import ahlers.faker.models._
 
@@ -6,4 +6,4 @@ import ahlers.faker.models._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 16, 2020
  */
-case class ClassifiedName(name: PersonFamilyName, rank: NameRank, count: NameCount)
+case class ClassifiedFamilyName(name: PersonFamilyName, rank: NameRank)
