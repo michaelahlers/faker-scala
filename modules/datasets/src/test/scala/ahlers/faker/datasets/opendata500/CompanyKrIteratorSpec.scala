@@ -11,9 +11,9 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 11, 2020
  */
-class CompaniesKrLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
+class CompanyKrIteratorSpec extends AnyWordSpec with BeforeAndAfterAll {
 
-  val loader = CompaniesKrLoader()
+  val loader = CompanyKrIterator()
 
   override def afterAll(): Unit = {
     super.afterAll()
@@ -21,7 +21,7 @@ class CompaniesKrLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
   }
 
   "Companies (Korean)" in {
-    val companies = loader.companies().toIndexedSeq
+    val companies = loader.toIndexedSeq
 
     companies.size.should(be(301))
 

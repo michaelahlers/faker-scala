@@ -1,5 +1,7 @@
 package ahlers.faker.datasets.heise
 
+import java.io.Closeable
+
 import cats.syntax.option._
 import eu.timepit.refined._
 import eu.timepit.refined.api._
@@ -14,7 +16,7 @@ import scala.io._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 13, 2020
  */
-class GivenNamesLoader {
+class GivenNameIterator extends Iterator[ClassifiedName] with Closeable {
 
   private val source: BufferedSource =
     Source.fromInputStream(
@@ -25,9 +27,12 @@ class GivenNamesLoader {
         while (!(getNextEntry().getName() == "0717-182/nam_dict.txt")) {}
       })(Codec.ISO8859)
 
+  private val lines: Iterator[String] = source.getLines()
+
+  override def close(): Unit = source.close()
+
   private[heise] val characterEncodings: Seq[CharacterEncoding] =
-    source
-      .getLines()
+    lines
       .dropWhile(!_.contains("char set"))
       .drop(6)
       .take(67)
@@ -114,8 +119,7 @@ class GivenNamesLoader {
   }
 
   private[heise] val localeByIndex: Map[Int, Locale] =
-    source
-      .getLines()
+    lines
       .dropWhile(!_.contains("list of countries"))
       .drop(7)
       .take(164)
@@ -139,48 +143,50 @@ class GivenNamesLoader {
     )
   }
 
-  def givenNames(): Iterator[ClassifiedName] =
-    source
-      .getLines()
-      .dropWhile(!_.contains("begin of name list"))
-      .drop(2)
-      .map { entry =>
-        val genderO: Option[Gender] = genderByLabel.get(entry.take(2).trim())
+  /* Moves the iterator to the correct position for names. */
+  lines
+    .dropWhile(!_.contains("begin of name list"))
+    .drop(2)
 
-        val probabilityByLocale: Map[Locale, LocaleProbability] =
-          localeByIndex
-            .flatMap {
-              case (index, name) =>
-                Option(entry.charAt(index.toInt + 30))
-                  .map(_.toString.trim())
-                  .filter(_.nonEmpty)
-                  .map(Integer.parseInt(_, 16))
-                  .map { probability =>
-                    (name, LocaleProbability(Refined.unsafeApply(probability)))
-                  }
-            }
+  override def hasNext = lines.hasNext
 
-        genderO match {
-          case None =>
-            EquivalentNames(
-              decodeName(entry.slice(3, 29).trim())
-                .split(' ').toSet[String]
-                .map(givenName => PersonGivenName(Refined.unsafeApply(givenName))),
-              probabilityByLocale)
-          case Some(gender) =>
-            GenderedName(
-              gender,
-              decodeName(entry.slice(3, 29).trim())
-                .split('+').toSeq
-                .map(givenName => PersonGivenName(Refined.unsafeApply(givenName))),
-              probabilityByLocale)
+  override def next() = {
+    val entry = lines.next()
+
+    val genderO: Option[Gender] = genderByLabel.get(entry.take(2).trim())
+
+    val probabilityByLocale: Map[Locale, LocaleProbability] =
+      localeByIndex
+        .flatMap {
+          case (index, name) =>
+            Option(entry.charAt(index.toInt + 30))
+              .map(_.toString.trim())
+              .filter(_.nonEmpty)
+              .map(Integer.parseInt(_, 16))
+              .map { probability =>
+                (name, LocaleProbability(Refined.unsafeApply(probability)))
+              }
         }
-      }
 
-  def close(): Unit = source.close()
+    genderO match {
+      case None =>
+        EquivalentNames(
+          decodeName(entry.slice(3, 29).trim())
+            .split(' ').toSet[String]
+            .map(givenName => PersonGivenName(Refined.unsafeApply(givenName))),
+          probabilityByLocale)
+      case Some(gender) =>
+        GenderedName(
+          gender,
+          decodeName(entry.slice(3, 29).trim())
+            .split('+').toSeq
+            .map(givenName => PersonGivenName(Refined.unsafeApply(givenName))),
+          probabilityByLocale)
+    }
+  }
 
 }
 
-object GivenNamesLoader {
-  def apply(): GivenNamesLoader = new GivenNamesLoader
+object GivenNameIterator {
+  def apply(): GivenNameIterator = new GivenNameIterator
 }

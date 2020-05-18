@@ -31,4 +31,7 @@ package object opendata500 {
           Seq()
       }
 
+  def companiesKr(): Iterator[Company] = CompanyKrIterator()
+  def companiesUs(): Iterator[Company] = CompanyUsIterator()
+
 }

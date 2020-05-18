@@ -11,9 +11,9 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 11, 2020
  */
-class CompaniesUsLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
+class CompanyUsIteratorSpec extends AnyWordSpec with BeforeAndAfterAll {
 
-  val loader = CompaniesUsLoader()
+  val loader = CompanyUsIterator()
 
   override def afterAll(): Unit = {
     super.afterAll()
@@ -21,7 +21,7 @@ class CompaniesUsLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
   }
 
   "Companies (United States)" in {
-    val companies = loader.companies().toIndexedSeq
+    val companies = loader.toIndexedSeq
 
     companies.size should be(529)
 

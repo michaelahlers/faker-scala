@@ -11,9 +11,9 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 14, 2020
  */
-class GivenNamesLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
+class GivenNameIteratorSpec extends AnyWordSpec with BeforeAndAfterAll {
 
-  val loader = GivenNamesLoader()
+  val loader = GivenNameIterator()
 
   override def afterAll(): Unit = {
     super.afterAll()
@@ -47,7 +47,7 @@ class GivenNamesLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
     import Genders._
     import Locales._
 
-    val givenNames = loader.givenNames().toIndexedSeq
+    val givenNames = loader.toIndexedSeq
 
     givenNames.size should be(48528)
 
@@ -120,8 +120,6 @@ class GivenNamesLoaderSpec extends AnyWordSpec with BeforeAndAfterAll {
     givenNames(48527).should(
       matchTo(GenderedName(Female, PersonGivenName("Zyta"))
         .withProbabilities(Poland -> LocaleProbability(0x2)): ClassifiedName))
-
-    loader.givenNames().size.should(be(0))
 
   }
 
