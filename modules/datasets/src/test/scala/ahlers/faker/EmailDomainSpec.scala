@@ -1,4 +1,4 @@
-package ahlers.faker.models
+package ahlers.faker
 
 import eu.timepit.refined.auto._
 import org.scalatest.matchers.should.Matchers._

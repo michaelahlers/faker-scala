@@ -1,6 +1,6 @@
 package ahlers.faker.datasets.census2000
 
-import ahlers.faker.models._
+import ahlers.faker._
 import com.softwaremill.diffx.scalatest.DiffMatcher._
 import eu.timepit.refined.auto._
 import org.scalatest.BeforeAndAfterAll

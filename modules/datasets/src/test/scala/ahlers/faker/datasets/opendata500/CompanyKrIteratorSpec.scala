@@ -1,6 +1,8 @@
 package ahlers.faker.datasets.opendata500
 
-import ahlers.faker.models._
+import ahlers.faker
+import ahlers.faker.Company
+import ahlers.faker._
 import com.softwaremill.diffx.scalatest.DiffMatcher._
 import eu.timepit.refined.auto._
 import org.scalatest.BeforeAndAfterAll
@@ -25,7 +27,7 @@ class CompanyKrIteratorSpec extends FixtureAnyWordSpec {
 
     companies(0).should(
       matchTo(
-        Company(
+        faker.Company(
           CompanyId("-airblack-inc"),
           CompanyName("airblack Inc."),
           Seq(CompanyWebsite("www.airblack.com"))
@@ -33,7 +35,7 @@ class CompanyKrIteratorSpec extends FixtureAnyWordSpec {
 
     companies(99).should(
       matchTo(
-        Company(
+        faker.Company(
           CompanyId("i-s-m-s-"),
           CompanyName("I S M S"),
           Seq(CompanyWebsite("http://www.isms.re.kr"))
@@ -41,7 +43,7 @@ class CompanyKrIteratorSpec extends FixtureAnyWordSpec {
 
     companies(199).should(
       matchTo(
-        Company(
+        faker.Company(
           CompanyId("onycom-"),
           CompanyName("onycom"),
           Seq(CompanyWebsite("http://www.onycom.com"))
@@ -49,7 +51,7 @@ class CompanyKrIteratorSpec extends FixtureAnyWordSpec {
 
     companies(299).should(
       matchTo(
-        Company(
+        faker.Company(
           CompanyId("ywmobile"),
           CompanyName("YWMobile"),
           Seq(CompanyWebsite("http://www.evercon.me/homepage/index.html"))

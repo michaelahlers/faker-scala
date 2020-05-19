@@ -1,4 +1,4 @@
-package ahlers.faker.models
+package ahlers.faker
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>

@@ -1,6 +1,6 @@
 package ahlers.faker.datasets.heise
 
-import ahlers.faker.models._
+import ahlers.faker._
 import cats.syntax.option._
 
 /**

@@ -1,4 +1,4 @@
-package ahlers.faker
+package ahlers
 
 import ahlers.faker.refined.string._
 import eu.timepit.refined.api._
@@ -11,7 +11,7 @@ import io.estatico.newtype.macros.newtype
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 05, 2020
  */
-package object models {
+package object faker {
 
   type CompanyIdType = String Refined (NonEmpty And Trimmed)
   @newtype case class CompanyId(toText: CompanyIdType)

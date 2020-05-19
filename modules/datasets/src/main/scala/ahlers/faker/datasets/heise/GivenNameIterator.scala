@@ -8,7 +8,7 @@ import eu.timepit.refined.api._
 import eu.timepit.refined.auto._
 import java.util.zip.ZipInputStream
 
-import ahlers.faker.models.PersonGivenName
+import ahlers.faker.PersonGivenName
 
 import scala.io._
 

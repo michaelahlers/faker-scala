@@ -1,6 +1,8 @@
 package ahlers.faker.datasets.opendata500
 
-import ahlers.faker.models._
+import ahlers.faker
+import ahlers.faker.Company
+import ahlers.faker._
 import com.softwaremill.diffx.scalatest.DiffMatcher._
 import eu.timepit.refined.auto._
 import org.scalatest.BeforeAndAfterAll
@@ -27,7 +29,7 @@ class CompanyUsIteratorSpec extends FixtureAnyWordSpec {
 
     companies(0).should(
       matchTo(
-        Company(
+        faker.Company(
           CompanyId("3-round-stones-inc"),
           CompanyName("3 Round Stones, Inc."),
           Seq(CompanyWebsite("http://3RoundStones.com"))
@@ -35,7 +37,7 @@ class CompanyUsIteratorSpec extends FixtureAnyWordSpec {
 
     companies(99).should(
       matchTo(
-        Company(
+        faker.Company(
           CompanyId("cloudspyre"),
           CompanyName("Cloudspyre"),
           Seq(CompanyWebsite("http://www.cloudspyre.com"))
@@ -43,7 +45,7 @@ class CompanyUsIteratorSpec extends FixtureAnyWordSpec {
 
     companies(199).should(
       matchTo(
-        Company(
+        faker.Company(
           CompanyId("govtribe"),
           CompanyName("GovTribe"),
           Seq(CompanyWebsite("govtribe.com"))
@@ -51,7 +53,7 @@ class CompanyUsIteratorSpec extends FixtureAnyWordSpec {
 
     companies(299).should(
       matchTo(
-        Company(
+        faker.Company(
           CompanyId("mhealthcoach"),
           CompanyName("mHealthCoach"),
           Seq(CompanyWebsite("http://mhealthcoach.com"))
@@ -59,7 +61,7 @@ class CompanyUsIteratorSpec extends FixtureAnyWordSpec {
 
     companies(399).should(
       matchTo(
-        Company(
+        faker.Company(
           CompanyId("reed-elsevier"),
           CompanyName("Reed Elsevier"),
           Seq(CompanyWebsite("http://www.reedelsevier.com/Pages/Home.aspx"))
@@ -67,7 +69,7 @@ class CompanyUsIteratorSpec extends FixtureAnyWordSpec {
 
     companies(499).should(
       matchTo(
-        Company(
+        faker.Company(
           CompanyId("walk-score"),
           CompanyName("Walk Score"),
           Seq(CompanyWebsite("www.walkscore.com"))

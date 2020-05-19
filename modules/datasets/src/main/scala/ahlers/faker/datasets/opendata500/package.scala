@@ -1,6 +1,7 @@
 package ahlers.faker.datasets
 
-import ahlers.faker.models._
+import ahlers.faker.Company
+import ahlers.faker._
 import kantan.csv.DecodeError.TypeError
 import kantan.csv._
 import kantan.csv.generic._
