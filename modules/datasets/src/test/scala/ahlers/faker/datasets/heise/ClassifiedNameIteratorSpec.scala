@@ -12,11 +12,11 @@ import org.scalatest.wordspec._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 14, 2020
  */
-class GivenNameIteratorSpec extends FixtureAnyWordSpec {
+class ClassifiedNameIteratorSpec extends FixtureAnyWordSpec {
 
-  override type FixtureParam = GivenNameIterator
+  override type FixtureParam = ClassifiedNameIterator
   override protected def withFixture(test: OneArgTest) = {
-    val loader = GivenNameIterator()
+    val loader = ClassifiedNameIterator()
     try withFixture(test.toNoArgTest(loader))
     finally loader.close()
   }

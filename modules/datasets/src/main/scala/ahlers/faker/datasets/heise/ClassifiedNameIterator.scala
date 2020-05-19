@@ -16,7 +16,7 @@ import scala.io._
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 13, 2020
  */
-class GivenNameIterator extends Iterator[ClassifiedName] with Closeable {
+class ClassifiedNameIterator extends Iterator[ClassifiedName] with Closeable {
 
   private val source: BufferedSource =
     Source.fromInputStream(
@@ -187,6 +187,6 @@ class GivenNameIterator extends Iterator[ClassifiedName] with Closeable {
 
 }
 
-object GivenNameIterator {
-  def apply(): GivenNameIterator = new GivenNameIterator
+object ClassifiedNameIterator {
+  def apply(): ClassifiedNameIterator = new ClassifiedNameIterator
 }
