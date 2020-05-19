@@ -10,6 +10,9 @@ import org.scalacheck.Gen._
  */
 object all {
 
+  val genCompany: Gen[Company] =
+    opendata500.genCompany
+
   val genPersonGivenName: Gen[PersonGivenName] =
     oneOf(census1990.genPersonGivenName, heise.genPersonGivenName)
 
