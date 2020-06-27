@@ -1,9 +1,10 @@
-package ahlers.faker.scalacheck
+package ahlers.faker.scalacheck.company
 
-import ahlers.faker._
-import ahlers.faker.datasets.opendata500._
-import org.scalacheck.Gen._
-import org.scalacheck._
+import ahlers.faker.Company
+import ahlers.faker.datasets.opendata500.CompanyKrIterator
+import ahlers.faker.datasets.opendata500.CompanyUsIterator
+import org.scalacheck.Gen
+import org.scalacheck.Gen.oneOf
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
