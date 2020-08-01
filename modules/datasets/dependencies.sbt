@@ -2,9 +2,9 @@ libraryDependencies ++=
   "com.nrinaudo" %% "kantan.csv" % "0.6.1" ::
     "com.nrinaudo" %% "kantan.csv-generic" % "0.6.1" ::
     "com.nrinaudo" %% "kantan.csv-refined" % "0.6.1" ::
-    "eu.timepit" %% "refined" % "0.9.14" ::
-    "eu.timepit" %% "refined-scalacheck" % "0.9.14" ::
-    "eu.timepit" %% "refined-shapeless" % "0.9.14" ::
+    "eu.timepit" %% "refined" % "0.9.15" ::
+    "eu.timepit" %% "refined-scalacheck" % "0.9.15" ::
+    "eu.timepit" %% "refined-shapeless" % "0.9.15" ::
     "io.estatico" %% "newtype" % "0.4.4" ::
     "org.typelevel" %% "cats-core" % "2.1.1" ::
     Nil
