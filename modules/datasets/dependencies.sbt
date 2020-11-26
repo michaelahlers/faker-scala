@@ -6,7 +6,7 @@ libraryDependencies ++=
     "eu.timepit" %% "refined-scalacheck" % "0.9.15" ::
     "eu.timepit" %% "refined-shapeless" % "0.9.15" ::
     "io.estatico" %% "newtype" % "0.4.4" ::
-    "org.typelevel" %% "cats-core" % "2.1.1" ::
+    "org.typelevel" %% "cats-core" % "2.3.0" ::
     Nil
 
 libraryDependencies ++= {
