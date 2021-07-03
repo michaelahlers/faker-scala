@@ -1,17 +1,18 @@
-package ahlers.faker.scalacheck
+package ahlers.faker.scalacheck.name
 
-import ahlers.faker.datasets.heise._
-import ahlers.faker._
-import org.scalacheck.Gen._
-import org.scalacheck._
+import ahlers.faker.PersonGivenName
+import ahlers.faker.datasets.heise.ClassifiedNameIterator
+import ahlers.faker.datasets.heise.GenderedName
 import eu.timepit.refined.api.Refined
+import org.scalacheck.Gen
+import org.scalacheck.Gen.const
+import org.scalacheck.Gen.oneOf
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 18, 2020
  */
 object heise {
-
   val genPersonGivenName: Gen[PersonGivenName] =
     oneOf(
       ClassifiedNameIterator()

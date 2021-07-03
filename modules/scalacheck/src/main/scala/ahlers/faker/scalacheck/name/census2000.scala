@@ -1,9 +1,9 @@
-package ahlers.faker.scalacheck
+package ahlers.faker.scalacheck.name
 
-import ahlers.faker._
-import ahlers.faker.datasets.census2000._
-import org.scalacheck.Gen._
-import org.scalacheck._
+import ahlers.faker.PersonFamilyName
+import ahlers.faker.datasets.census2000.FamilyNamesIterator
+import org.scalacheck.Gen
+import org.scalacheck.Gen.oneOf
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>

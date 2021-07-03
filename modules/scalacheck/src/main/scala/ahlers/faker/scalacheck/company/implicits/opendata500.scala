@@ -1,8 +1,8 @@
-package ahlers.faker.scalacheck.implicits
+package ahlers.faker.scalacheck.company.implicits
 
-import ahlers.faker._
-import ahlers.faker.scalacheck.opendata500._
-import org.scalacheck._
+import ahlers.faker.Company
+import ahlers.faker.scalacheck.company.opendata500.genCompany
+import org.scalacheck.Arbitrary
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>

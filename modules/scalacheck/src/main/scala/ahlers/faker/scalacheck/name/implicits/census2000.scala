@@ -1,8 +1,8 @@
-package ahlers.faker.scalacheck.implicits
+package ahlers.faker.scalacheck.name.implicits
 
-import ahlers.faker._
-import ahlers.faker.scalacheck.census2000._
-import org.scalacheck._
+import ahlers.faker.PersonFamilyName
+import ahlers.faker.scalacheck.name.census2000.genPersonFamilyName
+import org.scalacheck.Arbitrary
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
