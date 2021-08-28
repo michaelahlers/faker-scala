@@ -83,7 +83,7 @@ class ClassifiedNameIteratorSpec extends FixtureAnyWordSpec {
             `Belgium` -> LocaleProbability(0x1),
             `Netherlands` -> LocaleProbability(0x2),
             `Austria` -> LocaleProbability(0x2),
-            `Swiss` -> LocaleProbability(0x3),
+            `Switzerland` -> LocaleProbability(0x3),
             `Denmark` -> LocaleProbability(0x7),
             `Norway` -> LocaleProbability(0x3),
             `Sweden` -> LocaleProbability(0x3),
