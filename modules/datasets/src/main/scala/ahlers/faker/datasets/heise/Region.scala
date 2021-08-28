@@ -2,7 +2,8 @@ package ahlers.faker.datasets.heise
 
 import cats.syntax.option._
 import java.util.Locale
-import scala.collection.immutable.Seq
+import java.util.Locale.IsoCountryCode
+//import scala.collection.immutable.Seq
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
@@ -70,18 +71,28 @@ object Regions {
 
   object HasLocale {
 
+    case class CountryCodeNotFoundException(country: String)
+      extends Exception(s"""No locale with country code "$country".""")
+
+    private val byCountry: Map[String, Seq[Locale]] =
+      Locale.getAvailableLocales
+        .groupBy(_.getCountry)
+        .mapValues(_.toSeq)
+        .withDefault(country =>
+          throw CountryCodeNotFoundException(country))
+
     /**
      * Caveats:
      *
      * - Resolves [[`Great Britain`]] to [[Locale.UK]], which is technically incorrect; see also [[https://stackoverflow.com/questions/8334904/locale-uk-and-country-code ''Locale.UK and country code'']].
      */
-    def unapplySeq(region: Region): Option[Seq[Locale]] =
+    def unapply(region: Region): Option[Seq[Locale]] =
       region match {
-        case `Albania` => none
+        case `Albania` => byCountry("AL").some
         case `Arabia/Persia` => none
-        case `Armenia` => none
-        case `Austria` => none
-        case `Azerbaijan` => none
+        case `Armenia` => byCountry("AM").some
+        case `Austria` => byCountry("AT").some
+        case `Azerbaijan` => byCountry("AZ").some
         case `Belarus` => none
         case `Belgium` => none
         case `Bosnia/Herzegovina` => none
@@ -100,7 +111,7 @@ object Regions {
         case `Greece` => none
         case `Hungary` => none
         case `Iceland` => none
-        case `India/Sri Lanka` => none
+        case `India/Sri Lanka` => (byCountry("IN") ++ byCountry("LK")).some
         case `Ireland` => none
         case `Israel` => none
         case `Italy` => Seq(Locale.ITALY).some
