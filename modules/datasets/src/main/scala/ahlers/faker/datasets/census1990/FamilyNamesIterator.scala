@@ -1,10 +1,8 @@
 package ahlers.faker.datasets.census1990
 
 import java.io.Closeable
-
 import ahlers.faker._
 import eu.timepit.refined.api.Refined
-
 import scala.io.Source
 
 /**

@@ -3,7 +3,6 @@ package ahlers.faker.datasets.census2000
 import java.io.Closeable
 import java.io.InputStream
 import java.util.zip.ZipInputStream
-
 import ahlers.faker._
 import eu.timepit.refined.api._
 import eu.timepit.refined.boolean._

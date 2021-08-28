@@ -1,7 +1,6 @@
 package ahlers.faker.datasets.opendata500
 
 import java.io.Closeable
-
 import ahlers.faker.Company
 import ahlers.faker._
 import kantan.csv.DecodeError.TypeError

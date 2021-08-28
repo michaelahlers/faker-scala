@@ -1,15 +1,12 @@
 package ahlers.faker.datasets.heise
 
 import java.io.Closeable
-
 import cats.syntax.option._
 import eu.timepit.refined._
 import eu.timepit.refined.api._
 import eu.timepit.refined.auto._
 import java.util.zip.ZipInputStream
-
 import ahlers.faker.PersonGivenName
-
 import scala.io._
 
 /**

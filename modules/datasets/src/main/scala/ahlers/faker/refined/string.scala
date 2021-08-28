@@ -47,11 +47,10 @@ object string {
     implicit def emailDomainIPv4Validate: Validate.Plain[String, MatchEmailDomainIPv4] =
       Validate.fromPredicate(predicate, t => s"$t is a valid email domain IPv4 address", MatchEmailDomainIPv4())
 
-    private val predicate: String => Boolean = s => {
+    private val predicate: String => Boolean = s =>
       s.startsWith("[") &&
-        s.endsWith("]") &&
-        ipv4Validate.validate(s.drop(1).dropRight(1)).isPassed
-    }
+      s.endsWith("]") &&
+      ipv4Validate.validate(s.drop(1).dropRight(1)).isPassed
 
   }
 
@@ -63,11 +62,10 @@ object string {
     implicit def emailDomainIPv6Validate: Validate.Plain[String, MatchEmailDomainIPv6] =
       Validate.fromPredicate(predicate, t => s"$t is a valid email domain IPv6 address", MatchEmailDomainIPv6())
 
-    private val predicate: String => Boolean = s => {
+    private val predicate: String => Boolean = s =>
       s.startsWith("[") &&
-        s.endsWith("]") &&
-        ipv6Validate.validate(s.drop(1).dropRight(1)).isPassed
-    }
+      s.endsWith("]") &&
+      ipv6Validate.validate(s.drop(1).dropRight(1)).isPassed
 
   }
 
