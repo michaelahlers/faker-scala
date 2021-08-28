@@ -1,32 +1,22 @@
 package ahlers.faker.datasets.heise
 
-import java.io.Closeable
-import cats.syntax.option._
 import eu.timepit.refined._
 import eu.timepit.refined.api._
 import eu.timepit.refined.auto._
-import java.util.zip.ZipInputStream
 import ahlers.faker.PersonGivenName
-import scala.io._
+import better.files._
+import java.nio.charset.StandardCharsets
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 13, 2020
  */
-class ClassifiedNameIterator extends Iterator[ClassifiedName] with Closeable {
+class ClassifiedNameIterator() extends Iterator[ClassifiedName] {
 
-  private val source: BufferedSource =
-    Source.fromInputStream(
-      new ZipInputStream(
-        Thread.currentThread()
-          .getContextClassLoader()
-          .getResourceAsStream("ftp.heise.de/pub/ct/listings/0717-182.zip")) {
-        while (!(getNextEntry().getName() == "0717-182/nam_dict.txt")) {}
-      })(Codec.ISO8859)
-
-  private val lines: Iterator[String] = source.getLines()
-
-  override def close(): Unit = source.close()
+  private val lines: Iterator[String] =
+    Resource
+      .getAsStream("ftp.heise.de/pub/ct/listings/0717-182/nam_dict.txt")
+      .lines(StandardCharsets.ISO_8859_1)
 
   val characterEncodings: Seq[CharacterEncoding] =
     lines
@@ -52,12 +42,15 @@ class ClassifiedNameIterator extends Iterator[ClassifiedName] with Closeable {
       }
       .toIndexedSeq
 
-  private def decodeName(x: String): String =
+  private def decodeName(encodedName: String): String =
     characterEncodings
       .sortBy(_.pattern.length())
-      .foldLeft(x) {
-        case (a, ce) =>
-          a.replace(ce.pattern, ce.substitution)
+      .foldLeft(encodedName) {
+        case (decodedName, characterEncoding) =>
+          decodedName
+            .replace(
+              characterEncoding.pattern,
+              characterEncoding.substitution)
       }
 
   val localeByLabel: Map[String, Locale] = {
@@ -162,7 +155,8 @@ class ClassifiedNameIterator extends Iterator[ClassifiedName] with Closeable {
   override def next() = {
     val entry = lines.next()
 
-    val genderO: Option[Gender] = genderByLabel.get(entry.take(2).trim())
+    val genderO: Option[Gender] =
+      genderByLabel.get(entry.take(2).trim())
 
     val probabilityByLocale: Map[Locale, LocaleProbability] =
       localeByIndex
