@@ -1,5 +1,9 @@
 package ahlers.faker.datasets.heise
 
+import cats.syntax.option._
+import java.util.Locale
+import scala.collection.immutable.Seq
+
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  * @since May 16, 2020
@@ -63,5 +67,74 @@ object Regions {
   case object `Vietnam` extends Region
 
   case object `Other` extends Region
+
+  object HasLocale {
+
+    /**
+     * Caveats:
+     *
+     * - Resolves [[`Great Britain`]] to [[Locale.UK]], which is technically incorrect; see also [[https://stackoverflow.com/questions/8334904/locale-uk-and-country-code ''Locale.UK and country code'']].
+     */
+    def unapplySeq(region: Region): Option[Seq[Locale]] =
+      region match {
+        case `Albania` => none
+        case `Arabia/Persia` => none
+        case `Armenia` => none
+        case `Austria` => none
+        case `Azerbaijan` => none
+        case `Belarus` => none
+        case `Belgium` => none
+        case `Bosnia/Herzegovina` => none
+        case `Bulgaria` => none
+        case `China` => none
+        case `Croatia` => none
+        case `Czech Republic` => none
+        case `Denmark` => none
+        case `East Frisia` => none
+        case `Estonia` => none
+        case `Finland` => none
+        case `France` => Seq(Locale.FRANCE).some
+        case `Georgia` => none
+        case `Germany` => Seq(Locale.GERMANY).some
+        case `Great Britain` => Seq(Locale.UK).some
+        case `Greece` => none
+        case `Hungary` => none
+        case `Iceland` => none
+        case `India/Sri Lanka` => none
+        case `Ireland` => none
+        case `Israel` => none
+        case `Italy` => Seq(Locale.ITALY).some
+        case `Japan` => Seq(Locale.JAPAN).some
+        case `Kazakhstan/Uzbekistan` => none
+        case `Korea` => Seq(Locale.KOREA).some
+        case `Kosovo` => none
+        case `Latvia` => none
+        case `Lithuania` => none
+        case `Luxembourg` => none
+        case `Macedonia` => none
+        case `Malta` => none
+        case `Moldova` => none
+        case `Montenegro` => none
+        case `Netherlands` => none
+        case `Norway` => none
+        case `Poland` => none
+        case `Portugal` => none
+        case `Romania` => none
+        case `Russia` => none
+        case `Serbia` => none
+        case `Slovakia` => none
+        case `Slovenia` => none
+        case `Spain` => none
+        case `Sweden` => none
+        case `Switzerland` => none
+        case `Turkey` => none
+        case `Ukraine` => none
+        case `United States` => Seq(Locale.US).some
+        case `Vietnam` => none
+
+        case `Other` => none
+      }
+
+  }
 
 }
