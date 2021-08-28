@@ -40,12 +40,18 @@ class ClassifiedNameIterator extends Iterator[ClassifiedName] with Closeable {
       .map(_.replaceAll("""\/\*\*.*""", ""))
       .map(_.trim().split('='))
       .flatMap {
+
         case Array(character, encodings) =>
           encodings
             .split("or")
             .map(_.trim())
             .filter(_.nonEmpty)
             .map(CharacterEncoding(_, character.trim().toInt.toChar.toString))
+
+        /** @todo Handle errors properly. */
+        case _ =>
+          ???
+
       }
       .toIndexedSeq
 
@@ -125,8 +131,14 @@ class ClassifiedNameIterator extends Iterator[ClassifiedName] with Closeable {
       .take(164)
       .sliding(2, 3)
       .map {
+
         case Seq(label, index) =>
           (index.indexOf('|') - 30, localeByLabel(label.tail.init.trim()))
+
+        /** @todo Handle errors properly. */
+        case _ =>
+          ???
+
       }
       .toMap
 
