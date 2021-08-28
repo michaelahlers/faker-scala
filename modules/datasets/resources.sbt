@@ -12,32 +12,38 @@ unpackZipArchives := {
       .value
       .toGlob / ** / "*.zip")
     .flatMap {
-      case (file, _) =>
+      case (fromFile, _) =>
+
+        val toDirectory =
+          (Compile / resourceManaged)
+          .value
+          .toPath
+          .resolve(fromFile
+            .getParent
+            .drop((Compile / resourceDirectory)
+              .value
+              .toPath
+              .size)
+            .reduce(_.resolve(_)))
+
         val files =
           IO.unzip(
-            from =
-              file
-                .toFile,
-            toDirectory =
-              (Compile / resourceManaged)
-                .value
-                .toPath
-                .resolve(file
-                  .getParent
-                  .drop((Compile / resourceDirectory)
-                    .value
-                    .toPath
-                    .size)
-                  .reduce(_.resolve(_)))
-                .toFile
+            from =              fromFile.toFile,
+            toDirectory =              toDirectory.toFile
           )
 
-        sourceDirectory.value.toPath
 
-        log.info("""Extracted %d files from archive "%s"."""
+        log.info("""Extracted %d files from archive "%s" to "%s"."""
           .format(
             files.size,
-            file
+
+            fromFile
+              .drop(baseDirectory.value
+                .toPath
+                .size)
+              .reduce(_.resolve(_)),
+
+            toDirectory
               .drop(baseDirectory.value
                 .toPath
                 .size)
