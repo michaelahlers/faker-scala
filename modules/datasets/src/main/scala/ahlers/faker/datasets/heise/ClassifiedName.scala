@@ -11,7 +11,7 @@ sealed trait ClassifiedName
 
 case class EquivalentNames(
   givenNames: Set[PersonGivenName],
-  probabilityByLocale: Map[Locale, LocaleProbability])
+  probabilityByLocale: Map[Region, LocaleProbability])
   extends ClassifiedName
 
 object EquivalentNames {
@@ -28,10 +28,10 @@ object EquivalentNames {
 
     import name._
 
-    def withProbabilities(classification: Map[Locale, LocaleProbability]): EquivalentNames =
+    def withProbabilities(classification: Map[Region, LocaleProbability]): EquivalentNames =
       copy(probabilityByLocale = classification)
 
-    def withProbabilities(classification: (Locale, LocaleProbability)*): EquivalentNames =
+    def withProbabilities(classification: (Region, LocaleProbability)*): EquivalentNames =
       withProbabilities(classification.toMap)
 
   }
@@ -41,7 +41,7 @@ object EquivalentNames {
 case class GenderedName(
   gender: Gender,
   givenNames: Seq[PersonGivenName],
-  probabilityByLocale: Map[Locale, LocaleProbability])
+  probabilityByLocale: Map[Region, LocaleProbability])
   extends ClassifiedName
 
 object GenderedName {
@@ -66,10 +66,10 @@ object GenderedName {
 
     import name._
 
-    def withProbabilities(probabilityByLocale: Map[Locale, LocaleProbability]): GenderedName =
+    def withProbabilities(probabilityByLocale: Map[Region, LocaleProbability]): GenderedName =
       copy(probabilityByLocale = probabilityByLocale)
 
-    def withProbabilities(probabilityByLocale: (Locale, LocaleProbability)*): GenderedName =
+    def withProbabilities(probabilityByLocale: (Region, LocaleProbability)*): GenderedName =
       withProbabilities(probabilityByLocale.toMap)
 
   }

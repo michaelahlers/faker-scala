@@ -35,7 +35,7 @@ class ClassifiedNameIteratorSpec extends FixtureAnyWordSpec {
   }
 
   "Locale by index" in { loader =>
-    import Locales._
+    import Regions._
 
     loader.localeByIndex.size should be(55)
 
@@ -46,7 +46,7 @@ class ClassifiedNameIteratorSpec extends FixtureAnyWordSpec {
 
   "Given names" in { loader =>
     import Genders._
-    import Locales._
+    import Regions._
 
     val givenNames = loader.toIndexedSeq
 

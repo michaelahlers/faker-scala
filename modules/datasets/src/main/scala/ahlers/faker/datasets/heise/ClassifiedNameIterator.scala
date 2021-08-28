@@ -53,8 +53,8 @@ class ClassifiedNameIterator() extends Iterator[ClassifiedName] {
               characterEncoding.substitution)
       }
 
-  val localeByLabel: Map[String, Locale] = {
-    import Locales._
+  val localeByLabel: Map[String, Region] = {
+    import Regions._
     Map(
       "Great Britain" -> `Great Britain`,
       "Ireland" -> `Ireland`,
@@ -114,7 +114,7 @@ class ClassifiedNameIterator() extends Iterator[ClassifiedName] {
     )
   }
 
-  val localeByIndex: Map[Int, Locale] =
+  val localeByIndex: Map[Int, Region] =
     lines
       .dropWhile(!_.contains("list of countries"))
       .drop(7)
@@ -158,7 +158,7 @@ class ClassifiedNameIterator() extends Iterator[ClassifiedName] {
     val genderO: Option[Gender] =
       genderByLabel.get(entry.take(2).trim())
 
-    val probabilityByLocale: Map[Locale, LocaleProbability] =
+    val probabilityByLocale: Map[Region, LocaleProbability] =
       localeByIndex
         .flatMap {
           case (index, name) =>
