@@ -49,8 +49,8 @@ object string {
 
     private val predicate: String => Boolean = s =>
       s.startsWith("[") &&
-      s.endsWith("]") &&
-      ipv4Validate.validate(s.drop(1).dropRight(1)).isPassed
+        s.endsWith("]") &&
+        ipv4Validate.validate(s.drop(1).dropRight(1)).isPassed
 
   }
 
@@ -64,8 +64,8 @@ object string {
 
     private val predicate: String => Boolean = s =>
       s.startsWith("[") &&
-      s.endsWith("]") &&
-      ipv6Validate.validate(s.drop(1).dropRight(1)).isPassed
+        s.endsWith("]") &&
+        ipv6Validate.validate(s.drop(1).dropRight(1)).isPassed
 
   }
 
