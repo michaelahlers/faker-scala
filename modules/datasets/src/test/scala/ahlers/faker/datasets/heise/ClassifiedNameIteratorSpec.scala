@@ -54,36 +54,40 @@ class ClassifiedNameIteratorSpec extends FixtureAnyWordSpec {
 
     givenNames(0).should(
       matchTo(GenderedName(Male, PersonGivenName("Aad"))
-        .withProbabilities(Netherlands -> LocaleProbability(0x4)): ClassifiedName))
+        .withProbabilities(
+          `Netherlands` -> LocaleProbability(0x4)): ClassifiedName))
 
     givenNames(3).should(
       matchTo(GenderedName(Male, PersonGivenName("Ådne"))
-        .withProbabilities(Norway -> LocaleProbability(0x1)): ClassifiedName))
+        .withProbabilities(
+          `Norway` -> LocaleProbability(0x1)): ClassifiedName))
 
     givenNames(95).should(
       matchTo(GenderedName(Male, PersonGivenName("Abdel"), PersonGivenName("Hafiz"))
-        .withProbabilities(`Arabia/Persia` -> LocaleProbability(0x2)): ClassifiedName))
+        .withProbabilities(
+          `Arabia/Persia` -> LocaleProbability(0x2)): ClassifiedName))
 
     givenNames(186).should(
       matchTo(EquivalentNames(PersonGivenName("Abe"), PersonGivenName("Abraham"))
-        .withProbabilities(`United States` -> LocaleProbability(0x1)): ClassifiedName))
+        .withProbabilities(
+          `United States` -> LocaleProbability(0x1)): ClassifiedName))
 
     givenNames(19982).should(
       matchTo(
         GenderedName(Female, PersonGivenName("Jane"))
           .withProbabilities(
             `Great Britain` -> LocaleProbability(0x7),
-            Ireland -> LocaleProbability(0x6),
+            `Ireland` -> LocaleProbability(0x6),
             `United States` -> LocaleProbability(0x6),
-            Malta -> LocaleProbability(0x6),
-            Belgium -> LocaleProbability(0x1),
-            Netherlands -> LocaleProbability(0x2),
-            Austria -> LocaleProbability(0x2),
-            Swiss -> LocaleProbability(0x3),
-            Denmark -> LocaleProbability(0x7),
-            Norway -> LocaleProbability(0x3),
-            Sweden -> LocaleProbability(0x3),
-            Estonia -> LocaleProbability(0x6)
+            `Malta` -> LocaleProbability(0x6),
+            `Belgium` -> LocaleProbability(0x1),
+            `Netherlands` -> LocaleProbability(0x2),
+            `Austria` -> LocaleProbability(0x2),
+            `Swiss` -> LocaleProbability(0x3),
+            `Denmark` -> LocaleProbability(0x7),
+            `Norway` -> LocaleProbability(0x3),
+            `Sweden` -> LocaleProbability(0x3),
+            `Estonia` -> LocaleProbability(0x6)
           ): ClassifiedName))
 
     givenNames(27155).should(
@@ -95,17 +99,17 @@ class ClassifiedNameIteratorSpec extends FixtureAnyWordSpec {
         GenderedName(Female, PersonGivenName("Zina"))
           .withProbabilities(
             `United States` -> LocaleProbability(0x1),
-            Italy -> LocaleProbability(0x1),
-            Lithuania -> LocaleProbability(0x1),
+            `Italy` -> LocaleProbability(0x1),
+            `Lithuania` -> LocaleProbability(0x1),
             `Czech Republic` -> LocaleProbability(0x1),
-            Romania -> LocaleProbability(0x3),
-            Bulgaria -> LocaleProbability(0x1),
+            `Romania` -> LocaleProbability(0x3),
+            `Bulgaria` -> LocaleProbability(0x1),
             `Bosnia/Herzegovina` -> LocaleProbability(0x1),
-            Albania -> LocaleProbability(0x1),
-            Greece -> LocaleProbability(0x1),
-            Belarus -> LocaleProbability(0x2),
-            Moldova -> LocaleProbability(0x3),
-            Armenia -> LocaleProbability(0x2),
+            `Albania` -> LocaleProbability(0x1),
+            `Greece` -> LocaleProbability(0x1),
+            `Belarus` -> LocaleProbability(0x2),
+            `Moldova` -> LocaleProbability(0x3),
+            `Armenia` -> LocaleProbability(0x2),
             `Kazakhstan/Uzbekistan` -> LocaleProbability(0x2),
             `Arabia/Persia` -> LocaleProbability(0x4)
           ): ClassifiedName))
