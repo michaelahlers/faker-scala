@@ -4,7 +4,7 @@ Realistic sample value generators for Scala.
 
 ## Status
 
-**This project's a work-in-progress**, and it's settling on design patterns and essential datasets to provide. Once those are stabilized, this project will begin publishing artifacts and accepting any pull-requests.
+**This project's a work-in-progress**, and it's settling on design patterns and essential datasets to provide. **Until those are stabilized**, this project will _not_ publish artifacts or accept pull-requests.
 
 ## Datasets
 
