@@ -4,6 +4,7 @@ import ahlers.faker
 import ahlers.faker.Company
 import ahlers.faker._
 import com.softwaremill.diffx.scalatest.DiffMatcher._
+import com.softwaremill.diffx.generic.auto._
 import eu.timepit.refined.auto._
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers._

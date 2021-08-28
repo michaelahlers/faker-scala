@@ -3,6 +3,7 @@ package ahlers.faker.datasets.heise
 import ahlers.faker.datasets.census1990.ClassifiedGivenName
 import ahlers.faker._
 import com.softwaremill.diffx.scalatest.DiffMatcher._
+import com.softwaremill.diffx.generic.auto._
 import eu.timepit.refined.auto._
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers._
@@ -17,8 +18,7 @@ class ClassifiedNameIteratorSpec extends FixtureAnyWordSpec {
   override type FixtureParam = ClassifiedNameIterator
   override protected def withFixture(test: OneArgTest) = {
     val loader = ClassifiedNameIterator()
-    try withFixture(test.toNoArgTest(loader))
-    finally loader.close()
+    withFixture(test.toNoArgTest(loader))
   }
 
   "Character encodings" in { loader =>
