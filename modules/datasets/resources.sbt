@@ -1,4 +1,5 @@
 import sbt.nio.file.FileTreeView
+
 import scala.collection.convert.ImplicitConversionsToScala._
 
 val unpackZipArchives: TaskKey[Seq[File]] = taskKey[Seq[File]]("Extract entries from source resource archives to managed resources.")
