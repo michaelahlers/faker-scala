@@ -19,5 +19,3 @@ ThisBuild / scmInfo :=
   ))
 
 ThisBuild / licenses += "MIT" -> new URL("http://opensource.org/licenses/MIT")
-
-
