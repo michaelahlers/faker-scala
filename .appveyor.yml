@@ -37,6 +37,7 @@ for:
       JAVA_HOME: '$(/usr/libexec/java_home -v 1.8)'
 
     install:
+      - 'export PATH=$JAVA_HOME/bin:$PATH'
 #      - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
@@ -55,6 +56,7 @@ for:
       JAVA_HOME: '$(/usr/libexec/java_home -v 11)'
 
     install:
+      - 'export PATH=$JAVA_HOME/bin:$PATH'
 #      - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
