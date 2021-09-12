@@ -4,14 +4,14 @@ version: '{build}'
 
 image:
   - macOS
-  - Ubuntu
-  - Visual Studio 2017
+#  - Ubuntu
+#  - Visual Studio 2017
 
 platform:
   - x64
 
 stack:
-  - jdk 8
+  - jdk 1.8
   - jdk 11
 
 environment:
@@ -36,10 +36,10 @@ for:
           stack: jdk 8
 
     environment:
-      JAVA_HOME: '$(/usr/libexec/java_home -version 1.8.0)'
+      JAVA_HOME: '$(/usr/libexec/java_home -version 1.8)'
 
     install:
-      - /usr/libexec/java_home -version 1.8.0
+      - /usr/libexec/java_home -version 1.8
       - /usr/libexec/java_home -V
       - 'export PATH=$JAVA_HOME/bin:$PATH'
       - 'echo $PATH'
