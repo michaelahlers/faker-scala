@@ -48,5 +48,5 @@ for:
     only:
       - image: Ubuntu
 
-    install:
-      - apt-get install sbt
+  install:
+    - apt-get install sbt
