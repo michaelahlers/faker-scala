@@ -51,4 +51,5 @@ for:
       - image: Ubuntu
 
   install:
-    - sudo apt-get install sbt
+    - sh: sudo apt-get update
+    - sh: sudo apt-get install sbt
