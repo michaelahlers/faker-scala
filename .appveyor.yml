@@ -19,11 +19,7 @@ environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
 build_script:
-  - sh: 'echo $JAVA_ARCH'
-  - sh: 'echo $JAVA_VERSION'
   - sh: 'echo $JAVA_HOME'
-  - cmd: 'echo %JAVA_ARCH%'
-  - cmd: 'echo %JAVA_VERSION%'
   - cmd: 'echo %JAVA_HOME%'
   - 'java -version'
 #  - 'sbt -version'
