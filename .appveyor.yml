@@ -33,7 +33,7 @@ for:
     matrix:
       only:
         - image: macOS
-          stack: jdk 8
+          stack: jdk 1.8
 
     environment:
       JAVA_HOME: '$(/usr/libexec/java_home -version 1.8)'
