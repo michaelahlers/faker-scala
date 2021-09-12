@@ -16,12 +16,6 @@ stack:
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
-#  matrix:
-#    - JAVA_VERSION: 1.8
-#    - JAVA_VERSION: 11
-#    - JAVA_HOME: '$(/usr/libexec/java_home -v 11)'
-#    - JAVA_HOME: 'C:\Program Files\Java\jdk1.8.0'
-#    - JAVA_HOME: 'C:\Program Files\Java\jdk11'
 
 build_script:
   - java -version
@@ -77,9 +71,6 @@ for:
       only:
         - image: Visual Studio 2017
 
-#    environment:
-#      JAVA_HOME: 'C:\Program Files\Java\jdk%JAVA_VERSION%'
-
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
     install:
 #      - 'SET PATH=%PATH%;%JAVA_HOME%\bin'
@@ -92,3 +83,20 @@ for:
       - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
 
+  -
+    matrix:
+      only:
+        - image: Visual Studio 2017
+        - stack: jdk 8
+
+    environment:
+      JAVA_HOME: 'C:\Program Files\Java\jdk1.8.0'
+
+  -
+    matrix:
+      only:
+        - image: Visual Studio 2017
+        - stack: jdk 11
+
+    environment:
+      JAVA_HOME: 'C:\Program Files\Java\jdk11'
