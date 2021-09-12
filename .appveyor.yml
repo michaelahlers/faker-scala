@@ -19,7 +19,7 @@ environment:
 
 build_script:
   - java -version
-  - sbt -version
+#  - sbt -version
 #  - sbt +test:compile
 
 #test_script:
