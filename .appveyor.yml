@@ -3,7 +3,7 @@ version: '{build}'
 #os: Windows Server 2016
 
 image:
-#  - macOS
+  - macOS
   - Ubuntu
   - Visual Studio 2017
 
@@ -27,17 +27,17 @@ build_script:
 
 for:
 
-#  -
-#    matrix:
-#      only:
-#        - image: macOS
-#
+  -
+    matrix:
+      only:
+        - image: macOS
+
 #    environment:
 #      JAVA_HOME: $(/usr/libexec/java_home -v $JAVA_VERSION)
-#
-#    install:
+
+    install:
 #      - 'brew install sbt'
-#
+
     # https://get-coursier.io/docs/cache
 #    cache:
 #      - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
