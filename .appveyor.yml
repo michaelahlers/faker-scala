@@ -34,7 +34,7 @@ for:
           stack: jdk 8
 
     environment:
-      JAVA_HOME: '$(/usr/libexec/java_home -v 8)'
+      JAVA_HOME: '$(/usr/libexec/java_home -version 8)'
 
     install:
       - 'export PATH=$JAVA_HOME/bin:$PATH'
@@ -54,7 +54,7 @@ for:
           stack: jdk 11
 
     environment:
-      JAVA_HOME: '$(/usr/libexec/java_home -v 11)'
+      JAVA_HOME: '$(/usr/libexec/java_home -version 11)'
 
     install:
       - 'export PATH=$JAVA_HOME/bin:$PATH'
