@@ -66,22 +66,22 @@ for:
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
 
-  -
-    matrix:
-      only:
-        - image: Visual Studio 2017
-
-    # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
-    install:
-#      - 'SET PATH=%PATH%;%JAVA_HOME%\bin'
-      - 'SET PATH=%PATH%;%PROGRAMFILES(X86)%\sbt\bin'
-#      - 'choco install sbt'
-
-    # https://get-coursier.io/docs/cache
-    cache:
-      - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
-      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
-      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
+#  -
+#    matrix:
+#      only:
+#        - image: Visual Studio 2017
+#
+#    # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
+#    install:
+##      - 'SET PATH=%PATH%;%JAVA_HOME%\bin'
+#      - 'SET PATH=%PATH%;%PROGRAMFILES(X86)%\sbt\bin'
+##      - 'choco install sbt'
+#
+#    # https://get-coursier.io/docs/cache
+#    cache:
+#      - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
+#      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
+#      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
 
   -
     matrix:
