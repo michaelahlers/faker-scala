@@ -30,8 +30,7 @@ test_script:
 
 for:
 
-  -
-    matrix:
+  - matrix:
       only:
         - image: macOS
           stack: jdk 8
@@ -51,8 +50,7 @@ for:
 #      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
 #      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
 
-  -
-    matrix:
+  - matrix:
       only:
         - image: macOS
           stack: jdk 11
@@ -69,8 +67,7 @@ for:
 #      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
 #      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
 
-  -
-    matrix:
+  - matrix:
       only:
         - image: macOS
           stack: jdk 15
@@ -87,8 +84,7 @@ for:
 #      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
 #      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
 
-  -
-    matrix:
+  - matrix:
       only:
         - image: Ubuntu
 
@@ -106,8 +102,7 @@ for:
 #      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
 #      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
 
-  -
-    matrix:
+  - matrix:
       only:
         - image: Visual Studio 2017
           stack: jdk 8
@@ -150,8 +145,7 @@ for:
 #      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
 #      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
 
-  -
-    matrix:
+  - matrix:
       only:
         - image: Visual Studio 2017
           stack: jdk 15
