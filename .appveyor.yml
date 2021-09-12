@@ -18,8 +18,9 @@ environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
 build_script:
-  - 'echo $JAVA_HOME'
-  - 'echo $PATH'
+  - 'echo JAVA_ARCH: $JAVA_ARCH'
+  - 'echo JAVA_VERSION: $JAVA_VERSION'
+  - 'echo JAVA_HOME: $JAVA_HOME'
   - 'java -version'
 #  - 'sbt -version'
 #  - 'sbt +test:compile'
@@ -35,9 +36,12 @@ for:
         - image: macOS
           stack: jdk 8
 
+    environment:
+      JAVA_VERSION: 1.8
+
     install:
       - '/usr/libexec/java_home -V'
-      - 'export JAVA_HOME=$(/usr/libexec/java_home -version 1.8)'
+      - 'export JAVA_HOME=$(/usr/libexec/java_home)'
       - 'export PATH=$JAVA_HOME/bin:$PATH'
 #      - 'brew install sbt'
 
@@ -52,6 +56,9 @@ for:
       only:
         - image: macOS
           stack: jdk 11
+
+    environment:
+      JAVA_VERSION: 11
 
     install:
 #      - 'brew install sbt'
