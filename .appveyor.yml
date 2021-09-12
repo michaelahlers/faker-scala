@@ -3,6 +3,7 @@ version: '{build}'
 #os: Windows Server 2016
 
 image:
+  - macOS
   - Ubuntu
   - Visual Studio 2017
 
@@ -24,41 +25,54 @@ build_script:
 
 for:
 
--
-  matrix:
-    only:
-      - image: Visual Studio 2017
-
-  environment:
+  -
     matrix:
-      - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
-      - JAVA_HOME: C:\Program Files\Java\jdk11
-      - JAVA_HOME: C:\Program Files\Java\jdk14
+      only:
+        - image: macOS
 
-  install:
-    - cmd: SET PATH=%PATH%;%JAVA_HOME%\bin
-    - cmd: SET PATH=%PATH%;%PROGRAMFILES(X86)%\sbt\bin
-    - cmd: choco install sbt
+    install:
+      - 'brew install sbt'
 
-  cache:
-    - '%LOCALAPPDATA%\Coursier\Cache -> **\dependencies.sbt, project\*'
-    - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
-    - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
+    cache:
+      - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
+      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
+      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
 
--
-  matrix:
-    only:
-      - image: Ubuntu
+  -
+    matrix:
+      only:
+        - image: Ubuntu
 
-  install:
-    - sh: echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
-    - sh: echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list
-    - sh: curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
-    - sh: sudo apt-get update
-    - sh: sudo apt-get install sbt
+    install:
+      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list'
+      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list'
+      - 'curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add'
+      - 'sudo apt-get update'
+      - 'sudo apt-get install sbt'
 
-  cache:
-    - '$HOME/.cache/coursier -> **/dependencies.sbt, project/*'
-    - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
-    - '$HOME/.sbt -> **/dependencies.sbt, project/*'
+    cache:
+      - '$HOME/.cache/coursier/v1 -> **/dependencies.sbt, project/*'
+      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
+      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
+
+  -
+    matrix:
+      only:
+        - image: Visual Studio 2017
+
+    #environment:
+    #  matrix:
+    #    - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+    #    - JAVA_HOME: C:\Program Files\Java\jdk11
+    #    - JAVA_HOME: C:\Program Files\Java\jdk14
+
+    install:
+      - 'SET PATH=%PATH%;%JAVA_HOME%\bin'
+      - 'SET PATH=%PATH%;%PROGRAMFILES(X86)%\sbt\bin'
+      - 'choco install sbt'
+
+    cache:
+      - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
+      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
+      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
 
