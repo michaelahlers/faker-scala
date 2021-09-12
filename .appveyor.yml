@@ -78,7 +78,7 @@ for:
       - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
-#    cache:
+    cache:
       - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
