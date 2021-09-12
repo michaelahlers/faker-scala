@@ -14,10 +14,6 @@ stack:
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
-  matrix:
-    - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
-    - JAVA_HOME: C:\Program Files\Java\jdk11
-    - JAVA_HOME: C:\Program Files\Java\jdk14
 
 build_script:
   - sbt -version
@@ -32,6 +28,12 @@ for:
   matrix:
     only:
       - image: Visual Studio 2017
+
+  environment:
+    matrix:
+      - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+      - JAVA_HOME: C:\Program Files\Java\jdk11
+      - JAVA_HOME: C:\Program Files\Java\jdk14
 
   install:
     - cmd: SET PATH=%PATH%;%JAVA_HOME%\bin
@@ -49,4 +51,4 @@ for:
       - image: Ubuntu
 
   install:
-    - apt-get install sbt
+    - sudo apt-get install sbt
