@@ -8,8 +8,8 @@ image:
 platform:
   - x64
 
-stack:
-  - jdk 11
+#stack:
+#  - jdk 11
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
