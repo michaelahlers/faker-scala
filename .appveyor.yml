@@ -83,7 +83,7 @@ for:
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
     install:
 #      - 'SET PATH=%PATH%;%JAVA_HOME%\bin'
-#      - 'SET PATH=%PATH%;%PROGRAMFILES(X86)%\sbt\bin'
+      - 'SET PATH=%PATH%;%PROGRAMFILES(X86)%\sbt\bin'
       - 'choco install sbt'
 
     # https://get-coursier.io/docs/cache
