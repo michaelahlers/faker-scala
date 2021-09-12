@@ -13,6 +13,7 @@ platform:
 stack:
   - jdk 8
   - jdk 11
+  - jdk 15
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
@@ -75,6 +76,24 @@ for:
   -
     matrix:
       only:
+        - image: macOS
+          stack: jdk 15
+
+    environment:
+      JAVA_VERSION: 15
+
+    install:
+#      - 'brew install sbt'
+
+    # https://get-coursier.io/docs/cache
+#    cache:
+#      - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
+#      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
+#      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
+
+  -
+    matrix:
+      only:
         - image: Ubuntu
 
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
@@ -122,6 +141,28 @@ for:
     environment:
       JAVA_VERSION: '11'
       JAVA_HOME: 'C:\Program Files\Java\jdk11'
+
+    # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
+    install:
+      - 'SET PATH=%JAVA_HOME%\bin;%PATH%'
+#      - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
+#      - 'choco install sbt'
+
+    # https://get-coursier.io/docs/cache
+    cache:
+#      - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
+#      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
+#      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
+
+  -
+    matrix:
+      only:
+        - image: Visual Studio 2017
+          stack: jdk 15
+
+    environment:
+      JAVA_VERSION: '15'
+      JAVA_HOME: 'C:\Program Files\Java\jdk15'
 
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
     install:
