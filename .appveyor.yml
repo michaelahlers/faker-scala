@@ -18,7 +18,9 @@ environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
 build_script:
-  - java -version
+  - 'echo $JAVA_HOME'
+  - 'echo $PATH'
+  - 'java -version'
 #  - sbt -version
 #  - sbt +test:compile
 
@@ -55,12 +57,12 @@ for:
         - image: macOS
           stack: jdk 11
 
-    environment:
-      JAVA_HOME: '$(/usr/libexec/java_home -version 11)'
+#    environment:
+#      JAVA_HOME: '$(/usr/libexec/java_home -version 11)'
 
     install:
-      - 'export PATH=$JAVA_HOME/bin:$PATH'
-      - 'echo $PATH'
+#      - 'export PATH=$JAVA_HOME/bin:$PATH'
+#      - 'echo $PATH'
 #      - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
