@@ -56,12 +56,13 @@ This library and tools are fully-tested on and supported for these Java versions
 
 | JDK | macOS | Linux | Windows |
 | ---: | :---: | :---: | :---: |
-| **1.8** | :grey_question: | :white_check_mark: | :white_check_mark: | 
+| **8** | :white_check_mark: | :white_check_mark: | :white_check_mark: | 
 | **9** | :grey_question: | :grey_question: | :grey_question: | 
-| **11** | :grey_question: | :grey_question: | :grey_question: | 
-| **12** | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| **11** | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| **12** | :grey_question: | :grey_question: | :grey_question: | 
 | **13** | :grey_question: | :grey_question: | :grey_question: | 
-| **14** | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| **14** | :grey_question: | :grey_question: | :grey_question: | 
+| **15** | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 [appveyor-build]: https://ci.appveyor.com/project/michaelahlers/faker-scala
 [appveyor-status-badge]: https://ci.appveyor.com/api/projects/status/erw16d62o5erwy95/branch/v0.0.x?svg=true
