@@ -3,13 +3,14 @@ version: '{build}'
 #os: Windows Server 2016
 
 image:
+  - Ubuntu
   - Visual Studio 2017
 
 platform:
   - x64
 
-#stack:
-#  - jdk 11
+stack:
+  - jdk 11
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
@@ -19,7 +20,7 @@ environment:
     - JAVA_HOME: C:\Program Files\Java\jdk14
 
 build_script:
-  - sbt version # & exit 0
+  - sbt -version
 #  - sbt +test:compile
 
 #test_script:
@@ -40,3 +41,10 @@ for:
     - '%LOCALAPPDATA%\Coursier\Cache -> **\dependencies.sbt, project\*'
     - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
     - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
+
+- matrix:
+    only:
+      - image: Ubuntu
+
+    install:
+      - apt-get install sbt
