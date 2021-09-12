@@ -37,6 +37,7 @@ for:
       JAVA_HOME: '$(/usr/libexec/java_home -version 8)'
 
     install:
+      - /usr/libexec/java_home -V
       - 'export PATH=$JAVA_HOME/bin:$PATH'
       - 'echo $PATH'
 #      - 'brew install sbt'
