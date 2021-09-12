@@ -103,7 +103,7 @@ for:
 
   - matrix:
       only:
-        - image: Visual Studio 2017
+        - image: Visual Studio 2019
           stack: jdk 8
 
     environment:
@@ -125,7 +125,7 @@ for:
   -
     matrix:
       only:
-        - image: Visual Studio 2017
+        - image: Visual Studio 2019
           stack: jdk 11
 
     environment:
@@ -146,7 +146,7 @@ for:
 
   - matrix:
       only:
-        - image: Visual Studio 2017
+        - image: Visual Studio 2019
           stack: jdk 15
 
     environment:
