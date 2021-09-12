@@ -74,8 +74,8 @@ object Regions {
 
     private val byCountry: Map[String, Seq[Locale]] =
       Locale.getAvailableLocales
+        .toSeq
         .groupBy(_.getCountry)
-        .mapValues(_.toSeq)
         .withDefault(country =>
           throw CountryCodeNotFoundException(country))
 
