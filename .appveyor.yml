@@ -21,11 +21,11 @@ build_script:
   - 'echo $JAVA_HOME'
   - 'echo $PATH'
   - 'java -version'
-#  - sbt -version
-#  - sbt +test:compile
+#  - 'sbt -version'
+#  - 'sbt +test:compile'
 
-#test_script:
-#  - sbt +test
+test_script:
+#  - 'sbt +test'
 
 for:
 
@@ -35,12 +35,8 @@ for:
         - image: macOS
           stack: jdk 8
 
-#    environment:
-#      JAVA_HOME: '$(/usr/libexec/java_home -version 1.8)'
-
     install:
-      - /usr/libexec/java_home -version 1.8
-      - /usr/libexec/java_home -V
+      - '/usr/libexec/java_home -V'
       - 'export JAVA_HOME=$(/usr/libexec/java_home -version 1.8)'
       - 'export PATH=$JAVA_HOME/bin:$PATH'
 #      - 'brew install sbt'
@@ -57,12 +53,7 @@ for:
         - image: macOS
           stack: jdk 11
 
-#    environment:
-#      JAVA_HOME: '$(/usr/libexec/java_home -version 11)'
-
     install:
-#      - 'export PATH=$JAVA_HOME/bin:$PATH'
-#      - 'echo $PATH'
 #      - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
@@ -78,17 +69,17 @@ for:
 
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
     install:
-#      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list'
-#      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list'
-#      - 'curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add'
-#      - 'sudo apt-get update'
-#      - 'sudo apt-get install sbt'
+      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list'
+      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list'
+      - 'curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add'
+      - 'sudo apt-get update'
+      - 'sudo apt-get install sbt'
 
     # https://get-coursier.io/docs/cache
-#    cache:
-#      - '$HOME/.cache/coursier/v1 -> **/dependencies.sbt, project/*'
-#      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
-#      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
+    cache:
+      - '$HOME/.cache/coursier/v1 -> **/dependencies.sbt, project/*'
+      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
+      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
 
   -
     matrix:
@@ -102,14 +93,14 @@ for:
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
     install:
       - 'SET PATH=%JAVA_HOME%\bin;%PATH%'
-#      - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
-#      - 'choco install sbt'
+      - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
+      - 'choco install sbt'
 
-#    # https://get-coursier.io/docs/cache
-#    cache:
-#      - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
-#      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
-#      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
+    # https://get-coursier.io/docs/cache
+    cache:
+      - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
+      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
+      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
 
   -
     matrix:
@@ -123,12 +114,11 @@ for:
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
     install:
       - 'SET PATH=%JAVA_HOME%\bin;%PATH%'
-#      - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
-#      - 'choco install sbt'
+      - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
+      - 'choco install sbt'
 
-#    # https://get-coursier.io/docs/cache
-#    cache:
-#      - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
-#      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
-#      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
-
+    # https://get-coursier.io/docs/cache
+    cache:
+      - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
+      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
+      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
