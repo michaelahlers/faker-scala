@@ -2,8 +2,6 @@ package ahlers.faker.datasets.heise
 
 import cats.syntax.option._
 import java.util.Locale
-import java.util.Locale.IsoCountryCode
-//import scala.collection.immutable.Seq
 
 /**
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
