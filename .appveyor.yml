@@ -24,6 +24,7 @@ environment:
 #    - JAVA_HOME: 'C:\Program Files\Java\jdk11'
 
 build_script:
+  - java -version
   - sbt -version
 #  - sbt +test:compile
 
