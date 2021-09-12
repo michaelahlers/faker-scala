@@ -34,10 +34,11 @@ for:
           stack: jdk 8
 
     environment:
-      JAVA_HOME: '$(/usr/libexec/java_home -v 1.8)'
+      JAVA_HOME: '$(/usr/libexec/java_home -v 8)'
 
     install:
       - 'export PATH=$JAVA_HOME/bin:$PATH'
+      - 'echo $PATH'
 #      - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
@@ -57,6 +58,7 @@ for:
 
     install:
       - 'export PATH=$JAVA_HOME/bin:$PATH'
+      - 'echo $PATH'
 #      - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
