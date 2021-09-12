@@ -13,28 +13,29 @@ platform:
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
+  matrix:
+    - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+    - JAVA_HOME: C:\Program Files\Java\jdk11
+    - JAVA_HOME: C:\Program Files\Java\jdk14
 
 build_script:
-  - sbt +test:compile
+  - sbt version # & exit 0
+#  - sbt +test:compile
 
-test_script:
-  - sbt +test
+#test_script:
+#  - sbt +test
 
 for:
 -
   matrix:
     only:
       - image: Visual Studio 2017
-  environment:
-    matrix:
-      - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
-      - JAVA_HOME: C:\Program Files\Java\jdk11
-      - JAVA_HOME: C:\Program Files\Java\jdk14
+
   install:
     - cmd: SET PATH=%PATH%;%JAVA_HOME%\bin
     - cmd: SET PATH=%PATH%;%PROGRAMFILES(X86)%\sbt\bin
     - cmd: choco install sbt
-    - cmd: sbt version & exit 0
+
   cache:
     - '%LOCALAPPDATA%\Coursier\Cache -> **\dependencies.sbt, project\*'
     - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
