@@ -27,6 +27,7 @@ build_script:
 #  - sbt +test
 
 for:
+
 -
   matrix:
     only:
@@ -42,7 +43,8 @@ for:
     - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
     - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
 
-- matrix:
+-
+  matrix:
     only:
       - image: Ubuntu
 
