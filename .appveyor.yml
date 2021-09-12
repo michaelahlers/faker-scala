@@ -34,9 +34,10 @@ for:
           stack: jdk 8
 
     environment:
-      JAVA_HOME: '$(/usr/libexec/java_home -version 8)'
+      JAVA_HOME: '$(/usr/libexec/java_home -version 1.8.0)'
 
     install:
+      - /usr/libexec/java_home -version 1.8.0
       - /usr/libexec/java_home -V
       - 'export PATH=$JAVA_HOME/bin:$PATH'
       - 'echo $PATH'
