@@ -33,6 +33,7 @@ for:
     install:
       - 'brew install sbt'
 
+    # https://get-coursier.io/docs/cache
     cache:
       - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
@@ -43,6 +44,7 @@ for:
       only:
         - image: Ubuntu
 
+    # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
     install:
       - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list'
       - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list'
@@ -50,6 +52,7 @@ for:
       - 'sudo apt-get update'
       - 'sudo apt-get install sbt'
 
+    # https://get-coursier.io/docs/cache
     cache:
       - '$HOME/.cache/coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
@@ -66,11 +69,13 @@ for:
         - JAVA_HOME: C:\Program Files\Java\jdk11
         - JAVA_HOME: C:\Program Files\Java\jdk14
 
+    # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
     install:
       - 'SET PATH=%PATH%;%JAVA_HOME%\bin'
       - 'SET PATH=%PATH%;%PROGRAMFILES(X86)%\sbt\bin'
       - 'choco install sbt'
 
+    # https://get-coursier.io/docs/cache
     cache:
       - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
