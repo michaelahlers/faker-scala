@@ -97,6 +97,7 @@ for:
 
     # https://get-coursier.io/docs/cache
     cache:
+      - '/var/cache/apt/archives -> .appveyor.yml'
       - '$HOME/.cache/coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
@@ -116,6 +117,8 @@ for:
       - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
       - 'choco install sbt'
 
+    # https://appveyor.com/docs/build-cache/
+    # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
     # https://get-coursier.io/docs/cache
     cache:
       - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
@@ -139,6 +142,8 @@ for:
       - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
       - 'choco install sbt'
 
+    # https://appveyor.com/docs/build-cache/
+    # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
     # https://get-coursier.io/docs/cache
     cache:
       - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
@@ -161,6 +166,8 @@ for:
       - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
       - 'choco install sbt'
 
+    # https://appveyor.com/docs/build-cache/
+    # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
     # https://get-coursier.io/docs/cache
     cache:
       - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
