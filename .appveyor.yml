@@ -45,7 +45,7 @@ for:
 
     # https://get-coursier.io/docs/cache
     cache:
-      - '$HOME/Library/Caches/Homewbrew -> .appveyor.yml'
+      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
       - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
@@ -63,7 +63,7 @@ for:
 
     # https://get-coursier.io/docs/cache
     cache:
-      - '$HOME/Library/Caches/Homewbrew -> .appveyor.yml'
+      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
       - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
@@ -81,7 +81,7 @@ for:
 
     # https://get-coursier.io/docs/cache
     cache:
-      - '$HOME/Library/Caches/Homewbrew -> .appveyor.yml'
+      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
       - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
