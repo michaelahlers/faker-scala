@@ -118,6 +118,7 @@ for:
 
     # https://get-coursier.io/docs/cache
     cache:
+      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
       - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
@@ -140,6 +141,7 @@ for:
 
     # https://get-coursier.io/docs/cache
     cache:
+      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
       - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
@@ -161,6 +163,7 @@ for:
 
     # https://get-coursier.io/docs/cache
     cache:
+      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
       - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
