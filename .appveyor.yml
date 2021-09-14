@@ -37,10 +37,10 @@ for:
     environment:
       JAVA_VERSION: 1.8
 
-    install:
-#      - '/usr/libexec/java_home -V'
-#      - 'export JAVA_HOME=$(/usr/libexec/java_home)'
-#      - 'export PATH=$JAVA_HOME/bin:$PATH'
+    install: &macos-install
+      - '/usr/libexec/java_home -V'
+      - 'export JAVA_HOME=$(/usr/libexec/java_home)'
+      - 'export PATH=$JAVA_HOME/bin:$PATH'
       - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
@@ -58,8 +58,7 @@ for:
     environment:
       JAVA_VERSION: 11
 
-    install:
-      - 'brew install sbt'
+    install: *macos-install
 
     cache: *macos-cache
 
@@ -71,8 +70,7 @@ for:
     environment:
       JAVA_VERSION: 15
 
-    install:
-      - 'brew install sbt'
+    install: *macos-install
 
     cache: *macos-cache
 
