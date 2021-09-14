@@ -1,31 +1,143 @@
 version: '{build}'
 
-os: Windows Server 2016
-image: Visual Studio 2017
-
 platform:
   - x64
 
+image:
+  - macOS
+  - Ubuntu
+  - Visual Studio 2019
+
+stack:
+  - jdk 8
+  - jdk 11
+  - jdk 15
+
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
-  matrix:
-    - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
-    - JAVA_HOME: C:\Program Files\Java\jdk12
-    - JAVA_HOME: C:\Program Files\Java\jdk14
-
-install:
-  - cmd: SET PATH=%PATH%;%JAVA_HOME%\bin
-  - cmd: SET PATH=%PATH%;%PROGRAMFILES(X86)%\sbt\bin
-  - cmd: choco install sbt
-  - cmd: sbt version & exit 0
 
 build_script:
-  - sbt +test:compile
+  - sh: 'echo $JAVA_HOME'
+  - cmd: 'echo %JAVA_HOME%'
+  - 'java -version'
+  - 'sbt +test:compile'
 
 test_script:
-  - sbt +test
+  - 'sbt +test'
 
-cache:
-  - '%LOCALAPPDATA%\Coursier\Cache -> **\dependencies.sbt, project\*'
-  - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
-  - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
+for:
+
+  - matrix:
+      only:
+        - image: macOS
+          stack: jdk 8
+
+    environment:
+      JAVA_VERSION: 1.8
+
+    install: &install-macos
+      - '/usr/libexec/java_home -V'
+      - 'export JAVA_HOME=$(/usr/libexec/java_home)'
+      - 'export PATH=$JAVA_HOME/bin:$PATH'
+      - 'brew install sbt'
+
+    # https://get-coursier.io/docs/cache
+    cache: &cache-macos
+#      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
+      - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
+      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
+      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
+
+  - matrix:
+      only:
+        - image: macOS
+          stack: jdk 11
+
+    environment:
+      JAVA_VERSION: 11
+
+    install: *install-macos
+
+    cache: *cache-macos
+
+  - matrix:
+      only:
+        - image: macOS
+          stack: jdk 15
+
+    environment:
+      JAVA_VERSION: 15
+
+    install: *install-macos
+
+    cache: *cache-macos
+
+  - matrix:
+      only:
+        - image: Ubuntu
+
+    # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
+    install: &install-linux
+      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list'
+      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list'
+      - 'curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add'
+      - 'sudo apt-get update'
+      - 'sudo apt-get install sbt'
+
+    # https://get-coursier.io/docs/cache
+    cache: &cache-linux
+#      - '/var/cache/apt/archives -> .appveyor.yml'
+      - '$HOME/.cache/coursier/v1 -> **/dependencies.sbt, project/*'
+      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
+      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
+
+  - matrix:
+      only:
+        - image: Visual Studio 2019
+          stack: jdk 8
+
+    environment:
+      JAVA_VERSION: '1.8'
+      JAVA_HOME: 'C:\Program Files\Java\jdk1.8.0'
+
+    # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
+    install: &install-windows
+      - 'SET PATH=%JAVA_HOME%\bin;%PATH%'
+      - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
+      - 'choco install sbt'
+
+    # https://appveyor.com/docs/build-cache/
+    # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
+    # https://get-coursier.io/docs/cache
+    cache: &cache-windows
+#      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
+      - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
+      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
+      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
+
+  -
+    matrix:
+      only:
+        - image: Visual Studio 2019
+          stack: jdk 11
+
+    environment:
+      JAVA_VERSION: '11'
+      JAVA_HOME: 'C:\Program Files\Java\jdk11'
+
+    install: *install-windows
+
+    cache: *cache-windows
+
+  - matrix:
+      only:
+        - image: Visual Studio 2019
+          stack: jdk 15
+
+    environment:
+      JAVA_VERSION: '15'
+      JAVA_HOME: 'C:\Program Files\Java\jdk15'
+
+    install: *install-windows
+
+    cache: *cache-windows
