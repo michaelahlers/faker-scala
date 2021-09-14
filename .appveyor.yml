@@ -1,14 +1,12 @@
 version: '{build}'
 
-#os: Windows Server 2016
+platform:
+  - x64
 
 image:
   - macOS
   - Ubuntu
   - Visual Studio 2019
-
-platform:
-  - x64
 
 stack:
   - jdk 8
