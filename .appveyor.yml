@@ -39,9 +39,9 @@ for:
       - '/usr/libexec/java_home -V'
       - 'export JAVA_HOME=$(/usr/libexec/java_home)'
       - 'export PATH=$JAVA_HOME/bin:$PATH'
-      - 'curl -Lo cs https://git.io/coursier-cli-macos'
-      - 'chmod +x cs'
-      - 'alias sbt="launch org.scala-sbt:sbt-launch:1.5.5 --"'
+      - 'curl -Lo $HOME/cs https://git.io/coursier-cli-macos'
+      - 'chmod +x $HOME/cs'
+      - 'alias sbt="$HOME/cs launch org.scala-sbt:sbt-launch:1.5.5 --"'
 
     # https://get-coursier.io/docs/cache
     cache: &cache-macos
