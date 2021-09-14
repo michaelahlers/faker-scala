@@ -110,7 +110,7 @@ for:
     # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
     # https://get-coursier.io/docs/cache
     cache: &cache-windows
-#      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
+      - '%LOCALAPPDATA%\Temp\1\chocolatey\sbt -> .appveyor.yml'
       - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
