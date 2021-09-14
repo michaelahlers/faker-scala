@@ -5,13 +5,13 @@ platform:
 
 image:
   - macOS
-  - Ubuntu
-  - Visual Studio 2019
+#  - Ubuntu
+#  - Visual Studio 2019
 
 stack:
   - jdk 8
-  - jdk 11
-  - jdk 15
+#  - jdk 11
+#  - jdk 15
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
@@ -39,7 +39,9 @@ for:
       - '/usr/libexec/java_home -V'
       - 'export JAVA_HOME=$(/usr/libexec/java_home)'
       - 'export PATH=$JAVA_HOME/bin:$PATH'
-      - 'brew install sbt'
+      - 'curl -Lo cs https://git.io/coursier-cli-macos'
+      - 'chmod +x cs'
+      - 'alias sbt="launch org.scala-sbt:sbt-launch:1.5.5 --"'
 
     # https://get-coursier.io/docs/cache
     cache: &cache-macos
