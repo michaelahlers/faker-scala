@@ -44,8 +44,8 @@ for:
       - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
-    cache:
-      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
+    cache: &macos-cache
+#      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
       - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
@@ -61,12 +61,7 @@ for:
     install:
       - 'brew install sbt'
 
-    # https://get-coursier.io/docs/cache
-    cache:
-      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
-      - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
-      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
-      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
+    cache: *macos-cache
 
   - matrix:
       only:
@@ -79,19 +74,14 @@ for:
     install:
       - 'brew install sbt'
 
-    # https://get-coursier.io/docs/cache
-    cache:
-      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
-      - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
-      - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
-      - '$HOME/.sbt -> **/dependencies.sbt, project/*'
+    cache: *macos-cache
 
   - matrix:
       only:
         - image: Ubuntu
 
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
-    install:
+    install: &linux-install
       - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list'
       - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list'
       - 'curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add'
@@ -99,8 +89,8 @@ for:
       - 'sudo apt-get install sbt'
 
     # https://get-coursier.io/docs/cache
-    cache:
-      - '/var/cache/apt/archives -> .appveyor.yml'
+    cache: &linux-cache
+#      - '/var/cache/apt/archives -> .appveyor.yml'
       - '$HOME/.cache/coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
@@ -115,7 +105,7 @@ for:
       JAVA_HOME: 'C:\Program Files\Java\jdk1.8.0'
 
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
-    install:
+    install: &windows-install
       - 'SET PATH=%JAVA_HOME%\bin;%PATH%'
       - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
       - 'choco install sbt'
@@ -123,8 +113,8 @@ for:
     # https://appveyor.com/docs/build-cache/
     # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
     # https://get-coursier.io/docs/cache
-    cache:
-      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
+    cache: &windows-cache
+#      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
       - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
@@ -139,20 +129,9 @@ for:
       JAVA_VERSION: '11'
       JAVA_HOME: 'C:\Program Files\Java\jdk11'
 
-    # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
-    install:
-      - 'SET PATH=%JAVA_HOME%\bin;%PATH%'
-      - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
-      - 'choco install sbt'
+    install: *windows-install
 
-    # https://appveyor.com/docs/build-cache/
-    # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
-    # https://get-coursier.io/docs/cache
-    cache:
-      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
-      - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
-      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
-      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
+    cache: *windows-cache
 
   - matrix:
       only:
@@ -163,17 +142,6 @@ for:
       JAVA_VERSION: '15'
       JAVA_HOME: 'C:\Program Files\Java\jdk15'
 
-    # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
-    install:
-      - 'SET PATH=%JAVA_HOME%\bin;%PATH%'
-      - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
-      - 'choco install sbt'
+    install: *windows-install
 
-    # https://appveyor.com/docs/build-cache/
-    # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
-    # https://get-coursier.io/docs/cache
-    cache:
-      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
-      - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
-      - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
-      - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
+    cache: *windows-cache
