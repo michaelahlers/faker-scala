@@ -37,14 +37,14 @@ for:
     environment:
       JAVA_VERSION: 1.8
 
-    install: &macos-install
+    install: &install-macos
       - '/usr/libexec/java_home -V'
       - 'export JAVA_HOME=$(/usr/libexec/java_home)'
       - 'export PATH=$JAVA_HOME/bin:$PATH'
       - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
-    cache: &macos-cache
+    cache: &cache-macos
 #      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
       - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
@@ -58,9 +58,9 @@ for:
     environment:
       JAVA_VERSION: 11
 
-    install: *macos-install
+    install: *install-macos
 
-    cache: *macos-cache
+    cache: *cache-macos
 
   - matrix:
       only:
@@ -70,16 +70,16 @@ for:
     environment:
       JAVA_VERSION: 15
 
-    install: *macos-install
+    install: *install-macos
 
-    cache: *macos-cache
+    cache: *cache-macos
 
   - matrix:
       only:
         - image: Ubuntu
 
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
-    install: &linux-install
+    install: &install-linux
       - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list'
       - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list'
       - 'curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add'
@@ -87,7 +87,7 @@ for:
       - 'sudo apt-get install sbt'
 
     # https://get-coursier.io/docs/cache
-    cache: &linux-cache
+    cache: &cache-linux
 #      - '/var/cache/apt/archives -> .appveyor.yml'
       - '$HOME/.cache/coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
@@ -103,7 +103,7 @@ for:
       JAVA_HOME: 'C:\Program Files\Java\jdk1.8.0'
 
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
-    install: &windows-install
+    install: &install-windows
       - 'SET PATH=%JAVA_HOME%\bin;%PATH%'
       - 'SET PATH=%PROGRAMFILES(X86)%\sbt\bin;%PATH%'
       - 'choco install sbt'
@@ -111,7 +111,7 @@ for:
     # https://appveyor.com/docs/build-cache/
     # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
     # https://get-coursier.io/docs/cache
-    cache: &windows-cache
+    cache: &cache-windows
 #      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
       - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
@@ -127,9 +127,9 @@ for:
       JAVA_VERSION: '11'
       JAVA_HOME: 'C:\Program Files\Java\jdk11'
 
-    install: *windows-install
+    install: *install-windows
 
-    cache: *windows-cache
+    cache: *cache-windows
 
   - matrix:
       only:
@@ -140,6 +140,6 @@ for:
       JAVA_VERSION: '15'
       JAVA_HOME: 'C:\Program Files\Java\jdk15'
 
-    install: *windows-install
+    install: *install-windows
 
-    cache: *windows-cache
+    cache: *cache-windows
