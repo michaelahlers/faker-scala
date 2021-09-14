@@ -38,9 +38,9 @@ for:
       JAVA_VERSION: 1.8
 
     install:
-      - '/usr/libexec/java_home -V'
-      - 'export JAVA_HOME=$(/usr/libexec/java_home)'
-      - 'export PATH=$JAVA_HOME/bin:$PATH'
+#      - '/usr/libexec/java_home -V'
+#      - 'export JAVA_HOME=$(/usr/libexec/java_home)'
+#      - 'export PATH=$JAVA_HOME/bin:$PATH'
       - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
