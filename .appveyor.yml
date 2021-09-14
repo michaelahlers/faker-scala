@@ -5,8 +5,8 @@ platform:
 
 image:
   - macOS
-#  - Ubuntu
-#  - Visual Studio 2019
+  - Ubuntu
+  - Visual Studio 2019
 
 stack:
   - jdk 8
@@ -20,7 +20,7 @@ build_script:
   - sh: 'echo $JAVA_HOME'
   - cmd: 'echo %JAVA_HOME%'
   - 'java -version'
-  - sh: '$HOME/cs launch sbt -- +test:compile'
+  - 'sbt +test:compile'
 
 test_script:
   - 'sbt +test'
@@ -44,7 +44,7 @@ for:
       - 'export PATH=$JAVA_HOME/bin:$PATH'
       - 'curl -Lo $HOME/cs https://git.io/coursier-cli-macos'
       - 'chmod +x $HOME/cs'
-#      - 'alias sbt="$HOME/cs launch org.scala-sbt:sbt-launch:1.5.5 --"'
+      - 'alias sbt="$HOME/cs launch sbt -- "'
 
     # https://get-coursier.io/docs/cache
     cache: &cache-macos
@@ -88,7 +88,7 @@ for:
     install: &install-linux
       - 'curl -Lo $HOME/cs https://git.io/coursier-cli-linux'
       - 'chmod +x $HOME/cs'
-#      - 'alias sbt="$HOME/cs launch org.scala-sbt:sbt-launch:1.5.5 --"'
+      - 'alias sbt="$HOME/cs launch sbt -- "'
 
     # https://get-coursier.io/docs/cache
     cache: &cache-linux
