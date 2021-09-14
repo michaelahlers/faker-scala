@@ -1,4 +1,4 @@
-# Faker: Scala [![TravisCI][travis-ci-status-badge]][travis-ci-build] [![Appveyor][appveyor-status-badge]][appveyor-build] [![Codacy][codacy-status-badge]][codacy-build] [![Scala Steward][scala-steward-status-badge]][scala-steward-overview]
+# Faker: Scala [![Appveyor][appveyor-status-badge]][appveyor-build] [![Codacy][codacy-status-badge]][codacy-build] [![Scala Steward][scala-steward-status-badge]][scala-steward-overview]
 
 Realistic sample value generators for Scala.
 
@@ -72,6 +72,3 @@ This library and tools are fully-tested on and supported for these Java versions
 
 [scala-steward-status-badge]: https://img.shields.io/badge/Scala_Steward-helping-blue.svg
 [scala-steward-overview]: https://scala-steward.org
-
-[travis-ci-build]: https://www.travis-ci.com/michaelahlers/faker-scala
-[travis-ci-status-badge]: https://www.travis-ci.com/michaelahlers/faker-scala.svg?branch=v0.0.x
