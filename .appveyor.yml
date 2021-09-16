@@ -10,8 +10,8 @@ image:
 
 stack:
   - jdk 8
-#  - jdk 11
-#  - jdk 15
+  - jdk 11
+  - jdk 15
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
@@ -20,12 +20,10 @@ build_script:
   - sh: 'echo $JAVA_HOME'
   - cmd: 'echo %JAVA_HOME%'
   - 'java -version'
-  - sh: '$HOME/cs launch sbt -- +test:compile'
-  - cmd: 'sbt +test:compile'
+  - 'sbt +test:compile'
 
 test_script:
-  - sh: '$HOME/cs launch sbt -- +test'
-  - cmd: 'sbt +test'
+  - 'sbt +test'
 
 for:
 
@@ -37,19 +35,15 @@ for:
     environment:
       JAVA_VERSION: 1.8
 
-    # https://github.com/scala/scala-lang/pull/1130
-    # https://github.com/coursier/coursier/issues/1714
-    # https://contributors.scala-lang.org/t/easier-scala-installation/4326
     install: &install-macos
       - '/usr/libexec/java_home -V'
       - 'export JAVA_HOME=$(/usr/libexec/java_home)'
       - 'export PATH=$JAVA_HOME/bin:$PATH'
-      - 'curl -Lo $HOME/cs https://git.io/coursier-cli-macos'
-      - 'chmod +x $HOME/cs'
+      - 'brew install sbt'
 
     # https://get-coursier.io/docs/cache
     cache: &cache-macos
-#      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
+      #      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
       - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
@@ -83,16 +77,16 @@ for:
         - image: Ubuntu
 
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
-    # https://github.com/scala/scala-lang/pull/1130
-    # https://github.com/coursier/coursier/issues/1714
-    # https://contributors.scala-lang.org/t/easier-scala-installation/4326
     install: &install-linux
-      - 'curl -Lo $HOME/cs https://git.io/coursier-cli-linux'
-      - 'chmod +x $HOME/cs'
+      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list'
+      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list'
+      - 'curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add'
+      - 'sudo apt-get update'
+      - 'sudo apt-get install sbt'
 
     # https://get-coursier.io/docs/cache
     cache: &cache-linux
-#      - '/var/cache/apt/archives -> .appveyor.yml'
+      #      - '/var/cache/apt/archives -> .appveyor.yml'
       - '$HOME/.cache/coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
@@ -116,7 +110,7 @@ for:
     # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
     # https://get-coursier.io/docs/cache
     cache: &cache-windows
-      - '%LOCALAPPDATA%\Temp\1\chocolatey\sbt -> .appveyor.yml'
+      #      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
       - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
