@@ -20,10 +20,12 @@ build_script:
   - sh: 'echo $JAVA_HOME'
   - cmd: 'echo %JAVA_HOME%'
   - 'java -version'
-  - 'sbt +test:compile'
+  - sh: '$HOME/cs launch sbt -- +test:compile'
+  - cmd: 'sbt +test:compile'
 
 test_script:
-  - 'sbt +test'
+  - sh: '$HOME/cs launch sbt -- +test'
+  - cmd: 'sbt +test'
 
 for:
 
@@ -44,7 +46,6 @@ for:
       - 'export PATH=$JAVA_HOME/bin:$PATH'
       - 'curl -Lo $HOME/cs https://git.io/coursier-cli-macos'
       - 'chmod +x $HOME/cs'
-      - 'alias sbt="$HOME/cs launch sbt -- "'
 
     # https://get-coursier.io/docs/cache
     cache: &cache-macos
@@ -88,7 +89,6 @@ for:
     install: &install-linux
       - 'curl -Lo $HOME/cs https://git.io/coursier-cli-linux'
       - 'chmod +x $HOME/cs'
-      - 'alias sbt="$HOME/cs launch sbt -- "'
 
     # https://get-coursier.io/docs/cache
     cache: &cache-linux
