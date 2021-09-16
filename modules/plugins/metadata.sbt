@@ -1,0 +1,2 @@
+name := "faker-plugins"
+description := ""
