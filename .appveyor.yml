@@ -43,7 +43,7 @@ for:
 
     # https://get-coursier.io/docs/cache
     cache: &cache-macos
-      #      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
+#      - '$HOME/Library/Caches/Homebrew -> .appveyor.yml'
       - '$HOME/Library/Caches/Coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
@@ -86,7 +86,7 @@ for:
 
     # https://get-coursier.io/docs/cache
     cache: &cache-linux
-      #      - '/var/cache/apt/archives -> .appveyor.yml'
+#      - '/var/cache/apt/archives -> .appveyor.yml'
       - '$HOME/.cache/coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
@@ -110,13 +110,12 @@ for:
     # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
     # https://get-coursier.io/docs/cache
     cache: &cache-windows
-      #      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
+#      - '%ALLUSERSAPPDATA%\chocolatey\lib -> .appveyor.yml'
       - '%LOCALAPPDATA%\Coursier\Cache\v1 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
 
-  -
-    matrix:
+  - matrix:
       only:
         - image: Visual Studio 2019
           stack: jdk 11
