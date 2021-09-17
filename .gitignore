@@ -1,5 +1,7 @@
+.DS_Store
 *.sc
-.idea
-.java-version
-.sbtopts
+/.bsp
+/.idea
+/.java-version
+/.sbtopts
 /target
