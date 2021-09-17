@@ -1,1 +1,1 @@
-enablePlugins(HelloPlugin)
+enablePlugins(HeiseNameDictionaryPlugin)
