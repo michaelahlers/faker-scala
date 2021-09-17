@@ -1,2 +1,0 @@
-name := "faker-plugins"
-description := ""

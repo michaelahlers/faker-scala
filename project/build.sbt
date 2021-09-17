@@ -1,9 +1,9 @@
-lazy val `faker-plugins` =
+lazy val `faker-heise-name-dictionary` =
   RootProject {
     val path: File =
       file(".") /
-        "modules" /
-        "plugins"
+        "plugins" /
+        "heise-name-dictionary"
 
     uri(s"""file:${path.getAbsolutePath}""")
   }
@@ -11,5 +11,5 @@ lazy val `faker-plugins` =
 lazy val `faker-project` =
   project
     .in(file("."))
-    .aggregate(`faker-plugins`)
-    .dependsOn(`faker-plugins`)
+    .aggregate(`faker-heise-name-dictionary`)
+    .dependsOn(`faker-heise-name-dictionary`)
