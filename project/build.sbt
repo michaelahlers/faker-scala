@@ -1,12 +1,9 @@
 lazy val `faker-heise-name-dictionary` =
-  RootProject {
-    val path: File =
-      file(".") /
-        "plugins" /
-        "heise-name-dictionary"
-
-    uri(s"""file:${path.getAbsolutePath}""")
-  }
+  RootProject(
+    IO.toURI((file(".") /
+      "plugins" /
+      "heise-name-dictionary")
+      .getAbsoluteFile))
 
 lazy val `faker-project` =
   project
