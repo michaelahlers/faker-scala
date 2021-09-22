@@ -1,5 +1,6 @@
 package ahlers.faker.plugins.heise
 
+import ahlers.faker.plugins.heise.HeiseNameDictionaryUtilities.Region
 import better.files.Dispose
 import better.files.File
 import better.files.Resource
@@ -10,6 +11,7 @@ import java.util.zip.ZipInputStream
 import scala.io.Codec
 import scala.io.Source
 import better.files._
+
 import scala.util.Try
 
 /**
@@ -18,4 +20,5 @@ import scala.util.Try
  */
 case class ClassifiedName(
   gender: String,
-  parts: Seq[String])
+  parts: Seq[String],
+  probabilityByLocale: Map[Region, Int])
