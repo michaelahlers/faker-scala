@@ -60,65 +60,12 @@ object HeiseNameDictionaryUtilities {
               characterEncoding.substitution)
       }
 
-  sealed trait Region
-  object Regions {
+  type Region = Region.Value
+  object Region extends Enumeration {
 
-    case object `Albania` extends Region
-    case object `Arabia/Persia` extends Region
-    case object `Armenia` extends Region
-    case object `Austria` extends Region
-    case object `Azerbaijan` extends Region
-    case object `Belarus` extends Region
-    case object `Belgium` extends Region
-    case object `Bosnia/Herzegovina` extends Region
-    case object `Bulgaria` extends Region
-    case object `China` extends Region
-    case object `Croatia` extends Region
-    case object `Czech Republic` extends Region
-    case object `Denmark` extends Region
-    case object `East Frisia` extends Region
-    case object `Estonia` extends Region
-    case object `Finland` extends Region
-    case object `France` extends Region
-    case object `Georgia` extends Region
-    case object `Germany` extends Region
-    case object `Great Britain` extends Region
-    case object `Greece` extends Region
-    case object `Hungary` extends Region
-    case object `Iceland` extends Region
-    case object `India/Sri Lanka` extends Region
-    case object `Ireland` extends Region
-    case object `Israel` extends Region
-    case object `Italy` extends Region
-    case object `Japan` extends Region
-    case object `Kazakhstan/Uzbekistan` extends Region
-    case object `Korea` extends Region
-    case object `Kosovo` extends Region
-    case object `Latvia` extends Region
-    case object `Lithuania` extends Region
-    case object `Luxembourg` extends Region
-    case object `Macedonia` extends Region
-    case object `Malta` extends Region
-    case object `Moldova` extends Region
-    case object `Montenegro` extends Region
-    case object `Netherlands` extends Region
-    case object `Norway` extends Region
-    case object `Poland` extends Region
-    case object `Portugal` extends Region
-    case object `Romania` extends Region
-    case object `Russia` extends Region
-    case object `Serbia` extends Region
-    case object `Slovakia` extends Region
-    case object `Slovenia` extends Region
-    case object `Spain` extends Region
-    case object `Sweden` extends Region
-    case object `Switzerland` extends Region
-    case object `Turkey` extends Region
-    case object `Ukraine` extends Region
-    case object `United States` extends Region
-    case object `Vietnam` extends Region
-
-    case object `Other` extends Region
+    val `Albania`, `Arabia/Persia`, `Armenia`, `Austria`, `Azerbaijan`, `Belarus`, `Belgium`, `Bosnia/Herzegovina`, `Bulgaria`, `China`, `Croatia`, `Czech Republic`, `Denmark`, `East Frisia`, `Estonia`, `Finland`, `France`, `Georgia`,
+      `Germany`, `Great Britain`, `Greece`, `Hungary`, `Iceland`, `India/Sri Lanka`, `Ireland`, `Israel`, `Italy`, `Japan`, `Kazakhstan/Uzbekistan`, `Korea`, `Kosovo`, `Latvia`, `Lithuania`, `Luxembourg`, `Macedonia`, `Malta`, `Moldova`,
+      `Montenegro`, `Netherlands`, `Norway`, `Poland`, `Portugal`, `Romania`, `Russia`, `Serbia`, `Slovakia`, `Slovenia`, `Spain`, `Sweden`, `Switzerland`, `Turkey`, `Ukraine`, `United States`, `Vietnam`, `Other` = Value
 
     object HasLocale {
 
@@ -199,65 +146,6 @@ object HeiseNameDictionaryUtilities {
 
     }
 
-    val byLabel: Map[String, Region] =
-      Map(
-        "Great Britain" -> `Great Britain`,
-        "Ireland" -> `Ireland`,
-        "U.S.A." -> `United States`,
-        "Italy" -> `Italy`,
-        "Malta" -> `Malta`,
-        "Portugal" -> `Portugal`,
-        "Spain" -> `Spain`,
-        "France" -> `France`,
-        "Belgium" -> `Belgium`,
-        "Luxembourg" -> `Luxembourg`,
-        "the Netherlands" -> `Netherlands`,
-        "East Frisia" -> `East Frisia`,
-        "Germany" -> `Germany`,
-        "Austria" -> `Austria`,
-        "Swiss" -> `Switzerland`,
-        "Iceland" -> `Iceland`,
-        "Denmark" -> `Denmark`,
-        "Norway" -> `Norway`,
-        "Sweden" -> `Sweden`,
-        "Finland" -> `Finland`,
-        "Estonia" -> `Estonia`,
-        "Latvia" -> `Latvia`,
-        "Lithuania" -> `Lithuania`,
-        "Poland" -> `Poland`,
-        "Czech Republic" -> `Czech Republic`,
-        "Slovakia" -> `Slovakia`,
-        "Hungary" -> `Hungary`,
-        "Romania" -> `Romania`,
-        "Bulgaria" -> `Bulgaria`,
-        "Bosnia and Herzegovina" -> `Bosnia/Herzegovina`,
-        "Croatia" -> `Croatia`,
-        "Kosovo" -> `Kosovo`,
-        "Macedonia" -> `Macedonia`,
-        "Montenegro" -> `Montenegro`,
-        "Serbia" -> `Serbia`,
-        "Slovenia" -> `Slovenia`,
-        "Albania" -> `Albania`,
-        "Greece" -> `Greece`,
-        "Russia" -> `Russia`,
-        "Belarus" -> `Belarus`,
-        "Moldova" -> `Moldova`,
-        "Ukraine" -> `Ukraine`,
-        "Armenia" -> `Armenia`,
-        "Azerbaijan" -> `Azerbaijan`,
-        "Georgia" -> `Georgia`,
-        "Kazakhstan/Uzbekistan,etc." -> `Kazakhstan/Uzbekistan`,
-        "Turkey" -> `Turkey`,
-        "Arabia/Persia" -> `Arabia/Persia`,
-        "Israel" -> `Israel`,
-        "China" -> `China`,
-        "India/Sri Lanka" -> `India/Sri Lanka`,
-        "Japan" -> `Japan`,
-        "Korea" -> `Korea`,
-        "Vietnam" -> `Vietnam`,
-        "other countries" -> `Other`
-      )
-
   }
 
   def classifiedNames(dictionaryFile: File): Iterator[ClassifiedName] = {
@@ -298,7 +186,7 @@ object HeiseNameDictionaryUtilities {
         .map {
 
           case Seq(label, index) =>
-            (index.indexOf('|') - 30, Regions.byLabel(label.tail.init.trim()))
+            (index.indexOf('|') - 30, Region.withName(label.tail.init.trim()))
 
           /** @todo Handle errors properly. */
           case _ =>
