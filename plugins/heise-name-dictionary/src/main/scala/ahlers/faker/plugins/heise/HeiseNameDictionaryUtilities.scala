@@ -1,16 +1,16 @@
 package ahlers.faker.plugins.heise
 
+import better.files._
 import sbt.File
 import sbt.IO
 import sbt.MessageOnlyException
 import sbt.util.Logger
-import better.files._
-import cats.syntax.option._
-import java.util.Locale
 
-import scala.collection.convert.ImplicitConversionsToScala._
 import java.net.URL
 import java.nio.charset.StandardCharsets
+import java.util.Locale
+import scala.collection.convert.ImplicitConversionsToScala._
+import scala.util.control.NonFatal
 
 /**
  * @since September 18, 2021
@@ -61,90 +61,107 @@ object HeiseNameDictionaryUtilities {
       }
 
   type Region = Region.Value
+
+  /**
+   * Caveats:
+   * - Resolves to [[Locale.UK]], which is technically incorrect; see also [[https://stackoverflow.com/questions/8334904/locale-uk-and-country-code ''Locale.UK and country code'']].
+   */
   object Region extends Enumeration {
 
-    val `Albania`, `Arabia/Persia`, `Armenia`, `Austria`, `Azerbaijan`, `Belarus`, `Belgium`, `Bosnia/Herzegovina`, `Bulgaria`, `China`, `Croatia`, `Czech Republic`, `Denmark`, `East Frisia`, `Estonia`, `Finland`, `France`, `Georgia`,
-      `Germany`, `Great Britain`, `Greece`, `Hungary`, `Iceland`, `India/Sri Lanka`, `Ireland`, `Israel`, `Italy`, `Japan`, `Kazakhstan/Uzbekistan`, `Korea`, `Kosovo`, `Latvia`, `Lithuania`, `Luxembourg`, `Macedonia`, `Malta`, `Moldova`,
-      `Montenegro`, `Netherlands`, `Norway`, `Poland`, `Portugal`, `Romania`, `Russia`, `Serbia`, `Slovakia`, `Slovenia`, `Spain`, `Sweden`, `Switzerland`, `Turkey`, `Ukraine`, `United States`, `Vietnam`, `Other` = Value
+    private case class RegionLabelNotFoundException(regionLabel: String, cause: Throwable)
+      extends Exception(s"""Couldn't resolve "$regionLabel" to a region.""", cause)
+
+    private case class CountryCodeNotFoundException(countryCode: String)
+      extends Exception(s"""No locales with country code "$countryCode".""")
+
+    private val byCountryCode: Map[String, Seq[Locale]] =
+      Locale.getAvailableLocales
+        .toSeq
+        .groupBy(_.getCountry)
+        .withDefault(countryCode =>
+          throw CountryCodeNotFoundException(countryCode))
+
+    private[Region] case class WithProperties(locales: Seq[Locale]) extends Val
+    private object WithProperties {
+      def apply(): WithProperties = WithProperties(Nil)
+      def apply(locale: Locale, locales: Locale*): WithProperties = WithProperties(locale +: locales)
+    }
+
+    implicit private def implyRegion(value: Value): WithProperties = value.asInstanceOf[WithProperties]
+
+    val `Albania` = WithProperties(byCountryCode("AL"))
+    val `Arabia/Persia` = WithProperties()
+    val `Armenia` = WithProperties(byCountryCode("AM"))
+    val `Austria` = WithProperties(byCountryCode("AT"))
+    val `Azerbaijan` = WithProperties(byCountryCode("AZ"))
+    val `Belarus` = WithProperties()
+    val `Belgium` = WithProperties()
+    val `Bosnia and Herzegovina` = WithProperties()
+    val `Bulgaria` = WithProperties()
+    val `China` = WithProperties()
+    val `Croatia` = WithProperties()
+    val `Czech Republic` = WithProperties()
+    val `Denmark` = WithProperties()
+    val `East Frisia` = WithProperties()
+    val `Estonia` = WithProperties()
+    val `Finland` = WithProperties()
+    val `France` = WithProperties()
+    val `Georgia` = WithProperties()
+    val `Germany` = WithProperties()
+    val `Great Britain` = WithProperties(Locale.UK)
+    val `Greece` = WithProperties()
+    val `Hungary` = WithProperties()
+    val `Iceland` = WithProperties()
+    val `India/Sri Lanka` = WithProperties(byCountryCode("IN") ++ byCountryCode("LK"))
+    val `Ireland` = WithProperties(Locale.ITALY)
+    val `Israel` = WithProperties()
+    val `Italy` = WithProperties()
+    val `Japan` = WithProperties(Locale.JAPAN)
+    val `Kazakhstan/Uzbekistan,etc.` = WithProperties()
+    val `Korea` = WithProperties(Locale.KOREA)
+    val `Kosovo` = WithProperties()
+    val `Latvia` = WithProperties()
+    val `Lithuania` = WithProperties()
+    val `Luxembourg` = WithProperties()
+    val `Macedonia` = WithProperties()
+    val `Malta` = WithProperties()
+    val `Moldova` = WithProperties()
+    val `Montenegro` = WithProperties()
+    val `the Netherlands` = WithProperties()
+    val `Norway` = WithProperties()
+    val `Poland` = WithProperties()
+    val `Portugal` = WithProperties()
+    val `Romania` = WithProperties()
+    val `Russia` = WithProperties()
+    val `Serbia` = WithProperties()
+    val `Slovakia` = WithProperties()
+    val `Slovenia` = WithProperties()
+    val `Spain` = WithProperties()
+    val `Sweden` = WithProperties()
+    val `Swiss` = WithProperties()
+    val `Turkey` = WithProperties()
+    val `Ukraine` = WithProperties()
+    val `U.S.A.` = WithProperties()
+    val `Vietnam` = WithProperties()
+    val `other countries` = WithProperties()
 
     object HasLocale {
-
-      case class CountryCodeNotFoundException(countryCode: String)
-        extends Exception(s"""No locales with country code "$countryCode".""")
-
-      val byCountryCode: Map[String, Seq[Locale]] =
-        Locale.getAvailableLocales
-          .toSeq
-          .groupBy(_.getCountry)
-          .withDefault(countryCode =>
-            throw CountryCodeNotFoundException(countryCode))
-
-      /**
-       * Caveats:
-       *
-       * - Resolves [[`Great Britain`]] to [[Locale.UK]], which is technically incorrect; see also [[https://stackoverflow.com/questions/8334904/locale-uk-and-country-code ''Locale.UK and country code'']].
-       */
       def unapply(region: Region): Option[Seq[Locale]] =
-        region match {
-          case `Albania` => byCountryCode("AL").some
-          case `Arabia/Persia` => none
-          case `Armenia` => byCountryCode("AM").some
-          case `Austria` => byCountryCode("AT").some
-          case `Azerbaijan` => byCountryCode("AZ").some
-          case `Belarus` => none
-          case `Belgium` => none
-          case `Bosnia/Herzegovina` => none
-          case `Bulgaria` => none
-          case `China` => none
-          case `Croatia` => none
-          case `Czech Republic` => none
-          case `Denmark` => none
-          case `East Frisia` => none
-          case `Estonia` => none
-          case `Finland` => none
-          case `France` => Seq(Locale.FRANCE).some
-          case `Georgia` => none
-          case `Germany` => Seq(Locale.GERMANY).some
-          case `Great Britain` => Seq(Locale.UK).some
-          case `Greece` => none
-          case `Hungary` => none
-          case `Iceland` => none
-          case `India/Sri Lanka` => (byCountryCode("IN") ++ byCountryCode("LK")).some
-          case `Ireland` => none
-          case `Israel` => none
-          case `Italy` => Seq(Locale.ITALY).some
-          case `Japan` => Seq(Locale.JAPAN).some
-          case `Kazakhstan/Uzbekistan` => none
-          case `Korea` => Seq(Locale.KOREA).some
-          case `Kosovo` => none
-          case `Latvia` => none
-          case `Lithuania` => none
-          case `Luxembourg` => none
-          case `Macedonia` => none
-          case `Malta` => none
-          case `Moldova` => none
-          case `Montenegro` => none
-          case `Netherlands` => none
-          case `Norway` => none
-          case `Poland` => none
-          case `Portugal` => none
-          case `Romania` => none
-          case `Russia` => none
-          case `Serbia` => none
-          case `Slovakia` => none
-          case `Slovenia` => none
-          case `Spain` => none
-          case `Sweden` => none
-          case `Switzerland` => none
-          case `Turkey` => none
-          case `Ukraine` => none
-          case `United States` => Seq(Locale.US).some
-          case `Vietnam` => none
-
-          case `Other` => none
-        }
-
+        Option(region.locales)
+          .filter(_.nonEmpty)
     }
+
+    /** A simple work-around of [[withName]] with consideration for encodings. */
+    def withLabel(label: String): Region =
+      try withName(label
+        .replaceAllLiterally(" ", "$u0020")
+        .replaceAllLiterally(",", "$u002C")
+        .replaceAllLiterally(".", "$u002E")
+        .replaceAllLiterally("/", "$div"))
+      catch {
+        case NonFatal(reason) =>
+          throw RegionLabelNotFoundException(label, reason)
+      }
 
   }
 
@@ -186,7 +203,7 @@ object HeiseNameDictionaryUtilities {
         .map {
 
           case Seq(label, index) =>
-            (index.indexOf('|') - 30, Region.withName(label.tail.init.trim()))
+            (index.indexOf('|') - 30, Region.withLabel(label.tail.init.trim()))
 
           /** @todo Handle errors properly. */
           case _ =>
