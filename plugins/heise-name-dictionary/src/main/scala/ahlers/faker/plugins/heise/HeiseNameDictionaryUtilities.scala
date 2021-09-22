@@ -218,18 +218,38 @@ object HeiseNameDictionaryUtilities {
       .drop(2)
 
     lines
-      .flatMap { entry =>
+      .map { entry =>
         val genderO: Option[String] =
           Option(entry
             .take(2)
             .trim())
             .filter(_.nonEmpty)
 
+        val probabilityByRegion: Map[Region, Int] =
+          regionByIndex
+            .flatMap {
+              case (index, name) =>
+                Option(entry.charAt(index.toInt + 30))
+                  .map(_.toString.trim())
+                  .filter(_.nonEmpty)
+                  .map(Integer.parseInt(_, 16))
+                  .map { probability =>
+                    (name, probability)
+                  }
+            }
+
         genderO match {
 
           /** Export separately. */
           case None =>
-            None
+            val Array(short, long) =
+              decodeName(characterEncodings, entry.slice(3, 29).trim())
+                .split(' ')
+
+            ClassifiedName.Equivalent(
+              short = short,
+              long = long,
+              probabilityByRegion)
 
           case Some(gender) =>
             val name =
@@ -240,25 +260,21 @@ object HeiseNameDictionaryUtilities {
             val parts =
               decodeName(characterEncodings, name)
                 .split('+')
-                .toSeq
 
-            val probabilityByRegion: Map[Region, Int] =
-              regionByIndex
-                .flatMap {
-                  case (index, name) =>
-                    Option(entry.charAt(index.toInt + 30))
-                      .map(_.toString.trim())
-                      .filter(_.nonEmpty)
-                      .map(Integer.parseInt(_, 16))
-                      .map { probability =>
-                        (name, probability)
-                      }
-                }
+            val variations: Seq[String] =
+              parts match {
+                case parts @ Array(_) => parts
+                case Array(first, second) =>
+                  Array(
+                    s"$first $second",
+                    s"$first-$second",
+                    s"$first${second.toLowerCase}")
+              }
 
-            Some(ClassifiedName(
+            ClassifiedName.Gendered(
               gender = gender,
-              parts = parts,
-              probabilityByLocale = probabilityByRegion))
+              variations = variations,
+              probabilityByLocale = probabilityByRegion)
 
         }
       }
