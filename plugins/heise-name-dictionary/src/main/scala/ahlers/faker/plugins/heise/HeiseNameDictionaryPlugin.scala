@@ -1,7 +1,10 @@
 package ahlers.faker.plugins.heise
 
+import com.typesafe.config.ConfigFactory
 import sbt.Keys._
 import sbt._
+import scala.collection.convert.ImplicitConversionsToScala._
+import net.ceedubs.ficus.Ficus._
 
 object HeiseNameDictionaryPlugin extends AutoPlugin {
 
@@ -54,9 +57,15 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
             dictionaryFileName = dictionaryFileName,
             logger = logger)
       },
+      loadHeiseNameDictionaryRegions := {
+        ConfigFactory
+          .load(getClass.getClassLoader)
+          .as[Set[Region]]("regions")
+      },
       hello := {
         val log = streams.value.log
         val dictionaryFile = downloadHeiseNameDictionaryFile.value
+        val regions = loadHeiseNameDictionaryRegions.value
 
         HeiseNameDictionaryUtilities
           .classifiedNames(dictionaryFile)
