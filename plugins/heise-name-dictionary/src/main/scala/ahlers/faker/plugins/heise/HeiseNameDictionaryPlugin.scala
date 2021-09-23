@@ -3,9 +3,6 @@ package ahlers.faker.plugins.heise
 import sbt.Keys._
 import sbt._
 
-import java.nio.charset.StandardCharsets
-import scala.collection.convert.ImplicitConversionsToScala._
-
 object HeiseNameDictionaryPlugin extends AutoPlugin {
 
   /** Per [[noTrigger]], this plugin must be manually enabled, even if [[requires requirements]] are met. */
