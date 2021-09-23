@@ -8,6 +8,9 @@ import scala.collection.convert.ImplicitConversionsToScala._
 
 object HeiseNameDictionaryPlugin extends AutoPlugin {
 
+  /** Per [[noTrigger]], this plugin must be manually enabled, even if [[requires requirements]] are met. */
+  override val trigger = noTrigger
+
   object autoImport {
 
     val heiseNameDictionaryArchiveSourceUrl = settingKey[URL]("greeting")
