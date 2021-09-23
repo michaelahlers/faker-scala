@@ -25,7 +25,7 @@ As name prefix, given name, middle name, family name, nickname, and name suffix 
 
 - [United States Census Bureau: Frequently Occurring Surnames from Census 1990](https://www.census.gov/topics/population/genealogy/data/1990_census/1990_census_namefiles.html)
 - [United States Census Bureau: Frequently Occurring Surnames from the Census 2000](https://census.gov/topics/population/genealogy/data/2000_surnames.html)
-- [Magazin für Computertechnik: 40 000 Namen](https://www.heise.de/ct/ftp/07/17/182/)
+- [Magazin für Computertechnik: _40 000 Namen_](https://www.heise.de/ct/ftp/07/17/182/)
 
 ## Inspiration
 

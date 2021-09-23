@@ -1,10 +1,9 @@
 package ahlers.faker.plugins.heise
 
 import com.typesafe.config.ConfigFactory
+import net.ceedubs.ficus.Ficus._
 import sbt.Keys._
 import sbt._
-import scala.collection.convert.ImplicitConversionsToScala._
-import net.ceedubs.ficus.Ficus._
 
 object HeiseNameDictionaryPlugin extends AutoPlugin {
 
@@ -13,17 +12,20 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
   object autoImport {
 
-    val heiseNameDictionaryArchiveSourceUrl = settingKey[URL]("greeting")
+    /**
+     * @see [[https://www.heise.de/ct/ftp/07/17/182/ Magazin für Computertechnik: ''40 000 Namen'']]
+     */
+    val heiseNameDictionaryArchiveSourceUrl = settingKey[URL]("""Location of the original archive, described by Magazin für Computertechnik's "40 000 Namen".""")
 
-    val heiseNameDictionaryDownloadDirectory = settingKey[File]("greeting")
+    val heiseNameDictionaryDownloadDirectory = settingKey[File]("Destination of downloaded and extracted archive.")
 
-    val heiseNameDictionaryFileName = settingKey[String]("greeting")
+    val heiseNameDictionaryFileName = settingKey[String]("Names the file inside the dictionary archive containing classified names.")
 
-    val downloadHeiseNameDictionaryFile = taskKey[File]("")
+    val downloadHeiseNameDictionaryFile = taskKey[File]("Fetches and extracts the dictionary file from the original source.")
 
-    val loadHeiseNameDictionaryRegions = taskKey[Set[Region]]("")
+    val loadHeiseNameDictionaryRegions = taskKey[Set[Region]]("Loads region definitions from configuration.")
 
-    val loadHeiseNameDictionaryClassifiedNames = taskKey[Iterator[ClassifiedName]]("say hello")
+    val loadHeiseNameDictionaryClassifiedNames = taskKey[Iterator[ClassifiedName]]("Loads and parses the dictionary to classified name models, suitable for serialization to standard formats.")
 
   }
 
