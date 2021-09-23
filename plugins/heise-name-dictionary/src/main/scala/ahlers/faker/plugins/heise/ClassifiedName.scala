@@ -1,7 +1,5 @@
 package ahlers.faker.plugins.heise
 
-import ahlers.faker.plugins.heise.HeiseNameDictionaryUtilities.Region
-
 /**
  * @since September 17, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>

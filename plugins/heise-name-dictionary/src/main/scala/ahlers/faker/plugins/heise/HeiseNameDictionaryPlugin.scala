@@ -21,7 +21,9 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
     val downloadHeiseNameDictionaryFile = taskKey[File]("")
 
-    val hello = taskKey[Unit]("say hello")
+    val loadHeiseNameDictionaryRegions = taskKey[Set[Region]]("")
+
+    val loadHeiseNameDictionaryClassifiedNames = taskKey[Iterator[ClassifiedName]]("say hello")
 
   }
 
@@ -50,7 +52,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         val downloadDirectory = heiseNameDictionaryDownloadDirectory.value
         val dictionaryFileName = heiseNameDictionaryFileName.value
 
-        HeiseNameDictionaryUtilities
+        DictionaryIO
           .downloadDictionary(
             sourceUrl = sourceUrl,
             downloadDirectory = downloadDirectory,
@@ -62,17 +64,14 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
           .load(getClass.getClassLoader)
           .as[Set[Region]]("regions")
       },
-      hello := {
-        val log = streams.value.log
+      loadHeiseNameDictionaryClassifiedNames := {
         val dictionaryFile = downloadHeiseNameDictionaryFile.value
         val regions = loadHeiseNameDictionaryRegions.value
 
-        HeiseNameDictionaryUtilities
-          .classifiedNames(dictionaryFile)
-          .take(10)
-          .map(_.toString)
-          .foreach(log.info(_))
-
+        DictionaryParsing
+          .classifiedNames(
+            dictionaryFile = dictionaryFile,
+            regions = regions)
       }
     )
 
