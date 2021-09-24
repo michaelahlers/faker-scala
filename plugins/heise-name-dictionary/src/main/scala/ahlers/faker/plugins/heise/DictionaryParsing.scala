@@ -57,7 +57,7 @@ object DictionaryParsing {
                 .take(2)
                 .trim())
                 .filter(_.nonEmpty)
-                .map(decodeGender(_))
+                .flatMap(decodeGender(_))
 
             val regionProbabilities: Seq[RegionProbability] =
               parseRegionProbabilities(line)

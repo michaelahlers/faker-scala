@@ -4,7 +4,7 @@ package ahlers.faker.plugins.heise
  * @since September 23, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait GenderDecoder extends (String => Gender)
+trait GenderDecoder extends (String => Option[Gender])
 object GenderDecoder {
   import Gender._
 
@@ -12,13 +12,14 @@ object GenderDecoder {
     extends Exception(s"""Unexpected gender label "$label".""")
 
   def apply(): GenderDecoder = {
-    case "M" => Male
-    case "1M" => FirstMale
-    case "?M" => MostlyMale
-    case "F" => Female
-    case "1F" => FirstFemale
-    case "?F" => MostlyFemale
-    case "?" => Unisex
+    case "M" => Some(Male)
+    case "1M" => Some(FirstMale)
+    case "?M" => Some(MostlyMale)
+    case "F" => Some(Female)
+    case "1F" => Some(FirstFemale)
+    case "?F" => Some(MostlyFemale)
+    case "?" => Some(Unisex)
+    case "=" => None
     case label => throw UnknownGenderException(label)
   }
 
