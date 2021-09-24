@@ -14,7 +14,7 @@ object ClassifiedName {
     extends ClassifiedName
 
   case class Gendered(
-    gender: String,
+    gender: Gender,
     variations: Seq[String],
     probabilityByLocale: Map[Region, Int])
     extends ClassifiedName

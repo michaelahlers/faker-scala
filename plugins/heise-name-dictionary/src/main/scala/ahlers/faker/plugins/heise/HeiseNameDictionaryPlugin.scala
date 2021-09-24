@@ -70,9 +70,16 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         val regions = loadHeiseNameDictionaryRegions.value
         val dictionaryParsing = DictionaryParsing(regions)
 
-        dictionaryParsing
-          .classifiedNames(
-            dictionaryFile = dictionaryFile)
+        val classifiedNames =
+          dictionaryParsing
+            .classifiedNames(
+              dictionaryFile = dictionaryFile)
+
+        classifiedNames
+          .take(10)
+          .foreach(println(_))
+
+        classifiedNames
       }
     )
 

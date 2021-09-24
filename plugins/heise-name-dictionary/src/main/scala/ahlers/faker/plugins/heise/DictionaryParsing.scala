@@ -15,7 +15,15 @@ trait DictionaryParsing {
 
 object DictionaryParsing {
 
-  def apply(regions: Set[Region]): DictionaryParsing =
+  def apply(regions: Set[Region]): DictionaryParsing = {
+    val regionByLabel: Map[String, Region] =
+      regions
+        .map(region => (region.label, region))
+        .toMap
+
+    val parseCharacterEncodings = CharacterEncodingParser()
+    val decodeGender = GenderDecoder()
+
     new DictionaryParsing {
       override def classifiedNames(dictionaryFile: File) = {
         val lines: Iterator[String] =
@@ -23,35 +31,14 @@ object DictionaryParsing {
             .lineIterator(StandardCharsets.ISO_8859_1)
 
         val characterEncodings: Seq[CharacterEncoding] =
-          lines
-            .dropWhile(!_.contains("char set"))
-            .drop(6)
-            .take(67)
-            .map(_.tail.init)
-            .map(_.replaceAll("""\/\*\*.*""", ""))
-            .map(_.trim().split('='))
-            .flatMap {
-
-              case Array(character, encodings) =>
-                encodings
-                  .split("or")
-                  .map(_.trim())
-                  .filter(_.nonEmpty)
-                  .map(CharacterEncoding(_, character.trim().toInt.toChar.toString))
-
-              /** @todo Handle errors properly. */
-              case _ =>
-                ???
-
-            }
-            .toIndexedSeq
+          parseCharacterEncodings(
+            lines
+              .dropWhile(!_.contains("char set"))
+              .drop(6)
+              .take(67)
+              .toSeq)
 
         val decodeName = NameDecoder(characterEncodings)
-
-        val regionByLabel: Map[String, Region] =
-          regions
-            .map(region => (region.label, region))
-            .toMap
 
         val regionByIndex: Map[Int, Region] =
           lines
@@ -78,11 +65,12 @@ object DictionaryParsing {
 
         lines
           .map { entry =>
-            val genderO: Option[String] =
+            val genderO: Option[Gender] =
               Option(entry
                 .take(2)
                 .trim())
                 .filter(_.nonEmpty)
+                .map(decodeGender(_))
 
             val probabilityByRegion: Map[Region, Int] =
               regionByIndex
@@ -139,5 +127,6 @@ object DictionaryParsing {
           }
       }
     }
+  }
 
 }
