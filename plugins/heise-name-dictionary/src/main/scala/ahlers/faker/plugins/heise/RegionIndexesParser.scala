@@ -7,11 +7,11 @@ package ahlers.faker.plugins.heise
 trait RegionIndexesParser extends (TraversableOnce[DictionaryLine] => Seq[RegionIndex])
 object RegionIndexesParser {
 
-  case class UnknownRegionLabelException(label: String)
-    extends Exception(s"""Region label "$label" wasn't known.""")
+  case class UnknownRegionLabelException(label: RegionLabel)
+    extends Exception(s""""$label" wasn't known.""")
 
   def apply(regions: TraversableOnce[Region]): RegionIndexesParser = {
-    val regionByLabel: Map[String, Region] =
+    val regionByLabel: Map[RegionLabel, Region] =
       regions
         .map(region => (region.label, region))
         .toMap
@@ -27,11 +27,11 @@ object RegionIndexesParser {
             RegionIndex(
               region =
                 regionByLabel(
-                  label
+                  RegionLabel(label
                     .toString
                     .tail
                     .init
-                    .trim()),
+                    .trim())),
               index =
                 index
                   .toString

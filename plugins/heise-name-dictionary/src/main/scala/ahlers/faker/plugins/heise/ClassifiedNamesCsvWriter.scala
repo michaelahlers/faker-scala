@@ -15,9 +15,17 @@ object ClassifiedNamesCsvWriter {
       outputDirectory.mkdirs()
 
       val variationsFile = outputDirectory / "variations.csv"
+      val localesFile = outputDirectory / "locales.csv"
+
       IO.writeLines(
         file = variationsFile,
         lines = Seq("reference,name"),
+        StandardCharsets.UTF_8,
+        append = false)
+
+      IO.writeLines(
+        file = localesFile,
+        lines = Seq("reference,country-code,weight"),
         StandardCharsets.UTF_8,
         append = false)
 
@@ -38,6 +46,21 @@ object ClassifiedNamesCsvWriter {
                   .map(name => s"${reference.toInt},${name.toString}"),
               StandardCharsets.UTF_8,
               append = true)
+
+            IO.writeLines(
+              file = localesFile,
+              lines =
+                gendered
+                  .regionWeights
+                  .flatMap(regionWeight =>
+                    regionWeight
+                      .region
+                      .countryCodes
+                      .map(countryCode =>
+                        s"${reference.toInt},${countryCode.toString},${regionWeight.weight}")),
+              StandardCharsets.UTF_8,
+              append = true
+            )
 
         }
 
