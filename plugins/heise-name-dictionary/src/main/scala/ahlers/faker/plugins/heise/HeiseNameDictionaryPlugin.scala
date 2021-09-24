@@ -54,16 +54,20 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
         val dictionaryIO = DictionaryIO(logger)
 
-        dictionaryIO
-          .downloadDictionary(
-            sourceUrl = sourceUrl,
-            downloadDirectory = downloadDirectory,
-            dictionaryFileName = dictionaryFileName)
+        val dictionaryFile =
+          dictionaryIO
+            .downloadDictionary(
+              sourceUrl = sourceUrl,
+              downloadDirectory = downloadDirectory,
+              dictionaryFileName = dictionaryFileName)
+
+        dictionaryFile
       },
       loadHeiseNameDictionaryRegions := {
         val logger = streams.value.log
         val regionIO = RegionIO(logger)
-        regionIO.loadRegions()
+        val regions = regionIO.loadRegions()
+        regions
       },
       loadHeiseNameDictionaryClassifiedNames := {
         val dictionaryFile = downloadHeiseNameDictionaryFile.value
@@ -74,10 +78,6 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
           dictionaryParsing
             .classifiedNames(
               dictionaryFile = dictionaryFile)
-
-        classifiedNames
-          .take(10)
-          .foreach(println(_))
 
         classifiedNames
       }

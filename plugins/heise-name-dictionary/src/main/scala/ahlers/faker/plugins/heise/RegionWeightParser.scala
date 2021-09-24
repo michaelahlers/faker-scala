@@ -4,10 +4,10 @@ package ahlers.faker.plugins.heise
  * @since September 23, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait RegionProbabilityParser extends (DictionaryLine => Seq[RegionProbability])
-object RegionProbabilityParser {
+trait RegionWeightParser extends (DictionaryLine => Seq[RegionWeight])
+object RegionWeightParser {
 
-  def apply(regionIndexes: TraversableOnce[RegionIndex]): RegionProbabilityParser = {
+  def apply(regionIndexes: TraversableOnce[RegionIndex]): RegionWeightParser = {
     val localIndexes =
       regionIndexes
         .toIndexedSeq
@@ -23,7 +23,7 @@ object RegionProbabilityParser {
             .filter(_.nonEmpty)
             .map(Integer.parseInt(_, 16))
             .map { probability =>
-              RegionProbability(region, probability)
+              RegionWeight(region, probability)
             }
         }
   }

@@ -41,7 +41,7 @@ object DictionaryParsing {
               .drop(7)
               .take(164))
 
-        val parseRegionProbabilities = RegionProbabilityParser(regionIndexes)
+        val parseRegionWeights = RegionWeightParser(regionIndexes)
         val decodeName = NameDecoder(characterEncodings)
 
         /* Moves the iterator to the correct position for names. */
@@ -59,8 +59,8 @@ object DictionaryParsing {
                 .filter(_.nonEmpty)
                 .flatMap(decodeGender(_))
 
-            val regionProbabilities: Seq[RegionProbability] =
-              parseRegionProbabilities(line)
+            val regionWeights: Seq[RegionWeight] =
+              parseRegionWeights(line)
 
             genderO match {
 
@@ -76,7 +76,7 @@ object DictionaryParsing {
                 ClassifiedName.Equivalent(
                   short = short,
                   long = long,
-                  regionProbabilities = regionProbabilities)
+                  regionWeights = regionWeights)
 
               case Some(gender) =>
                 val name =
@@ -105,7 +105,7 @@ object DictionaryParsing {
                 ClassifiedName.Gendered(
                   gender = gender,
                   variations = variations,
-                  regionProbabilities = regionProbabilities)
+                  regionWeights = regionWeights)
 
             }
           }
