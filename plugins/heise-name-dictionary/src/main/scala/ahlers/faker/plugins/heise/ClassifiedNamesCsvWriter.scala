@@ -57,14 +57,16 @@ object ClassifiedNamesCsvWriter {
                       .region
                       .countryCodes
                       .map(countryCode =>
-                        s"${reference.toInt},${countryCode.toString},${regionWeight.weight}")),
+                        s"${reference.toInt},${countryCode.toText},${regionWeight.weight}")),
               StandardCharsets.UTF_8,
               append = true
             )
 
         }
 
-      Seq(variationsFile)
+      Seq(
+        variationsFile,
+        localesFile)
   }
 
 }
