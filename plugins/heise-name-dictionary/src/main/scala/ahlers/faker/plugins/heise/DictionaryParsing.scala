@@ -50,7 +50,8 @@ object DictionaryParsing {
           .drop(2)
 
         lines
-          .map { line =>
+          .zipWithIndex
+          .map { case (line, index) =>
             val genderO: Option[Gender] =
               Option(line
                 .toString
@@ -74,6 +75,7 @@ object DictionaryParsing {
                     .map(Name(_))
 
                 ClassifiedName.Equivalent(
+                  reference = ClassifiedNameReference(index),
                   short = short,
                   long = long,
                   regionWeights = regionWeights)
@@ -103,6 +105,7 @@ object DictionaryParsing {
                   }
 
                 ClassifiedName.Gendered(
+                  reference = ClassifiedNameReference(index),
                   gender = gender,
                   variations = variations,
                   regionWeights = regionWeights)
