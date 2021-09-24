@@ -4,10 +4,10 @@ package ahlers.faker.plugins.heise
  * @since September 23, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait RegionWeightParser extends (DictionaryLine => Seq[RegionWeight])
-object RegionWeightParser {
+trait RegionWeightsParser extends (DictionaryLine => Seq[RegionWeight])
+object RegionWeightsParser {
 
-  def apply(regionIndexes: TraversableOnce[RegionIndex]): RegionWeightParser = {
+  def apply(regionIndexes: TraversableOnce[RegionIndex]): RegionWeightsParser = {
     val localIndexes =
       regionIndexes
         .toIndexedSeq

@@ -4,13 +4,13 @@ package ahlers.faker.plugins.heise
  * @since September 23, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait RegionIndexParser extends (TraversableOnce[DictionaryLine] => Seq[RegionIndex])
-object RegionIndexParser {
+trait RegionIndexesParser extends (TraversableOnce[DictionaryLine] => Seq[RegionIndex])
+object RegionIndexesParser {
 
   case class UnknownRegionLabelException(label: String)
     extends Exception(s"""Region label "$label" wasn't known.""")
 
-  def apply(regions: TraversableOnce[Region]): RegionIndexParser = {
+  def apply(regions: TraversableOnce[Region]): RegionIndexesParser = {
     val regionByLabel: Map[String, Region] =
       regions
         .map(region => (region.label, region))

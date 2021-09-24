@@ -16,8 +16,8 @@ trait DictionaryParsing {
 object DictionaryParsing {
 
   def apply(regions: Seq[Region]): DictionaryParsing = {
-    val parseCharacterEncodings = CharacterEncodingParser()
-    val parseRegionIndexes = RegionIndexParser(regions)
+    val parseCharacterEncodings = CharacterEncodingsParser()
+    val parseRegionIndexes = RegionIndexesParser(regions)
     val decodeGender = GenderDecoder()
 
     new DictionaryParsing {
@@ -41,7 +41,7 @@ object DictionaryParsing {
               .drop(7)
               .take(164))
 
-        val parseRegionWeights = RegionWeightParser(regionIndexes)
+        val parseRegionWeights = RegionWeightsParser(regionIndexes)
         val decodeName = NameDecoder(characterEncodings)
 
         /* Moves the iterator to the correct position for names. */
