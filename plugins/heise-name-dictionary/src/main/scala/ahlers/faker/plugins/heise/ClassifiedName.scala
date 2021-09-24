@@ -10,13 +10,13 @@ object ClassifiedName {
   case class Equivalent(
     short: String,
     long: String,
-    probabilityByLocale: Map[Region, Int])
+    regionProbabilities: Seq[RegionProbability])
     extends ClassifiedName
 
   case class Gendered(
     gender: Gender,
     variations: Seq[String],
-    probabilityByLocale: Map[Region, Int])
+    regionProbabilities: Seq[RegionProbability])
     extends ClassifiedName
 
 }

@@ -15,92 +15,71 @@ trait DictionaryParsing {
 
 object DictionaryParsing {
 
-  def apply(regions: Set[Region]): DictionaryParsing = {
-    val regionByLabel: Map[String, Region] =
-      regions
-        .map(region => (region.label, region))
-        .toMap
-
+  def apply(regions: Seq[Region]): DictionaryParsing = {
     val parseCharacterEncodings = CharacterEncodingParser()
+    val parseRegionIndexes = RegionIndexParser(regions)
     val decodeGender = GenderDecoder()
 
     new DictionaryParsing {
       override def classifiedNames(dictionaryFile: File) = {
-        val lines: Iterator[String] =
+        val lines: Iterator[DictionaryLine] =
           File(dictionaryFile.toPath)
             .lineIterator(StandardCharsets.ISO_8859_1)
+            .map(DictionaryLine(_))
 
         val characterEncodings: Seq[CharacterEncoding] =
           parseCharacterEncodings(
             lines
-              .dropWhile(!_.contains("char set"))
+              .dropWhile(!_.toString.contains("char set"))
               .drop(6)
-              .take(67)
-              .toSeq)
+              .take(67))
 
+        val regionIndexes: Seq[RegionIndex] =
+          parseRegionIndexes(
+            lines
+              .dropWhile(!_.toString.contains("list of countries"))
+              .drop(7)
+              .take(164))
+
+        val parseRegionProbabilities = RegionProbabilityParser(regionIndexes)
         val decodeName = NameDecoder(characterEncodings)
-
-        val regionByIndex: Map[Int, Region] =
-          lines
-            .dropWhile(!_.contains("list of countries"))
-            .drop(7)
-            .take(164)
-            .sliding(2, 3)
-            .map {
-
-              case Seq(label, index) =>
-                (index.indexOf('|') - 30, regionByLabel(label.tail.init.trim()))
-
-              /** @todo Handle errors properly. */
-              case _ =>
-                ???
-
-            }
-            .toMap
 
         /* Moves the iterator to the correct position for names. */
         lines
-          .dropWhile(!_.contains("begin of name list"))
+          .dropWhile(!_.toString.contains("begin of name list"))
           .drop(2)
 
         lines
-          .map { entry =>
+          .map { line =>
             val genderO: Option[Gender] =
-              Option(entry
+              Option(line
+                .toString
                 .take(2)
                 .trim())
                 .filter(_.nonEmpty)
                 .map(decodeGender(_))
 
-            val probabilityByRegion: Map[Region, Int] =
-              regionByIndex
-                .flatMap {
-                  case (index, name) =>
-                    Option(entry.charAt(index.toInt + 30))
-                      .map(_.toString.trim())
-                      .filter(_.nonEmpty)
-                      .map(Integer.parseInt(_, 16))
-                      .map { probability =>
-                        (name, probability)
-                      }
-                }
+            val regionProbabilities: Seq[RegionProbability] =
+              parseRegionProbabilities(line)
 
             genderO match {
 
-              /** Export separately. */
               case None =>
                 val Array(short, long) =
-                  decodeName(entry.slice(3, 29).trim())
+                  decodeName(line
+                    .toString
+                    .slice(3, 29).trim())
                     .split(' ')
 
                 ClassifiedName.Equivalent(
                   short = short,
                   long = long,
-                  probabilityByRegion)
+                  regionProbabilities = regionProbabilities)
 
               case Some(gender) =>
                 val name =
-                  entry
+                  line
+                    .toString
                     .slice(3, 29)
                     .trim()
 
@@ -121,7 +100,7 @@ object DictionaryParsing {
                 ClassifiedName.Gendered(
                   gender = gender,
                   variations = variations,
-                  probabilityByLocale = probabilityByRegion)
+                  regionProbabilities = regionProbabilities)
 
             }
           }

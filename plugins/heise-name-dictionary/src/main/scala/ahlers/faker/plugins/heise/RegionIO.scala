@@ -9,7 +9,7 @@ import sbt.util.Logger
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
 trait RegionIO {
-  def loadRegions(): Set[Region]
+  def loadRegions(): Seq[Region]
 }
 
 object RegionIO {
@@ -20,7 +20,7 @@ object RegionIO {
         val regions =
           ConfigFactory
             .load(getClass.getClassLoader)
-            .as[Set[Region]]("regions")
+            .as[Seq[Region]]("regions")
 
         logger.info("Loaded %d regions, defining %d ISO country codes, from configuration."
           .format(

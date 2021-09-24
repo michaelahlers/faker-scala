@@ -21,7 +21,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
     val downloadHeiseNameDictionaryFile = taskKey[File]("Fetches and extracts the dictionary file from the original source.")
 
-    val loadHeiseNameDictionaryRegions = taskKey[Set[Region]]("Loads region definitions from configuration.")
+    val loadHeiseNameDictionaryRegions = taskKey[Seq[Region]]("Loads region definitions from configuration.")
 
     val loadHeiseNameDictionaryClassifiedNames = taskKey[Iterator[ClassifiedName]]("Loads and parses the dictionary to classified name models, suitable for serialization to standard formats.")
 
