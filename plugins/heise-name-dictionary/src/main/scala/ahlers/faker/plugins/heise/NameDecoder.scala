@@ -4,7 +4,7 @@ package ahlers.faker.plugins.heise
  * @since September 22, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait NameDecoder extends (String => String)
+trait NameDecoder extends (String => Name)
 object NameDecoder {
 
   def apply(characterEncodings: Seq[CharacterEncoding]): NameDecoder = {
@@ -14,13 +14,13 @@ object NameDecoder {
         .distinct
 
     (encodedName: String) =>
-      shortToLong.foldLeft(encodedName) {
+      Name(shortToLong.foldLeft(encodedName) {
         case (decodedName, characterEncoding) =>
           decodedName
             .replace(
               characterEncoding.pattern,
               characterEncoding.substitution)
-      }
+      })
   }
 
 }

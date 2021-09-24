@@ -8,14 +8,14 @@ sealed trait ClassifiedName
 object ClassifiedName {
 
   case class Equivalent(
-    short: String,
-    long: String,
+    short: Name,
+    long: Name,
     regionProbabilities: Seq[RegionProbability])
     extends ClassifiedName
 
   case class Gendered(
     gender: Gender,
-    variations: Seq[String],
+    variations: Seq[Name],
     regionProbabilities: Seq[RegionProbability])
     extends ClassifiedName
 

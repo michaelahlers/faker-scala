@@ -69,7 +69,9 @@ object DictionaryParsing {
                   decodeName(line
                     .toString
                     .slice(3, 29).trim())
+                    .toString
                     .split(' ')
+                    .map(Name(_))
 
                 ClassifiedName.Equivalent(
                   short = short,
@@ -85,16 +87,19 @@ object DictionaryParsing {
 
                 val parts =
                   decodeName(name)
+                    .toString
                     .split('+')
+                    .map(Name(_))
 
-                val variations: Seq[String] =
+                val variations: Seq[Name] =
                   parts match {
                     case parts @ Array(_) => parts
                     case Array(first, second) =>
                       Array(
                         s"$first $second",
                         s"$first-$second",
-                        s"$first${second.toLowerCase}")
+                        s"$first${second.toString.toLowerCase}")
+                        .map(Name(_))
                   }
 
                 ClassifiedName.Gendered(
