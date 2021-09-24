@@ -1,7 +1,5 @@
 package ahlers.faker.plugins.heise
 
-import com.typesafe.config.ConfigFactory
-import net.ceedubs.ficus.Ficus._
 import sbt.Keys._
 import sbt._
 
@@ -54,26 +52,27 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         val downloadDirectory = heiseNameDictionaryDownloadDirectory.value
         val dictionaryFileName = heiseNameDictionaryFileName.value
 
-        DictionaryIO
+        val dictionaryIO = DictionaryIO(logger)
+
+        dictionaryIO
           .downloadDictionary(
             sourceUrl = sourceUrl,
             downloadDirectory = downloadDirectory,
-            dictionaryFileName = dictionaryFileName,
-            logger = logger)
+            dictionaryFileName = dictionaryFileName)
       },
       loadHeiseNameDictionaryRegions := {
-        ConfigFactory
-          .load(getClass.getClassLoader)
-          .as[Set[Region]]("regions")
+        val logger = streams.value.log
+        val regionIO = RegionIO(logger)
+        regionIO.loadRegions()
       },
       loadHeiseNameDictionaryClassifiedNames := {
         val dictionaryFile = downloadHeiseNameDictionaryFile.value
         val regions = loadHeiseNameDictionaryRegions.value
+        val dictionaryParsing = DictionaryParsing(regions)
 
-        DictionaryParsing
+        dictionaryParsing
           .classifiedNames(
-            dictionaryFile = dictionaryFile,
-            regions = regions)
+            dictionaryFile = dictionaryFile)
       }
     )
 
