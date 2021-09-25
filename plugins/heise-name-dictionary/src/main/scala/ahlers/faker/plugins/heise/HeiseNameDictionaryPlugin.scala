@@ -97,12 +97,16 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         classifiedNames
       },
       writeHeiseNameDictionaryClassifiedNames := {
+        val logger = streams.value.log
         val outputFormat = heiseNameDictionaryOutputFormat.value
         val outputDirectory = heiseNameDictionaryOutputDirectory.value
         val classifiedNames = loadHeiseNameDictionaryClassifiedNames.value
         val writeClassifiedNames: ClassifiedNamesWriter =
           outputFormat match {
-            case ClassifiedNamesOutputFormat.Csv => ClassifiedNamesCsvWriter(outputDirectory)
+            case ClassifiedNamesOutputFormat.Csv =>
+              ClassifiedNamesCsvWriter(
+                outputDirectory = outputDirectory,
+                logger = logger)
           }
 
         val outputFiles = writeClassifiedNames(classifiedNames)
