@@ -78,6 +78,7 @@ object ClassifiedNamesCsvWriter {
               append = true
             )
 
+            /** @todo Need to think how [[ClassifiedName]] is modeled—names may be be duplicated with different genders by region. */
             gendered
               .variations
               .foreach(name =>
