@@ -5,17 +5,18 @@ package ahlers.faker.plugins.heise
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
 sealed trait Usage
+sealed trait Gender
 object Usage {
 
-  case object Male extends Usage
-  case object FirstMale extends Usage
-  case object MostlyMale extends Usage
+  case object Male extends Usage with Gender
+  case object FirstMale extends Usage with Gender
+  case object MostlyMale extends Usage with Gender
 
-  case object Female extends Usage
-  case object FirstFemale extends Usage
-  case object MostlyFemale extends Usage
+  case object Female extends Usage with Gender
+  case object FirstFemale extends Usage with Gender
+  case object MostlyFemale extends Usage with Gender
 
-  case object Unisex extends Usage
+  case object Unisex extends Usage with Gender
 
   case object Equivalent extends Usage
 

@@ -27,25 +27,43 @@ object ClassifiedNameParser {
         line
           .toText
           .slice(3, 29)
-          .replaceAll("""\s+""", " ")
           .trim()
 
       val decodedName: Name =
         decodeName(encodedName)
 
-      val reference =
-        ClassifiedNameReference(
-          decodedName
-            .toText)
-
       val names: Seq[Name] =
         parseNames(usage, decodedName)
 
-      ClassifiedName(
-        reference = reference,
-        usage = usage,
-        variations = names,
-        regionWeights = regionWeights)
+      usage match {
+
+        case gender: Gender =>
+          ClassifiedName.WithGender(
+            reference =
+              ClassifiedNameReference(decodedName
+                .toText),
+            gender = gender,
+            variations = names,
+            regionWeights = regionWeights)
+
+        case _ =>
+          ClassifiedName.WithEquivalents(
+            reference =
+              ClassifiedNameReference(
+                decodedName
+                  .toText
+                  .replaceAllLiterally(" ", "=")),
+            equivalents =
+              names
+                .map(name =>
+                  ClassifiedNameReference(name
+                    .toText)),
+            regionWeights =
+              regionWeights
+          )
+
+      }
+
   }
 
 }

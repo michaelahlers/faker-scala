@@ -4,6 +4,10 @@ import sbt._
 
 import java.nio.charset.StandardCharsets
 import scala.collection.mutable
+import cats.syntax.semigroup._
+import cats.instances.map._
+import cats.instances.list._
+import cats.instances.vector._
 
 /**
  * @since September 24, 2021
@@ -15,14 +19,14 @@ object ClassifiedNamesCsvWriter {
     classifiedNames =>
       outputDirectory.mkdirs()
 
-//val variationsFile = outputDirectory / "name_variations.csv"
+      val variationsFile = outputDirectory / "name_variations.csv"
 //val usageCountryCodeWeightsFile = outputDirectory / "usage_country-code_weights.csv"
 
-//IO.writeLines(
-//  file = variationsFile,
-//  lines = Seq("reference,variation"),
-//  StandardCharsets.UTF_8,
-//  append = false)
+      IO.writeLines(
+        file = variationsFile,
+        lines = Seq("reference,variation"),
+        StandardCharsets.UTF_8,
+        append = false)
 
 //IO.writeLines(
 //  file = usageCountryCodeWeightsFile,
@@ -30,10 +34,34 @@ object ClassifiedNamesCsvWriter {
 //  StandardCharsets.UTF_8,
 //  append = false)
 
-      classifiedNames
-        .toSeq
-        .take(10)
-        .foreach(println(_))
+      val namesByReference: Map[ClassifiedNameReference, Seq[ClassifiedName]] =
+        classifiedNames
+          .toSeq
+          .groupBy(_.reference)
+
+      IO.writeLines(
+        file = variationsFile,
+        lines =
+          namesByReference
+            .values
+            .toSeq
+            .flatten
+            .sortBy(_.reference.toText)
+            .collect {
+              case withGender: ClassifiedName.WithGender =>
+                withGender
+            }
+            .flatMap(withGender =>
+              withGender
+                .variations
+                .map((withGender.reference, _)))
+            .map {
+              case (reference, name) =>
+                s"""$reference,$name"""
+            },
+        StandardCharsets.UTF_8,
+        append = false
+      )
 
 //logger.info("""Wrote %d bytes to "%s"."""
 //  .format(
