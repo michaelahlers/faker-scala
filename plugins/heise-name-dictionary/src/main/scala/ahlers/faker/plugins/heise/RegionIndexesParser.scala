@@ -28,13 +28,13 @@ object RegionIndexesParser {
               region =
                 regionByLabel(
                   RegionLabel(label
-                    .toString
+                    .toText
                     .tail
                     .init
                     .trim())),
               index =
                 index
-                  .toString
+                  .toText
                   .indexOf('|') - 30)
 
           /** @todo Handle errors properly. */

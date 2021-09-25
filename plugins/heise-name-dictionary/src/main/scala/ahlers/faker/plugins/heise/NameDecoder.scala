@@ -7,20 +7,24 @@ package ahlers.faker.plugins.heise
 trait NameDecoder extends (String => Name)
 object NameDecoder {
 
-  def apply(characterEncodings: Seq[CharacterEncoding]): NameDecoder = {
-    val shortToLong =
+  def apply(characterEncodings: IndexedSeq[CharacterEncoding]): NameDecoder = {
+    val prioritizedCharacterEncodings =
       characterEncodings
         .sortBy(_.pattern.length())
         .distinct
 
-    (encodedName: String) =>
-      Name(shortToLong.foldLeft(encodedName) {
-        case (decodedName, characterEncoding) =>
-          decodedName
-            .replace(
-              characterEncoding.pattern,
-              characterEncoding.substitution)
-      })
+    encodedName =>
+      val decodedName: String =
+        prioritizedCharacterEncodings
+          .foldLeft(encodedName) {
+            case (decodedName, characterEncoding) =>
+              decodedName
+                .replace(
+                  characterEncoding.pattern,
+                  characterEncoding.substitution)
+          }
+
+      Name(decodedName)
   }
 
 }

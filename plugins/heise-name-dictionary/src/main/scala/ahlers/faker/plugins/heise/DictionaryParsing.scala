@@ -15,10 +15,10 @@ trait DictionaryParsing {
 
 object DictionaryParsing {
 
-  def apply(regions: Seq[Region]): DictionaryParsing = {
+  def apply(regions: IndexedSeq[Region]): DictionaryParsing = {
     val parseCharacterEncodings = CharacterEncodingsParser()
     val parseRegionIndexes = RegionIndexesParser(regions)
-    val decodeGender = GenderDecoder()
+    val decodeUsage = UsageDecoder()
 
     new DictionaryParsing {
       override def classifiedNames(dictionaryFile: File) = {
@@ -30,88 +30,35 @@ object DictionaryParsing {
         val characterEncodings: Seq[CharacterEncoding] =
           parseCharacterEncodings(
             lines
-              .dropWhile(!_.toString.contains("char set"))
+              .dropWhile(!_.toText.contains("char set"))
               .drop(6)
               .take(67))
 
         val regionIndexes: Seq[RegionIndex] =
           parseRegionIndexes(
             lines
-              .dropWhile(!_.toString.contains("list of countries"))
+              .dropWhile(!_.toText.contains("list of countries"))
               .drop(7)
               .take(164))
 
+        val decodeName = NameDecoder(characterEncodings.toIndexedSeq)
+        val parseNames = NamesParser()
         val parseRegionWeights = RegionWeightsParser(regionIndexes)
-        val decodeName = NameDecoder(characterEncodings)
+
+        val parseClassifiedName =
+          ClassifiedNameParser(
+            decodeUsage = decodeUsage,
+            decodeName = decodeName,
+            parseNames = parseNames,
+            parseRegionWeights = parseRegionWeights)
 
         /* Moves the iterator to the correct position for names. */
         lines
-          .dropWhile(!_.toString.contains("begin of name list"))
+          .dropWhile(!_.toText.contains("begin of name list"))
           .drop(2)
 
         lines
-          .zipWithIndex
-          .map { case (line, index) =>
-            val genderO: Option[Gender] =
-              Option(line
-                .toString
-                .take(2)
-                .trim())
-                .filter(_.nonEmpty)
-                .flatMap(decodeGender(_))
-
-            val regionWeights: Seq[RegionWeight] =
-              parseRegionWeights(line)
-
-            genderO match {
-
-              case None =>
-                val Array(short, long) =
-                  decodeName(line
-                    .toString
-                    .slice(3, 29).trim())
-                    .toString
-                    .split(' ')
-                    .map(Name(_))
-
-                ClassifiedName.Equivalent(
-                  reference = ClassifiedNameReference(index),
-                  short = short,
-                  long = long,
-                  regionWeights = regionWeights)
-
-              case Some(gender) =>
-                val name =
-                  line
-                    .toString
-                    .slice(3, 29)
-                    .trim()
-
-                val parts =
-                  decodeName(name)
-                    .toString
-                    .split('+')
-                    .map(Name(_))
-
-                val variations: Seq[Name] =
-                  parts match {
-                    case parts @ Array(_) => parts
-                    case Array(first, second) =>
-                      Array(
-                        s"$first $second",
-                        s"$first-$second",
-                        s"$first${second.toString.toLowerCase}")
-                        .map(Name(_))
-                  }
-
-                ClassifiedName.Gendered(
-                  reference = ClassifiedNameReference(index),
-                  gender = gender,
-                  variations = variations,
-                  regionWeights = regionWeights)
-
-            }
-          }
+          .map(parseClassifiedName(_))
       }
     }
   }

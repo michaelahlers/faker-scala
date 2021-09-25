@@ -11,7 +11,7 @@ object CharacterEncodingsParser {
     lines =>
       lines
         .toIndexedSeq
-        .map(_.toString)
+        .map(_.toText)
         .map(_.tail.init)
         .map(_.replaceAll("""\/\*\*.*""", ""))
         .map(_.trim().split('='))

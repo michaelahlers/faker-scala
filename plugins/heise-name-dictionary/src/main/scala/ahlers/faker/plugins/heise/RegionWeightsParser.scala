@@ -16,7 +16,7 @@ object RegionWeightsParser {
       localIndexes
         .flatMap { case RegionIndex(region, index) =>
           Option(line
-            .toString
+            .toText
             .charAt(index + 30)
             .toString
             .trim())
