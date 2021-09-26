@@ -20,7 +20,7 @@ object ClassifiedNamesCsvWriter {
       outputDirectory.mkdirs()
 
       val variationsFile = outputDirectory / "name_variations.csv"
-//val usageCountryCodeWeightsFile = outputDirectory / "usage_country-code_weights.csv"
+      val usageCountryCodeWeightsFile = outputDirectory / "usage_country-code_weights.csv"
 
       IO.writeLines(
         file = variationsFile,
@@ -39,18 +39,21 @@ object ClassifiedNamesCsvWriter {
           .toSeq
           .groupBy(_.reference)
 
+      val namesWithGender: Seq[ClassifiedName.WithGender] =
+        namesByReference
+          .values
+          .toSeq
+          .flatten
+          .collect {
+            case withGender: ClassifiedName.WithGender =>
+              withGender
+          }
+          .sortBy(_.reference.toText)
+
       IO.writeLines(
         file = variationsFile,
         lines =
-          namesByReference
-            .values
-            .toSeq
-            .flatten
-            .sortBy(_.reference.toText)
-            .collect {
-              case withGender: ClassifiedName.WithGender =>
-                withGender
-            }
+          namesWithGender
             .flatMap(withGender =>
               withGender
                 .variations
@@ -58,6 +61,30 @@ object ClassifiedNamesCsvWriter {
             .map {
               case (reference, name) =>
                 s"""$reference,$name"""
+            },
+        StandardCharsets.UTF_8,
+        append = false
+      )
+
+      IO.writeLines(
+        file = usageCountryCodeWeightsFile,
+        lines =
+          namesByReference
+            .values
+            .flatten
+            .toSeq
+            .sortBy(_.reference.toText)
+            .flatMap(name =>
+              name
+                .regionWeights
+                .flatMap(regionWeight =>
+                  regionWeight
+                    .region
+                    .countryCodes
+                    .map((name.reference, _, regionWeight.weight))))
+            .map {
+              case (reference, countryCode, weight) =>
+                s"""$reference,$countryCode,$weight"""
             },
         StandardCharsets.UTF_8,
         append = false

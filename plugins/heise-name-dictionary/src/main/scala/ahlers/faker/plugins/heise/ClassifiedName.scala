@@ -6,6 +6,7 @@ package ahlers.faker.plugins.heise
  */
 sealed trait ClassifiedName {
   def reference: ClassifiedNameReference
+  def regionWeights: Seq[RegionWeight]
 }
 
 object ClassifiedName {
@@ -13,14 +14,14 @@ object ClassifiedName {
   case class WithEquivalents(
     override val reference: ClassifiedNameReference,
     equivalents: Seq[ClassifiedNameReference],
-    regionWeights: Seq[RegionWeight])
+    override val regionWeights: Seq[RegionWeight])
     extends ClassifiedName
 
   case class WithGender(
     override val reference: ClassifiedNameReference,
     gender: Gender,
     variations: Seq[Name],
-    regionWeights: Seq[RegionWeight])
+    override val regionWeights: Seq[RegionWeight])
     extends ClassifiedName
 
 }
