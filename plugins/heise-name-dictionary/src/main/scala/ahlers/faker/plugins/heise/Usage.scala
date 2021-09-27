@@ -5,8 +5,9 @@ package ahlers.faker.plugins.heise
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
 sealed trait Usage
-sealed trait Gender
 object Usage {
+
+  sealed trait Gender
 
   case object Male extends Usage with Gender
   case object FirstMale extends Usage with Gender

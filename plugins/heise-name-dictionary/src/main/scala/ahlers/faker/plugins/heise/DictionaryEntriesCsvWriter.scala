@@ -3,12 +3,6 @@ package ahlers.faker.plugins.heise
 import sbt._
 
 import java.nio.charset.StandardCharsets
-import scala.collection.SortedMap
-import scala.collection.mutable
-import cats.syntax.semigroup._
-import cats.instances.map._
-import cats.instances.list._
-import cats.instances.vector._
 
 /**
  * @since September 24, 2021
@@ -23,20 +17,20 @@ object DictionaryEntriesCsvWriter {
     dictionaryEntries =>
       outputDirectory.mkdirs()
 
-      val variationsFile = outputDirectory / "name_variations.csv"
+      val namesFile = outputDirectory / "names.csv"
       val usageCountryCodeWeightsFile = outputDirectory / "usage_country-code_weights.csv"
 
       IO.writeLines(
-        file = variationsFile,
-        lines = Seq("reference,variation"),
+        file = namesFile,
+        lines = Seq("reference,name"),
         StandardCharsets.UTF_8,
         append = false)
 
-//IO.writeLines(
-//  file = usageCountryCodeWeightsFile,
-//  lines = Seq("reference,country-code,weight"),
-//  StandardCharsets.UTF_8,
-//  append = false)
+      IO.writeLines(
+        file = usageCountryCodeWeightsFile,
+        lines = Seq("reference,usage,country-code,weight"),
+        StandardCharsets.UTF_8,
+        append = false)
 
       /** Group around unique [[Name]] values. */
       val entriesByName: Map[Name, Seq[DictionaryEntry]] =
@@ -58,13 +52,13 @@ object DictionaryEntriesCsvWriter {
           .toMap
 
       IO.writeLines(
-        file = variationsFile,
+        file = namesFile,
         lines =
           names
             .map(name =>
               s"""${indexByName(name)},${name.toText}"""),
         StandardCharsets.UTF_8,
-        append = false
+        append = true
       )
 
       IO.writeLines(
@@ -84,20 +78,22 @@ object DictionaryEntriesCsvWriter {
                             s"${indexByName(entry.template)},${entry.usage.toString},${countryCode.toText},$weight")
                     })),
         StandardCharsets.UTF_8,
-        append = false
+        append = true
       )
 
-//logger.info("""Wrote %d bytes to "%s"."""
-//  .format(
-//    variationsFile.length(),
-//    variationsFile))
+      logger.info("""Wrote %d bytes to "%s"."""
+        .format(
+          namesFile.length(),
+          namesFile))
 
-//logger.info("""Wrote %d bytes to "%s"."""
-//  .format(
-//    usageCountryCodeWeightsFile.length(),
-//    usageCountryCodeWeightsFile))
+      logger.info("""Wrote %d bytes to "%s"."""
+        .format(
+          usageCountryCodeWeightsFile.length(),
+          usageCountryCodeWeightsFile))
 
-      Seq.empty
+      Seq(
+        namesFile,
+        usageCountryCodeWeightsFile)
   }
 
 }
