@@ -39,6 +39,14 @@ object ClassifiedNamesCsvWriter {
           .toSeq
           .groupBy(_.reference)
 
+      val indexByReference: Map[ClassifiedNameReference, Int] =
+        namesByReference
+          .keys
+          .toSeq
+          .sortBy(_.toText)
+          .zipWithIndex
+          .toMap
+
       val namesWithGender: Seq[ClassifiedName.WithGender] =
         namesByReference
           .values
@@ -50,6 +58,25 @@ object ClassifiedNamesCsvWriter {
           }
           .sortBy(_.reference.toText)
 
+      val namesWithEquivalents: Seq[ClassifiedName.WithEquivalents] =
+        namesByReference
+          .values
+          .toSeq
+          .flatten
+          .collect {
+            case withEquivalents: ClassifiedName.WithEquivalents =>
+              withEquivalents
+          }
+
+      namesWithEquivalents
+        .map { withEquivalent =>
+          withEquivalent
+            .equivalents
+            .map(equivalent => namesByReference.keySet.find(equivalent == _))
+        }
+        .filterNot(_.forall(_.isDefined))
+        .foreach(println(_))
+
       IO.writeLines(
         file = variationsFile,
         lines =
@@ -60,7 +87,15 @@ object ClassifiedNamesCsvWriter {
                 .map((withGender.reference, _)))
             .map {
               case (reference, name) =>
-                s"""$reference,$name"""
+                (indexByReference(reference), name.toText)
+            }
+            .sortBy {
+              case (index, _) =>
+                index
+            }
+            .map {
+              case (index, name) =>
+                s"""$index,$name"""
             },
         StandardCharsets.UTF_8,
         append = false
@@ -73,7 +108,6 @@ object ClassifiedNamesCsvWriter {
             .values
             .flatten
             .toSeq
-            .sortBy(_.reference.toText)
             .flatMap(name =>
               name
                 .regionWeights
@@ -84,7 +118,15 @@ object ClassifiedNamesCsvWriter {
                     .map((name.reference, _, regionWeight.weight))))
             .map {
               case (reference, countryCode, weight) =>
-                s"""$reference,$countryCode,$weight"""
+                (indexByReference(reference), countryCode.toText, weight)
+            }
+            .sortBy {
+              case (index, _, _) =>
+                index
+            }
+            .map {
+              case (index, countryCode, weight) =>
+                s"""$index,$countryCode,$weight"""
             },
         StandardCharsets.UTF_8,
         append = false
