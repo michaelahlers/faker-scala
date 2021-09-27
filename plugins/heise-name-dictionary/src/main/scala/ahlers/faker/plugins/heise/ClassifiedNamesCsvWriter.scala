@@ -3,6 +3,7 @@ package ahlers.faker.plugins.heise
 import sbt._
 
 import java.nio.charset.StandardCharsets
+import scala.collection.SortedMap
 import scala.collection.mutable
 import cats.syntax.semigroup._
 import cats.instances.map._
@@ -15,8 +16,11 @@ import cats.instances.vector._
  */
 object ClassifiedNamesCsvWriter {
 
+  implicit val orderingName: Ordering[Name] =
+    Ordering.by(_.toText)
+
   def apply(outputDirectory: File, logger: Logger): ClassifiedNamesWriter = {
-    classifiedNames =>
+    dictionaryEntries =>
       outputDirectory.mkdirs()
 
       val variationsFile = outputDirectory / "name_variations.csv"
@@ -34,69 +38,31 @@ object ClassifiedNamesCsvWriter {
 //  StandardCharsets.UTF_8,
 //  append = false)
 
-      val namesByReference: Map[ClassifiedNameReference, Seq[ClassifiedName]] =
-        classifiedNames
+      /** Group around unique [[Name]] values. */
+      val entriesByName: Map[Name, Seq[DictionaryEntry]] =
+        dictionaryEntries
           .toSeq
-          .groupBy(_.reference)
+          .groupBy(_.template)
 
-      val indexByReference: Map[ClassifiedNameReference, Int] =
-        namesByReference
-          .keys
+      /** Retain an always-sorted collection. */
+      val names: Seq[Name] =
+        entriesByName
+          .keySet
           .toSeq
-          .sortBy(_.toText)
+          .sorted
+
+      /** Number them for brevity in the output. */
+      val indexByName: Map[Name, Int] =
+        names
           .zipWithIndex
           .toMap
-
-      val namesWithGender: Seq[ClassifiedName.WithGender] =
-        namesByReference
-          .values
-          .toSeq
-          .flatten
-          .collect {
-            case withGender: ClassifiedName.WithGender =>
-              withGender
-          }
-          .sortBy(_.reference.toText)
-
-      val namesWithEquivalents: Seq[ClassifiedName.WithEquivalents] =
-        namesByReference
-          .values
-          .toSeq
-          .flatten
-          .collect {
-            case withEquivalents: ClassifiedName.WithEquivalents =>
-              withEquivalents
-          }
-
-      namesWithEquivalents
-        .map { withEquivalent =>
-          withEquivalent
-            .equivalents
-            .map(equivalent => namesByReference.keySet.find(equivalent == _))
-        }
-        .filterNot(_.forall(_.isDefined))
-        .foreach(println(_))
 
       IO.writeLines(
         file = variationsFile,
         lines =
-          namesWithGender
-            .flatMap(withGender =>
-              withGender
-                .variations
-                .map((withGender.reference, _)))
-            .map {
-              case (reference, name) =>
-                (indexByReference(reference), name.toText)
-            }
-            .sortBy {
-              case (index, _) =>
-                index
-            }
-            .map {
-              case (index, name) =>
-                s"""$index,$name"""
-            },
+          names
+            .map(name =>
+              s"""${indexByName(name)},${name.toText}"""),
         StandardCharsets.UTF_8,
         append = false
       )
@@ -104,30 +70,19 @@ object ClassifiedNamesCsvWriter {
       IO.writeLines(
         file = usageCountryCodeWeightsFile,
         lines =
-          namesByReference
-            .values
-            .flatten
-            .toSeq
-            .flatMap(name =>
-              name
-                .regionWeights
-                .flatMap(regionWeight =>
-                  regionWeight
-                    .region
-                    .countryCodes
-                    .map((name.reference, _, regionWeight.weight))))
-            .map {
-              case (reference, countryCode, weight) =>
-                (indexByReference(reference), countryCode.toText, weight)
-            }
-            .sortBy {
-              case (index, _, _) =>
-                index
-            }
-            .map {
-              case (index, countryCode, weight) =>
-                s"""$index,$countryCode,$weight"""
-            },
+          names
+            .flatMap(
+              entriesByName(_)
+                .flatMap(entry =>
+                  entry
+                    .regionWeights
+                    .flatMap {
+                      case RegionWeight(region, weight) =>
+                        region
+                          .countryCodes
+                          .map(countryCode =>
+                            s"${indexByName(entry.template)},${entry.usage.toString},${countryCode.toText},$weight")
+                    })),
         StandardCharsets.UTF_8,
         append = false
       )

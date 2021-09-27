@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
 trait DictionaryParsing {
-  def classifiedNames(dictionaryFile: File): Iterator[ClassifiedName]
+  def classifiedNames(dictionaryFile: File): Iterator[DictionaryEntry]
 }
 
 object DictionaryParsing {
@@ -42,14 +42,12 @@ object DictionaryParsing {
               .take(164))
 
         val decodeName = NameDecoder(characterEncodings.toIndexedSeq)
-        val parseNames = NamesParser()
         val parseRegionWeights = RegionWeightsParser(regionIndexes)
 
-        val parseClassifiedName =
-          ClassifiedNameParser(
+        val parseDictionaryEntry =
+          DictionaryEntryParser(
             decodeUsage = decodeUsage,
             decodeName = decodeName,
-            parseNames = parseNames,
             parseRegionWeights = parseRegionWeights)
 
         /* Moves the iterator to the correct position for names. */
@@ -58,7 +56,7 @@ object DictionaryParsing {
           .drop(2)
 
         lines
-          .map(parseClassifiedName(_))
+          .map(parseDictionaryEntry(_))
       }
     }
   }

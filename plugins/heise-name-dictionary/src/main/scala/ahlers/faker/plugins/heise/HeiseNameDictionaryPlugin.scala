@@ -30,10 +30,10 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
     val loadHeiseNameDictionaryRegions = taskKey[Seq[Region]]("Loads region definitions from configuration.")
 
-    val loadHeiseNameDictionaryClassifiedNames = taskKey[Iterator[ClassifiedName]]("Loads and parses the dictionary to classified name models, suitable for serialization to standard formats.")
+    val loadHeiseNameDictionaryEntries = taskKey[Iterator[DictionaryEntry]]("Loads and parses the dictionary to classified name models, suitable for serialization to standard formats.")
 
     /** @todo Set description. */
-    val writeHeiseNameDictionaryClassifiedNames = taskKey[Seq[File]]("")
+    val writeHeiseNameDictionaryEntries = taskKey[Seq[File]]("")
 
   }
 
@@ -84,23 +84,23 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         val regions = regionIO.loadRegions()
         regions
       },
-      loadHeiseNameDictionaryClassifiedNames := {
+      loadHeiseNameDictionaryEntries := {
         val dictionaryFile = downloadHeiseNameDictionaryFile.value
         val regions = loadHeiseNameDictionaryRegions.value
         val dictionaryParsing = DictionaryParsing(regions.toIndexedSeq)
 
-        val classifiedNames =
+        val dictionaryEntries =
           dictionaryParsing
             .classifiedNames(
               dictionaryFile = dictionaryFile)
 
-        classifiedNames
+        dictionaryEntries
       },
-      writeHeiseNameDictionaryClassifiedNames := {
+      writeHeiseNameDictionaryEntries := {
         val logger = streams.value.log
         val outputFormat = heiseNameDictionaryOutputFormat.value
         val outputDirectory = heiseNameDictionaryOutputDirectory.value
-        val classifiedNames = loadHeiseNameDictionaryClassifiedNames.value
+        val classifiedNames = loadHeiseNameDictionaryEntries.value
         val writeClassifiedNames: ClassifiedNamesWriter =
           outputFormat match {
             case ClassifiedNamesOutputFormat.Csv =>
