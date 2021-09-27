@@ -26,6 +26,9 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
     /** @todo Set description. */
     val heiseNameDictionaryOutputDirectory = settingKey[File]("")
 
+    /** @todo Set description. */
+    val heiseNameDictionaryResourceDirectory = settingKey[File]("")
+
     val downloadHeiseNameDictionaryFile = taskKey[File]("Fetches and extracts the dictionary file from the original source.")
 
     val loadHeiseNameDictionaryRegions = taskKey[Seq[Region]]("Loads region definitions from configuration.")
@@ -34,6 +37,9 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
     /** @todo Set description. */
     val writeHeiseNameDictionaryEntries = taskKey[Seq[File]]("")
+
+    /** @todo Set description. */
+    val generateHeiseNameDictionaryEntries = taskKey[Seq[File]]("")
 
   }
 
@@ -53,13 +59,22 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         "nam_dict.txt",
       heiseNameDictionaryOutputFormat :=
         DictionaryEntriesOutputFormat.Csv,
-      /** @todo Set to temporary directory. */
       heiseNameDictionaryOutputDirectory :=
-        (home / "tmp").toJava
+        taskTemporaryDirectory.value /
+          "ftp.heise.de" /
+          "pub" /
+          "ct" /
+          "listings"
     )
 
   override val projectSettings =
     Seq(
+      heiseNameDictionaryResourceDirectory :=
+        (Compile / resourceManaged).value /
+          "ftp.heise.de" /
+          "pub" /
+          "ct" /
+          "listings",
       downloadHeiseNameDictionaryFile := {
         val logger = streams.value.log
 
@@ -108,6 +123,19 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
         val outputFiles = writeClassifiedNames(classifiedNames)
         outputFiles
+      },
+      generateHeiseNameDictionaryEntries := {
+        val outputFiles = writeHeiseNameDictionaryEntries.value
+        val resourceDirectory = heiseNameDictionaryResourceDirectory.value
+        val resourceFiles =
+          outputFiles
+            .map(_.getName)
+            .map(resourceDirectory / _)
+
+        resourceDirectory.mkdirs()
+        IO.move(outputFiles.zip(resourceFiles))
+
+        resourceFiles
       }
     )
 
