@@ -21,7 +21,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
     val heiseNameDictionaryFileName = settingKey[String]("Names the file inside the dictionary archive containing classified names.")
 
     /** @todo Set description. */
-    val heiseNameDictionaryOutputFormat = settingKey[ClassifiedNamesOutputFormat]("")
+    val heiseNameDictionaryOutputFormat = settingKey[DictionaryEntriesOutputFormat]("")
 
     /** @todo Set description. */
     val heiseNameDictionaryOutputDirectory = settingKey[File]("")
@@ -52,7 +52,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
       heiseNameDictionaryFileName :=
         "nam_dict.txt",
       heiseNameDictionaryOutputFormat :=
-        ClassifiedNamesOutputFormat.Csv,
+        DictionaryEntriesOutputFormat.Csv,
       /** @todo Set to temporary directory. */
       heiseNameDictionaryOutputDirectory :=
         (home / "tmp").toJava
@@ -87,12 +87,9 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
       loadHeiseNameDictionaryEntries := {
         val dictionaryFile = downloadHeiseNameDictionaryFile.value
         val regions = loadHeiseNameDictionaryRegions.value
-        val dictionaryParsing = DictionaryParsing(regions.toIndexedSeq)
+        val parseDictionaryEntries = DictionaryEntriesParser(regions.toIndexedSeq)
 
-        val dictionaryEntries =
-          dictionaryParsing
-            .classifiedNames(
-              dictionaryFile = dictionaryFile)
+        val dictionaryEntries = parseDictionaryEntries(dictionaryFile)
 
         dictionaryEntries
       },
@@ -101,10 +98,10 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         val outputFormat = heiseNameDictionaryOutputFormat.value
         val outputDirectory = heiseNameDictionaryOutputDirectory.value
         val classifiedNames = loadHeiseNameDictionaryEntries.value
-        val writeClassifiedNames: ClassifiedNamesWriter =
+        val writeClassifiedNames: DictionaryEntriesWriter =
           outputFormat match {
-            case ClassifiedNamesOutputFormat.Csv =>
-              ClassifiedNamesCsvWriter(
+            case DictionaryEntriesOutputFormat.Csv =>
+              DictionaryEntriesCsvWriter(
                 outputDirectory = outputDirectory,
                 logger = logger)
           }

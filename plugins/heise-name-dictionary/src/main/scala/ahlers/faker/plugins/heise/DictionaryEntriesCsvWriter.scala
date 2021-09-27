@@ -14,12 +14,12 @@ import cats.instances.vector._
  * @since September 24, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-object ClassifiedNamesCsvWriter {
+object DictionaryEntriesCsvWriter {
 
   implicit val orderingName: Ordering[Name] =
     Ordering.by(_.toText)
 
-  def apply(outputDirectory: File, logger: Logger): ClassifiedNamesWriter = {
+  def apply(outputDirectory: File, logger: Logger): DictionaryEntriesWriter = {
     dictionaryEntries =>
       outputDirectory.mkdirs()
 
