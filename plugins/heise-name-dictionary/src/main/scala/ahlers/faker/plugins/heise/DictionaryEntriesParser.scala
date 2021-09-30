@@ -24,18 +24,10 @@ object DictionaryEntriesParser {
           .map(DictionaryLine(_))
 
       val characterEncodings: Seq[CharacterEncoding] =
-        parseCharacterEncodings(
-          lines
-            .dropWhile(!_.toText.contains("char set"))
-            .drop(6)
-            .take(67))
+        parseCharacterEncodings(lines)
 
       val regionIndexes: Seq[RegionIndex] =
-        parseRegionIndexes(
-          lines
-            .dropWhile(!_.toText.contains("list of countries"))
-            .drop(7)
-            .take(164))
+        parseRegionIndexes(lines)
 
       val decodeName = NameDecoder(characterEncodings.toIndexedSeq)
       val parseRegionWeights = RegionWeightsParser(regionIndexes)
