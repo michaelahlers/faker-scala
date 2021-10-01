@@ -1,11 +1,6 @@
 package ahlers.faker.plugins.heise
 
-import com.typesafe.config.Config
-import com.typesafe.config.ConfigFactory
-
 import java.util.Locale
-import scala.util.control.NonFatal
-import scala.collection.convert.ImplicitConversionsToScala._
 import net.ceedubs.ficus.readers.ValueReader
 import net.ceedubs.ficus.Ficus._
 
@@ -16,26 +11,13 @@ import net.ceedubs.ficus.Ficus._
 case class Region(label: RegionLabel, countryCodes: Set[CountryCode])
 object Region {
 
-//val values: Set[Region] =
-//  try ConfigFactory
-//    .load()
-//    .getConfigList("regions")
-//    .map(region =>
-//      Region(
-//        label = region.getString("label"),
-//        countryCodes = region.getStringList("country-codes").toSet
-//      ))
-//    .toSet
-//  catch {
-//    case NonFatal(reason) =>
-//      reason.printStackTrace()
-//      throw reason
-//  }
-
-//val byLabel: Map[String, Region] =
-//  values
-//    .map(region => (region.label, region))
-//    .toMap
+  /** Allows for factory overloading without breaking [[ValueReader]] derivation. */
+  implicit class CompanionOps(private val self: Region.type) extends AnyVal {
+    def apply(label: RegionLabel): Region =
+      Region(
+        label = label,
+        countryCodes = Set.empty)
+  }
 
   object HasLocales {
 
