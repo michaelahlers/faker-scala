@@ -7,15 +7,15 @@ package ahlers.faker.plugins.heise
 trait RegionIndexesParser extends (Iterator[DictionaryLine] => Seq[RegionIndex])
 object RegionIndexesParser {
 
-  case class UnknownRegionLabelException(label: RegionLabel)
-    extends Exception(s""""$label" wasn't known.""")
-
   def using(regions: IndexedSeq[Region]): RegionIndexesParser = {
     val regionByLabel: Map[RegionLabel, Region] =
       regions
         .map(region => (region.label, region))
         .toMap
-        .withDefault(label => throw UnknownRegionLabelException(label))
+        .withDefault(label =>
+          Region(
+            label = label,
+            countryCodes = Set.empty))
 
     lines =>
       lines
