@@ -6,9 +6,9 @@ lazy val `faker` =
       `faker-scalacheck`
     )
 
-lazy val `faker-heise-name-dictionary` =
+lazy val `faker-plugins` =
   project
-    .in(file("plugins") / "heise-name-dictionary")
+    .in(file("modules") / "plugins")
 
 lazy val `faker-datasets` =
   project

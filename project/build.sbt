@@ -1,12 +1,12 @@
-lazy val `faker-heise-name-dictionary` =
+lazy val `faker-plugins` =
   RootProject(
     IO.toURI((file(".") /
-      "plugins" /
-      "heise-name-dictionary")
+      "modules" /
+      "plugins")
       .getAbsoluteFile))
 
 lazy val `faker-project` =
   project
     .in(file("."))
-    .aggregate(`faker-heise-name-dictionary`)
-    .dependsOn(`faker-heise-name-dictionary`)
+    .aggregate(`faker-plugins`)
+    .dependsOn(`faker-plugins`)
