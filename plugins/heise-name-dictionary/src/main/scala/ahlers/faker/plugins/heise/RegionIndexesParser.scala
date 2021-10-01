@@ -10,7 +10,7 @@ object RegionIndexesParser {
   case class UnknownRegionLabelException(label: RegionLabel)
     extends Exception(s""""$label" wasn't known.""")
 
-  def apply(regions: TraversableOnce[Region]): RegionIndexesParser = {
+  def using(regions: IndexedSeq[Region]): RegionIndexesParser = {
     val regionByLabel: Map[RegionLabel, Region] =
       regions
         .map(region => (region.label, region))

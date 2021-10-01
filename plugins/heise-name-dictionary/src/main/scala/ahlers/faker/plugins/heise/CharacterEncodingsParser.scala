@@ -7,7 +7,7 @@ package ahlers.faker.plugins.heise
 trait CharacterEncodingsParser extends (Iterator[DictionaryLine] => Seq[CharacterEncoding])
 object CharacterEncodingsParser {
 
-  def apply(): CharacterEncodingsParser = {
+  val default: CharacterEncodingsParser = {
     lines =>
       lines
         .dropWhile(!_.toText.contains("char set"))

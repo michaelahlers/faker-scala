@@ -7,7 +7,7 @@ package ahlers.faker.plugins.heise
 trait DictionaryEntryParser extends (DictionaryLine => DictionaryEntry)
 object DictionaryEntryParser {
 
-  def apply(
+  def using(
     decodeUsage: UsageDecoder,
     decodeName: NameDecoder,
     parseRegionWeights: RegionWeightsParser

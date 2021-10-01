@@ -9,31 +9,22 @@ import java.nio.charset.StandardCharsets
  * @since September 22, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait DictionaryEntriesParser extends (File => Iterator[DictionaryEntry])
+trait DictionaryEntriesParser extends (Iterator[DictionaryLine] => Iterator[DictionaryEntry])
 object DictionaryEntriesParser {
 
-  def apply(regions: IndexedSeq[Region]): DictionaryEntriesParser = {
-    val parseCharacterEncodings = CharacterEncodingsParser()
-    val parseRegionIndexes = RegionIndexesParser(regions)
+  def using(
+    regions: IndexedSeq[Region],
+    characterEncodings: IndexedSeq[CharacterEncoding],
+    regionIndexes: IndexedSeq[RegionIndex]
+  ): DictionaryEntriesParser = {
     val decodeUsage = UsageDecoder()
 
-    dictionaryFile: File =>
-      val lines: Iterator[DictionaryLine] =
-        File(dictionaryFile.toPath)
-          .lineIterator(StandardCharsets.ISO_8859_1)
-          .map(DictionaryLine(_))
-
-      val characterEncodings: Seq[CharacterEncoding] =
-        parseCharacterEncodings(lines)
-
-      val regionIndexes: Seq[RegionIndex] =
-        parseRegionIndexes(lines)
-
+    lines =>
       val decodeName = NameDecoder(characterEncodings.toIndexedSeq)
-      val parseRegionWeights = RegionWeightsParser(regionIndexes)
+      val parseRegionWeights = RegionWeightsParser.using(regionIndexes)
 
       val parseDictionaryEntry =
-        DictionaryEntryParser(
+        DictionaryEntryParser.using(
           decodeUsage = decodeUsage,
           decodeName = decodeName,
           parseRegionWeights = parseRegionWeights)
@@ -45,6 +36,29 @@ object DictionaryEntriesParser {
 
       lines
         .map(parseDictionaryEntry(_))
+  }
+
+  def using(regions: IndexedSeq[Region]): DictionaryEntriesParser = {
+    val parseCharacterEncodings = CharacterEncodingsParser.default
+    val parseRegionIndexes = RegionIndexesParser.using(regions)
+
+    lines =>
+      val characterEncodings: IndexedSeq[CharacterEncoding] =
+        parseCharacterEncodings(lines)
+          .toIndexedSeq
+
+      val regionIndexes: IndexedSeq[RegionIndex] =
+        parseRegionIndexes(lines)
+          .toIndexedSeq
+
+      val parseDictionaryEntries: DictionaryEntriesParser =
+        DictionaryEntriesParser.using(
+          regions = regions,
+          characterEncodings = characterEncodings,
+          regionIndexes = regionIndexes)
+
+      parseDictionaryEntries(lines)
+
   }
 
 }

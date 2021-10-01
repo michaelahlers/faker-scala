@@ -4,6 +4,8 @@ import better.files.File.home
 import sbt.Keys._
 import sbt._
 
+import java.nio.charset.StandardCharsets
+
 object HeiseNameDictionaryPlugin extends AutoPlugin {
 
   /** Per [[noTrigger]], this plugin must be manually enabled, even if [[requires requirements]] are met. */
@@ -102,9 +104,17 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
       loadHeiseNameDictionaryEntries := {
         val dictionaryFile = downloadHeiseNameDictionaryFile.value
         val regions = loadHeiseNameDictionaryRegions.value
-        val parseDictionaryEntries = DictionaryEntriesParser(regions.toIndexedSeq)
 
-        val dictionaryEntries = parseDictionaryEntries(dictionaryFile)
+        val dictionaryLines: Iterator[DictionaryLine] =
+          IO.readLines(dictionaryFile, StandardCharsets.ISO_8859_1)
+            .map(DictionaryLine(_))
+            .toIterator
+
+        val parseDictionaryEntries =
+          DictionaryEntriesParser.using(regions.toIndexedSeq)
+
+        val dictionaryEntries: Iterator[DictionaryEntry] =
+          parseDictionaryEntries(dictionaryLines)
 
         dictionaryEntries
       },

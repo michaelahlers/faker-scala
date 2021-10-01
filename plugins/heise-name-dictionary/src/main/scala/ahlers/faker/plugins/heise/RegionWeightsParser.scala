@@ -7,7 +7,7 @@ package ahlers.faker.plugins.heise
 trait RegionWeightsParser extends (DictionaryLine => Seq[RegionWeight])
 object RegionWeightsParser {
 
-  def apply(regionIndexes: TraversableOnce[RegionIndex]): RegionWeightsParser = {
+  def using(regionIndexes: TraversableOnce[RegionIndex]): RegionWeightsParser = {
     val localIndexes =
       regionIndexes
         .toIndexedSeq
