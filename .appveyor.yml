@@ -20,10 +20,12 @@ build_script:
   - sh: 'echo $JAVA_HOME'
   - cmd: 'echo %JAVA_HOME%'
   - 'java -version'
-  - 'sbt +test:compile'
+  - 'sbt +Test/compile'
+  - 'sbt +IntegrationTest/compile'
 
 test_script:
-  - 'sbt +test'
+  - 'sbt +Test/test'
+  - 'sbt +IntegrationTest/test'
 
 for:
 
