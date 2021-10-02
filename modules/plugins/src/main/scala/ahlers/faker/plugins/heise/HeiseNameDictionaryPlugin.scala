@@ -1,6 +1,5 @@
 package ahlers.faker.plugins.heise
 
-import better.files.File.home
 import sbt.Keys._
 import sbt._
 
@@ -47,7 +46,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
   import autoImport._
 
-  override val globalSettings =
+  override val projectSettings =
     Seq(
       heiseNameDictionaryArchiveSourceUrl :=
         url("ftp://ftp.heise.de/pub/ct/listings/0717-182.zip"),
@@ -66,11 +65,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
           "ftp.heise.de" /
           "pub" /
           "ct" /
-          "listings"
-    )
-
-  override val projectSettings =
-    Seq(
+          "listings",
       heiseNameDictionaryResourceDirectory :=
         (Compile / resourceManaged).value /
           "ftp.heise.de" /
@@ -135,6 +130,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         outputFiles
       },
       generateHeiseNameDictionaryEntries := {
+        val logger = streams.value.log
         val outputFiles = writeHeiseNameDictionaryEntries.value
         val resourceDirectory = heiseNameDictionaryResourceDirectory.value
         val resourceFiles =
@@ -145,8 +141,18 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         resourceDirectory.mkdirs()
         IO.move(outputFiles.zip(resourceFiles))
 
+        logger.info("""Generated files %s in directory "%s"."""
+          .format(
+            outputFiles
+              .map(_.getName)
+              .mkString("\"", "\", \"", "\""),
+            resourceDirectory
+          ))
+
         resourceFiles
-      }
+      },
+      Compile / resourceGenerators +=
+        generateHeiseNameDictionaryEntries
     )
 
 }
