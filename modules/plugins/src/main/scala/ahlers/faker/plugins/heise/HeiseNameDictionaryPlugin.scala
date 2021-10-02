@@ -46,102 +46,122 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
   import autoImport._
 
-  override val projectSettings =
-    Seq(
-      heiseNameDictionaryArchiveSourceUrl :=
-        url("ftp://ftp.heise.de/pub/ct/listings/0717-182.zip"),
-      heiseNameDictionaryDownloadDirectory :=
-        taskTemporaryDirectory.value /
-          "ftp.heise.de" /
-          "pub" /
-          "ct" /
-          "listings",
-      heiseNameDictionaryFileName :=
-        "nam_dict.txt",
-      heiseNameDictionaryOutputFormat :=
-        DictionaryEntriesOutputFormat.Csv,
-      heiseNameDictionaryOutputDirectory :=
-        taskTemporaryDirectory.value /
-          "ftp.heise.de" /
-          "pub" /
-          "ct" /
-          "listings",
-      heiseNameDictionaryResourceDirectory :=
-        (Compile / resourceManaged).value /
-          "ftp.heise.de" /
-          "pub" /
-          "ct" /
-          "listings",
-      downloadHeiseNameDictionaryFile := {
-        val logger = streams.value.log
+  private val archiveSourceUrlSetting: Setting[URL] =
+    heiseNameDictionaryArchiveSourceUrl :=
+      url("ftp://ftp.heise.de/pub/ct/listings/0717-182.zip")
 
-        val sourceUrl = heiseNameDictionaryArchiveSourceUrl.value
-        val downloadDirectory = heiseNameDictionaryDownloadDirectory.value
-        val dictionaryFileName = heiseNameDictionaryFileName.value
+  private val downloadDirectorySetting: Setting[File] =
+    heiseNameDictionaryDownloadDirectory :=
+      taskTemporaryDirectory.value /
+        "ftp.heise.de" /
+        "pub" /
+        "ct" /
+        "listings"
 
-        val dictionaryIO = DictionaryIO(logger)
+  private val fileNameSetting: Setting[String] =
+    heiseNameDictionaryFileName :=
+      "nam_dict.txt"
 
-        val dictionaryFile =
-          dictionaryIO
-            .downloadDictionary(
-              sourceUrl = sourceUrl,
-              downloadDirectory = downloadDirectory,
-              dictionaryFileName = dictionaryFileName)
+  private val outputFormatSetting: Setting[DictionaryEntriesOutputFormat] =
+    heiseNameDictionaryOutputFormat :=
+      DictionaryEntriesOutputFormat.Csv
 
-        dictionaryFile
-      },
-      loadHeiseNameDictionaryRegions := {
-        val logger = streams.value.log
-        val regionIO = RegionIO(logger)
-        val regions = regionIO.loadRegions()
-        regions
-      },
-      loadHeiseNameDictionaryEntries := {
-        val dictionaryFile = downloadHeiseNameDictionaryFile.value
-        val regions = loadHeiseNameDictionaryRegions.value
+  private val outputDirectorySetting: Setting[sbt.File] =
+    heiseNameDictionaryOutputDirectory :=
+      taskTemporaryDirectory.value /
+        "ftp.heise.de" /
+        "pub" /
+        "ct" /
+        "listings"
 
-        val dictionaryLines: Iterator[DictionaryLine] =
-          IO.readLines(dictionaryFile, StandardCharsets.ISO_8859_1)
-            .map(DictionaryLine(_))
-            .toIterator
+  private val resourceDirectorySetting: Setting[File] =
+    heiseNameDictionaryResourceDirectory :=
+      (Compile / resourceManaged).value /
+        "ftp.heise.de" /
+        "pub" /
+        "ct" /
+        "listings"
 
-        val parseDictionaryEntries =
-          DictionaryEntriesParser.using(regions.toIndexedSeq)
+  private val downloadFileTask: Setting[Task[File]] =
+    downloadHeiseNameDictionaryFile := {
+      val logger = streams.value.log
 
-        val dictionaryEntries: Iterator[DictionaryEntry] =
-          parseDictionaryEntries(dictionaryLines)
+      val sourceUrl = heiseNameDictionaryArchiveSourceUrl.value
+      val downloadDirectory = heiseNameDictionaryDownloadDirectory.value
+      val dictionaryFileName = heiseNameDictionaryFileName.value
 
-        dictionaryEntries
-      },
-      writeHeiseNameDictionaryEntries := {
-        val logger = streams.value.log
-        val outputFormat = heiseNameDictionaryOutputFormat.value
-        val outputDirectory = heiseNameDictionaryOutputDirectory.value
-        val classifiedNames = loadHeiseNameDictionaryEntries.value
-        val writeClassifiedNames: DictionaryEntriesWriter =
-          outputFormat match {
-            case DictionaryEntriesOutputFormat.Csv =>
-              DictionaryEntriesCsvWriter(
-                outputDirectory = outputDirectory,
-                logger = logger)
-          }
+      val dictionaryIO = DictionaryIO(logger)
 
-        val outputFiles = writeClassifiedNames(classifiedNames)
+      val dictionaryFile =
+        dictionaryIO
+          .downloadDictionary(
+            sourceUrl = sourceUrl,
+            downloadDirectory = downloadDirectory,
+            dictionaryFileName = dictionaryFileName)
+
+      dictionaryFile
+    }
+
+  private val loadRegionsTask: Setting[Task[Seq[Region]]] =
+    loadHeiseNameDictionaryRegions := {
+      val logger = streams.value.log
+      val regionIO = RegionIO(logger)
+      val regions = regionIO.loadRegions()
+      regions
+    }
+
+  private val loadEntriesTask: Setting[Task[Iterator[DictionaryEntry]]] =
+    loadHeiseNameDictionaryEntries := {
+      val dictionaryFile = downloadHeiseNameDictionaryFile.value
+      val regions = loadHeiseNameDictionaryRegions.value
+
+      val dictionaryLines: Iterator[DictionaryLine] =
+        IO.readLines(dictionaryFile, StandardCharsets.ISO_8859_1)
+          .map(DictionaryLine(_))
+          .toIterator
+
+      val parseDictionaryEntries =
+        DictionaryEntriesParser.using(regions.toIndexedSeq)
+
+      val dictionaryEntries: Iterator[DictionaryEntry] =
+        parseDictionaryEntries(dictionaryLines)
+
+      dictionaryEntries
+    }
+
+  private val writeEntriesTask: Setting[Task[Seq[File]]] =
+    writeHeiseNameDictionaryEntries := {
+      val logger = streams.value.log
+      val outputFormat = heiseNameDictionaryOutputFormat.value
+      val outputDirectory = heiseNameDictionaryOutputDirectory.value
+      val classifiedNames = loadHeiseNameDictionaryEntries.value
+      val writeClassifiedNames: DictionaryEntriesWriter =
+        outputFormat match {
+          case DictionaryEntriesOutputFormat.Csv =>
+            DictionaryEntriesCsvWriter(
+              outputDirectory = outputDirectory,
+              logger = logger)
+        }
+
+      val outputFiles = writeClassifiedNames(classifiedNames)
+      outputFiles
+    }
+
+  private val generateEntriesTask: Setting[Task[Seq[File]]] =
+    generateHeiseNameDictionaryEntries := {
+      val logger = streams.value.log
+      val outputFiles = writeHeiseNameDictionaryEntries.value
+      val resourceDirectory = heiseNameDictionaryResourceDirectory.value
+      val resourceFiles =
         outputFiles
-      },
-      generateHeiseNameDictionaryEntries := {
-        val logger = streams.value.log
-        val outputFiles = writeHeiseNameDictionaryEntries.value
-        val resourceDirectory = heiseNameDictionaryResourceDirectory.value
-        val resourceFiles =
-          outputFiles
-            .map(_.getName)
-            .map(resourceDirectory / _)
+          .map(_.getName)
+          .map(resourceDirectory / _)
 
-        resourceDirectory.mkdirs()
-        IO.move(outputFiles.zip(resourceFiles))
+      resourceDirectory.mkdirs()
+      IO.move(outputFiles.zip(resourceFiles))
 
-        logger.info("""Generated files %s in directory "%s"."""
+      logger.info(
+        """Generated files %s in directory "%s"."""
           .format(
             outputFiles
               .map(_.getName)
@@ -149,8 +169,22 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
             resourceDirectory
           ))
 
-        resourceFiles
-      },
+      resourceFiles
+    }
+
+  override val projectSettings =
+    Seq(
+      archiveSourceUrlSetting,
+      downloadDirectorySetting,
+      fileNameSetting,
+      outputFormatSetting,
+      outputDirectorySetting,
+      resourceDirectorySetting,
+      downloadFileTask,
+      loadRegionsTask,
+      loadEntriesTask,
+      writeEntriesTask,
+      generateEntriesTask,
       Compile / resourceGenerators +=
         generateHeiseNameDictionaryEntries
     )
