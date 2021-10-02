@@ -2,9 +2,9 @@ lazy val `faker` =
   project
     .in(file("."))
     .aggregate(
-      `faker-datasets`,
-      `faker-plugins`,
-      `faker-scalacheck`
+      `faker-datasets`
+      //`faker-plugins`
+      //`faker-scalacheck`
     )
 lazy val `faker-datasets` =
   project
