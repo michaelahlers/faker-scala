@@ -23,13 +23,11 @@ build_script:
   - 'sbt faker-plugins/Test/compile'
   - 'sbt faker-plugins/IntegrationTest/compile'
   - 'sbt +Test/compile'
-  - 'sbt +IntegrationTest/compile'
 
 test_script:
   - 'sbt faker-plugins/Test/test'
   - 'sbt faker-plugins/IntegrationTest/test'
   - 'sbt +Test/test'
-  - 'sbt +IntegrationTest/test'
 
 for:
 
