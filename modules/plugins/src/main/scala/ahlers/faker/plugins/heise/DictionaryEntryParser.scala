@@ -31,6 +31,27 @@ object DictionaryEntryParser {
       val decodedName: Name =
         decodeName(encodedName)
 
+      val normalizedName: Name =
+        usage match {
+
+          case Usage.Equivalent =>
+            Name(decodedName
+              .toText
+              .replace(' ', '='))
+
+          case _ =>
+            decodedName
+
+        }
+
+      usage match {
+        case Usage.Equivalent =>
+          require(1 == normalizedName.toText.count('=' == _), s"Expected exactly one '=' character in $normalizedName normalized from $decodedName with usage $usage.")
+          require(!normalizedName.toText.contains(' '), s"Expected no space characters in $normalizedName normalized from $decodedName with usage $usage.")
+        case _ =>
+          require(!normalizedName.toText.contains('='), s"Expected no '=' characters $normalizedName normalized from $decodedName with usage $usage.")
+      }
+
       DictionaryEntry(
         usage = usage,
         template = decodedName,
