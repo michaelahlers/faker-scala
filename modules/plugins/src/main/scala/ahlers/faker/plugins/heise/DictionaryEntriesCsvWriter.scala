@@ -17,8 +17,8 @@ object DictionaryEntriesCsvWriter {
     dictionaryEntries =>
       outputDirectory.mkdirs()
 
-      val namesFile = outputDirectory / "names.csv"
-      val usageCountryCodeWeightsFile = outputDirectory / "usage_country-code_weights.csv"
+      val namesFile = outputDirectory / "reference,name.csv"
+      val usageCountryCodeWeightsFile = outputDirectory / "reference,usage,country-code,weights.csv"
 
       IO.writeLines(
         file = namesFile,
