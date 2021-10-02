@@ -24,10 +24,9 @@ class ParsersSpec extends FixtureAnyWordSpec {
     val outcome =
       withFixture(test.toNoArgTest(lines))
 
-    info("%d dictionary lines remaining after %s."
+    info("Dictionary line iterator had %d remaining after test."
       .format(
-        lines.size,
-        outcome))
+        lines.size))
 
     outcome
   }
