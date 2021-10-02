@@ -1,3 +1,5 @@
+crossScalaVersions := Nil
+
 libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1"
 
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.6.1"
