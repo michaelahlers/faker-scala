@@ -46,17 +46,18 @@ object DictionaryEntriesCsvWriter {
           .sorted
 
       /** Number them for brevity in the output. */
-      val indexByName: Map[Name, Int] =
+      val indexByName: Map[Name, Reference] =
         names
           .zipWithIndex
           .toMap
+          .mapValues(Reference(_))
 
       IO.writeLines(
         file = namesFile,
         lines =
           names
             .map(name =>
-              s"""${indexByName(name)},${name.toText}"""),
+              s"""${Integer.toHexString(indexByName(name).toInt)},${name.toText}"""),
         StandardCharsets.UTF_8,
         append = true
       )
