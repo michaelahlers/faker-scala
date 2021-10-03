@@ -17,18 +17,15 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
      */
     val heiseNameDictionaryArchiveSourceUrl = settingKey[URL]("""Location of the original archive, described by Magazin für Computertechnik's "40 000 Namen".""")
 
-    val heiseNameDictionaryDownloadDirectory = settingKey[File]("Destination of downloaded and extracted archive.")
+    val heiseNameDictionaryDownloadDirectory = settingKey[File]("Destination of downloaded and extracted archive, typically rooted in a task temporary directory, cleaned up after completion.")
 
     val heiseNameDictionaryFileName = settingKey[String]("Names the file inside the dictionary archive containing classified names.")
 
-    /** @todo Set description. */
-    val heiseNameDictionaryOutputFormat = settingKey[DictionaryEntriesOutputFormat]("")
+    val heiseNameDictionaryOutputFormat = settingKey[DictionaryEntriesOutputFormat]("Specifies whether to write—only CSV, for now, with additional formats planned.")
 
-    /** @todo Set description. */
-    val heiseNameDictionaryOutputDirectory = settingKey[File]("")
+    val heiseNameDictionaryOutputDirectory = settingKey[File]("A staging area for output, typically rooted in a task temporary directory, cleaned up after completion.")
 
-    /** @todo Set description. */
-    val heiseNameDictionaryResourceDirectory = settingKey[File]("")
+    val heiseNameDictionaryResourceDirectory = settingKey[File]("Where to write all output files, typically rooted in a managed resource directory on the class path.")
 
     val downloadHeiseNameDictionaryFile = taskKey[File]("Fetches and extracts the dictionary file from the original source.")
 
@@ -36,11 +33,9 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
     val loadHeiseNameDictionaryEntries = taskKey[Iterator[DictionaryEntry]]("Loads and parses the dictionary to classified name models, suitable for serialization to standard formats.")
 
-    /** @todo Set description. */
-    val writeHeiseNameDictionaryEntries = taskKey[Seq[File]]("")
+    val writeHeiseNameDictionaryEntries = taskKey[Seq[File]]("Writes entries in the specified output format.")
 
-    /** @todo Set description. */
-    val generateHeiseNameDictionaryEntries = taskKey[Seq[File]]("")
+    val generateHeiseNameDictionaryEntries = taskKey[Seq[File]]("Once written, serves as a resource generator with caching respective of arguments.")
 
   }
 
