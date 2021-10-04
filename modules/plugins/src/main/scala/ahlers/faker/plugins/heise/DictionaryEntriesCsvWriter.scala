@@ -18,7 +18,7 @@ object DictionaryEntriesCsvWriter {
       outputDirectory.mkdirs()
 
       val templatesFile = outputDirectory / "index,template.csv"
-      val usageCountryCodeWeightsFile = outputDirectory / "index,usage,country-code,weights.csv"
+      val usageCountryCodeWeightsFile = outputDirectory / "index,usage,country-code,weight.csv"
 
       /** Group around unique [[Template]] values. */
       val entriesByName: Map[Template, Seq[DictionaryEntry]] =
