@@ -1,4 +1,4 @@
-package ahlers.faker.plugins.heise
+package ahlers.faker.datasets.heise
 
 /**
  * @since September 25, 2021
