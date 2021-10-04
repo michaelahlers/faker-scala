@@ -12,10 +12,16 @@ object DictionaryEntryParser {
       line
         .toText
         .split(',') match {
+
         case Array(reference, name) =>
           DictionaryEntry(
             reference = Reference(Integer.parseInt(reference, 16)),
             name = Name(name))
+
+        /** @todo Proper error-handling. */
+        case _ =>
+          ???
+
       }
 
 }
