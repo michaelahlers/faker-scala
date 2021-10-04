@@ -20,7 +20,7 @@ object DictionaryEntriesParser {
     val decodeUsage = UsageDecoder()
 
     lines =>
-      val decodeName = NameDecoder(characterEncodings.toIndexedSeq)
+      val decodeName = TemplateDecoder(characterEncodings.toIndexedSeq)
       val parseRegionWeights = RegionWeightsParser.using(regionIndexes)
 
       val parseDictionaryEntry =

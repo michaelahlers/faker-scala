@@ -16,7 +16,7 @@ object heise {
     /** @todo Restore consideration for variations and equivalents. */
     oneOf(
       givenNames
-        .map(_.name)
+        .map(_.template)
         .map(name =>
           PersonGivenName(Refined.unsafeApply(name.toText)))
         .toIndexedSeq)

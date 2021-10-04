@@ -6,4 +6,4 @@ package ahlers.faker.datasets.heise
  */
 case class DictionaryEntry(
   reference: Reference,
-  name: Name)
+  template: Template)

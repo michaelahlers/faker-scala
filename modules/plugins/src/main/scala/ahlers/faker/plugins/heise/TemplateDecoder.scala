@@ -4,10 +4,10 @@ package ahlers.faker.plugins.heise
  * @since September 22, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait NameDecoder extends (String => Name)
-object NameDecoder {
+trait TemplateDecoder extends (String => Template)
+object TemplateDecoder {
 
-  def apply(characterEncodings: IndexedSeq[CharacterEncoding]): NameDecoder = {
+  def apply(characterEncodings: IndexedSeq[CharacterEncoding]): TemplateDecoder = {
     val prioritizedCharacterEncodings =
       characterEncodings
         .sortBy(_.pattern.length())
@@ -24,7 +24,7 @@ object NameDecoder {
                   characterEncoding.substitution)
           }
 
-      Name(decodedName)
+      Template(decodedName)
   }
 
 }

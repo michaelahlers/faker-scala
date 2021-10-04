@@ -6,5 +6,5 @@ package ahlers.faker.plugins.heise
  */
 case class DictionaryEntry(
   usage: Usage,
-  template: Name,
+  template: Template,
   regionWeights: Seq[RegionWeight])

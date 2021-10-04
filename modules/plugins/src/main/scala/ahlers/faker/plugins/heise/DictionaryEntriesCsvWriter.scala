@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets
  */
 object DictionaryEntriesCsvWriter {
 
-  implicit val orderingName: Ordering[Name] =
+  implicit val orderingName: Ordering[Template] =
     Ordering.by(_.toText)
 
   def apply(outputDirectory: File, logger: Logger): DictionaryEntriesWriter = {
@@ -35,21 +35,21 @@ object DictionaryEntriesCsvWriter {
         StandardCharsets.UTF_8,
         append = false)*/
 
-      /** Group around unique [[Name]] values. */
-      val entriesByName: Map[Name, Seq[DictionaryEntry]] =
+      /** Group around unique [[Template]] values. */
+      val entriesByName: Map[Template, Seq[DictionaryEntry]] =
         dictionaryEntries
           .toSeq
           .groupBy(_.template)
 
       /** Retain an always-sorted collection. */
-      val names: Seq[Name] =
+      val names: Seq[Template] =
         entriesByName
           .keySet
           .toSeq
           .sorted
 
       /** Number them for brevity in the output. */
-      val indexByName: Map[Name, Reference] =
+      val indexByName: Map[Template, Reference] =
         names
           .zipWithIndex
           .toMap

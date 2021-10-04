@@ -16,7 +16,7 @@ object DictionaryEntryParser {
         case Array(reference, name) =>
           DictionaryEntry(
             reference = Reference(Integer.parseInt(reference, 16)),
-            name = Name(name))
+            template = Template(name))
 
         /** @todo Proper error-handling. */
         case _ =>

@@ -9,7 +9,7 @@ object DictionaryEntryParser {
 
   def using(
     decodeUsage: UsageDecoder,
-    decodeName: NameDecoder,
+    decodeName: TemplateDecoder,
     parseRegionWeights: RegionWeightsParser
   ): DictionaryEntryParser = {
     line =>
@@ -28,14 +28,14 @@ object DictionaryEntryParser {
           .slice(3, 29)
           .trim()
 
-      val decodedName: Name =
+      val decodedName: Template =
         decodeName(encodedName)
 
-      val normalizedName: Name =
+      val normalizedName: Template =
         usage match {
 
           case Usage.Equivalent =>
-            Name(decodedName
+            Template(decodedName
               .toText
               .replace(' ', '='))
 

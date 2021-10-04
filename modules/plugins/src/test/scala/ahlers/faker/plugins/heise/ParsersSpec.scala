@@ -99,7 +99,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(matchTo(
         DictionaryEntry(
           usage = Usage.Male,
-          template = Name("Aad"),
+          template = Template("Aad"),
           regionWeights =
             Seq(
               RegionWeight(
@@ -111,7 +111,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(matchTo(
         DictionaryEntry(
           usage = Usage.Male,
-          template = Name("Ådne"),
+          template = Template("Ådne"),
           regionWeights =
             Seq(
               RegionWeight(
@@ -123,7 +123,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(matchTo(
         DictionaryEntry(
           usage = Usage.Male,
-          template = Name("Abdel+Hafiz"),
+          template = Template("Abdel+Hafiz"),
           regionWeights =
             Seq(
               RegionWeight(
@@ -135,7 +135,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(matchTo(
         DictionaryEntry(
           usage = Usage.Equivalent,
-          template = Name("Abe Abraham"),
+          template = Template("Abe Abraham"),
           regionWeights =
             Seq(
               RegionWeight(
@@ -147,7 +147,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(matchTo(
         DictionaryEntry(
           usage = Usage.Female,
-          template = Name("Jane"),
+          template = Template("Jane"),
           regionWeights =
             Seq(
               RegionWeight(
@@ -205,7 +205,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(matchTo(
         DictionaryEntry(
           usage = Usage.Female,
-          template = Name("Maria da Conceição"),
+          template = Template("Maria da Conceição"),
           regionWeights =
             Seq(
               RegionWeight(
@@ -217,7 +217,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(matchTo(
         DictionaryEntry(
           usage = Usage.Female,
-          template = Name("Zina"),
+          template = Template("Zina"),
           regionWeights =
             Seq(
               RegionWeight(
@@ -283,7 +283,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(matchTo(
         DictionaryEntry(
           usage = Usage.Female,
-          template = Name("Žydronė"),
+          template = Template("Žydronė"),
           regionWeights =
             Seq(
               RegionWeight(
@@ -295,7 +295,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(matchTo(
         DictionaryEntry(
           usage = Usage.Male,
-          template = Name("Žydrūnas"),
+          template = Template("Žydrūnas"),
           regionWeights =
             Seq(
               RegionWeight(
@@ -307,7 +307,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(matchTo(
         DictionaryEntry(
           usage = Usage.Female,
-          template = Name("Zyta"),
+          template = Template("Zyta"),
           regionWeights =
             Seq(
               RegionWeight(
