@@ -13,16 +13,12 @@ import eu.timepit.refined.api.Refined
 object heise {
 
   val genPersonGivenName: Gen[PersonGivenName] =
+    /** @todo Restore consideration for variations and equivalents. */
     oneOf(
-      ClassifiedNameIterator()
-        .collect { case name: GenderedName => name }
+      givenNames
+        .map(_.name)
+        .map(name =>
+          PersonGivenName(Refined.unsafeApply(name.toText)))
         .toIndexedSeq)
-      .flatMap {
-        case GenderedName(_, Seq(givenName), _) => const(givenName)
-        case GenderedName(_, givenNames, _) =>
-          oneOf(" ", "-")
-            .map(givenNames.mkString(_))
-            .map(givenName => PersonGivenName(Refined.unsafeApply(givenName)))
-      }
 
 }
