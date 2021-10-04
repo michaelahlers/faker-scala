@@ -1,7 +1,9 @@
 package ahlers.faker.datasets.heise
 
 /**
+ * @since October 02, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
- * @since May 15, 2020
  */
-case class CharacterEncoding(pattern: String, substitution: String)
+case class DictionaryEntry(
+  reference: Reference,
+  name: Name)

@@ -15,6 +15,9 @@ package object heise {
   type LocaleProbabilityType = Int Refined (NonNegative And LessEqual[W.`13`.T])
   @newtype case class LocaleProbability(toInt: LocaleProbabilityType)
 
-  def givenNames(): Iterator[ClassifiedName] = ClassifiedNameIterator()
+  val givenNames: Seq[DictionaryEntry] =
+    DictionaryIO
+      .default
+      .loadEntries()
 
 }
