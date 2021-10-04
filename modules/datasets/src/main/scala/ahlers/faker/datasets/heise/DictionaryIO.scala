@@ -20,7 +20,7 @@ object DictionaryIO {
     new DictionaryIO {
 
       override def loadEntries(): Seq[DictionaryEntry] =
-        parseEntries(Resource.my.getAsStream("reference,name.csv")
+        parseEntries(Resource.my.getAsStream("index,template.csv")
           .lines(StandardCharsets.UTF_8)
           .toSeq
           .map(DictionaryLine(_)))

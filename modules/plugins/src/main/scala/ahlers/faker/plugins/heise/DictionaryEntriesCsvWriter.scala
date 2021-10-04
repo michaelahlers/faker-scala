@@ -17,23 +17,8 @@ object DictionaryEntriesCsvWriter {
     dictionaryEntries =>
       outputDirectory.mkdirs()
 
-      val namesFile = outputDirectory / "reference,name.csv"
-      val usageCountryCodeWeightsFile = outputDirectory / "reference,usage,country-code,weights.csv"
-
-      namesFile.delete()
-      usageCountryCodeWeightsFile.delete()
-
-      /*IO.writeLines(
-        file = namesFile,
-        lines = Seq("reference,name"),
-        StandardCharsets.UTF_8,
-        append = false)*/
-
-      /*IO.writeLines(
-        file = usageCountryCodeWeightsFile,
-        lines = Seq("reference,usage,country-code,weight"),
-        StandardCharsets.UTF_8,
-        append = false)*/
+      val templatesFile = outputDirectory / "index,template.csv"
+      val usageCountryCodeWeightsFile = outputDirectory / "index,usage,country-code,weights.csv"
 
       /** Group around unique [[Template]] values. */
       val entriesByName: Map[Template, Seq[DictionaryEntry]] =
@@ -42,33 +27,33 @@ object DictionaryEntriesCsvWriter {
           .groupBy(_.template)
 
       /** Retain an always-sorted collection. */
-      val names: Seq[Template] =
+      val templates: Seq[Template] =
         entriesByName
           .keySet
           .toSeq
           .sorted
 
       /** Number them for brevity in the output. */
-      val indexByName: Map[Template, Reference] =
-        names
+      val indexByName: Map[Template, Index] =
+        templates
           .zipWithIndex
           .toMap
-          .mapValues(Reference(_))
+          .mapValues(Index(_))
 
       IO.writeLines(
-        file = namesFile,
+        file = templatesFile,
         lines =
-          names
-            .map(name =>
-              s"""${Integer.toHexString(indexByName(name).toInt)},${name.toText}"""),
+          templates
+            .map(template =>
+              s"""${Integer.toHexString(indexByName(template).toInt)},${template.toText}"""),
         StandardCharsets.UTF_8,
-        append = true
+        append = false
       )
 
       IO.writeLines(
         file = usageCountryCodeWeightsFile,
         lines =
-          names
+          templates
             .flatMap(
               entriesByName(_)
                 .flatMap(entry =>
@@ -79,16 +64,16 @@ object DictionaryEntriesCsvWriter {
                         region
                           .countryCodes
                           .map(countryCode =>
-                            s"${indexByName(entry.template)},${entry.usage.toString},${countryCode.toText},$weight")
+                            s"${Integer.toHexString(indexByName(entry.template).toInt)},${entry.usage.toString},${countryCode.toText},$weight")
                     })),
         StandardCharsets.UTF_8,
-        append = true
+        append = false
       )
 
       logger.info("""Wrote %d bytes to "%s"."""
         .format(
-          namesFile.length(),
-          namesFile))
+          templatesFile.length(),
+          templatesFile))
 
       logger.info("""Wrote %d bytes to "%s"."""
         .format(
@@ -96,7 +81,7 @@ object DictionaryEntriesCsvWriter {
           usageCountryCodeWeightsFile))
 
       Seq(
-        namesFile,
+        templatesFile,
         usageCountryCodeWeightsFile)
   }
 

@@ -5,5 +5,5 @@ package ahlers.faker.datasets.heise
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
 case class DictionaryEntry(
-  reference: Reference,
+  index: Index,
   template: Template)

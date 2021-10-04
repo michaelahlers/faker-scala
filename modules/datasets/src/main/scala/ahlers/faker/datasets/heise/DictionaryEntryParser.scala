@@ -13,10 +13,10 @@ object DictionaryEntryParser {
         .toText
         .split(',') match {
 
-        case Array(reference, name) =>
+        case Array(index, template) =>
           DictionaryEntry(
-            reference = Reference(Integer.parseInt(reference, 16)),
-            template = Template(name))
+            index = Index(Integer.parseInt(index, 16)),
+            template = Template(template))
 
         /** @todo Proper error-handling. */
         case _ =>
