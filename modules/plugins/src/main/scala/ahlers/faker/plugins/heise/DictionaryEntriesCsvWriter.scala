@@ -20,17 +20,20 @@ object DictionaryEntriesCsvWriter {
       val namesFile = outputDirectory / "reference,name.csv"
       val usageCountryCodeWeightsFile = outputDirectory / "reference,usage,country-code,weights.csv"
 
-      IO.writeLines(
+      namesFile.delete()
+      usageCountryCodeWeightsFile.delete()
+
+      /*IO.writeLines(
         file = namesFile,
         lines = Seq("reference,name"),
         StandardCharsets.UTF_8,
-        append = false)
+        append = false)*/
 
-      IO.writeLines(
+      /*IO.writeLines(
         file = usageCountryCodeWeightsFile,
         lines = Seq("reference,usage,country-code,weight"),
         StandardCharsets.UTF_8,
-        append = false)
+        append = false)*/
 
       /** Group around unique [[Name]] values. */
       val entriesByName: Map[Name, Seq[DictionaryEntry]] =
