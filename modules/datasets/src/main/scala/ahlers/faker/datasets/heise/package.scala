@@ -18,6 +18,6 @@ package object heise {
   val givenNames: Seq[TemplateEntry] =
     DictionaryIO
       .default
-      .loadEntries()
+      .loadTemplateEntries()
 
 }

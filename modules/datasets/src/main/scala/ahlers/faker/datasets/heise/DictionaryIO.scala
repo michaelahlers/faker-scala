@@ -9,26 +9,38 @@ import java.nio.charset.StandardCharsets
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
 trait DictionaryIO {
-  def loadEntries(): Seq[TemplateEntry]
+
+  def loadTemplateEntries(): Seq[TemplateEntry]
+
+  def loadUsageRegionWeightEntries(): Seq[UsageRegionWeightEntry]
+
 }
 
 object DictionaryIO {
 
   def using(
-    parseEntries: TemplateEntriesParser
+    parseTemplateEntries: TemplateEntriesParser,
+    parseUsageRegionWeightEntries: UsageRegionWeightEntriesParser
   ): DictionaryIO =
     new DictionaryIO {
 
-      override def loadEntries(): Seq[TemplateEntry] =
-        parseEntries(Resource.my.getAsStream("index,template.csv")
+      override def loadTemplateEntries() =
+        parseTemplateEntries(Resource.my.getAsStream("index,template.csv")
           .lines(StandardCharsets.UTF_8)
           .toSeq
           .map(TemplateLine(_)))
+
+      override def loadUsageRegionWeightEntries() =
+        parseUsageRegionWeightEntries(Resource.my.getAsStream("index,usage,country-code,weight.csv")
+          .lines(StandardCharsets.UTF_8)
+          .toSeq
+          .map(UsageRegionWeightLine(_)))
 
     }
 
   val default: DictionaryIO =
     using(
-      parseEntries = TemplateEntriesParser.default)
+      parseTemplateEntries = TemplateEntriesParser.default,
+      parseUsageRegionWeightEntries = UsageRegionWeightEntriesParser.default)
 
 }
