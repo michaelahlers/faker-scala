@@ -45,7 +45,10 @@ object DictionaryEntriesCsvWriter {
         lines =
           templates
             .map(template =>
-              s"""${Integer.toHexString(indexByName(template).toInt)},${template.toText}"""),
+              """%x,%s"""
+                .format(
+                  indexByName(template).toInt,
+                  template)),
         StandardCharsets.UTF_8,
         append = false
       )
@@ -64,7 +67,12 @@ object DictionaryEntriesCsvWriter {
                         region
                           .countryCodes
                           .map(countryCode =>
-                            s"${Integer.toHexString(indexByName(entry.template).toInt)},${entry.usage.toString},${countryCode.toText},$weight")
+                            """%x,%s,%s,%x"""
+                              .format(
+                                indexByName(entry.template).toInt,
+                                entry.usage.toString,
+                                countryCode.toText,
+                                weight))
                     })),
         StandardCharsets.UTF_8,
         append = false
