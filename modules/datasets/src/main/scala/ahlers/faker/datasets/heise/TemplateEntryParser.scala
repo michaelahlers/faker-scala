@@ -7,21 +7,19 @@ package ahlers.faker.datasets.heise
 trait TemplateEntryParser extends (TemplateLine => TemplateEntry)
 object TemplateEntryParser {
 
-  val default: TemplateEntryParser =
-    line =>
-      line
-        .toText
-        .split(',') match {
+  val default: TemplateEntryParser = _
+    .toText
+    .split(',') match {
 
-        case Array(index, template) =>
-          TemplateEntry(
-            index = Index(Integer.parseInt(index, 16)),
-            template = Template(template))
+    case Array(index, template) =>
+      TemplateEntry(
+        index = Index(Integer.parseInt(index, 16)),
+        template = Template(template))
 
-        /** @todo Proper error-handling. */
-        case _ =>
-          ???
+    /** @todo Proper error-handling. */
+    case _ =>
+      ???
 
-      }
+  }
 
 }

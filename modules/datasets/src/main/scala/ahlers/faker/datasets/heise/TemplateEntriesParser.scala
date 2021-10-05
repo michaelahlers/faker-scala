@@ -7,10 +7,8 @@ package ahlers.faker.datasets.heise
 trait TemplateEntriesParser extends (Seq[TemplateLine] => Seq[TemplateEntry])
 object TemplateEntriesParser {
 
-  def using(parseEntry: TemplateEntryParser): TemplateEntriesParser =
-    lines =>
-      lines
-        .map(parseEntry(_))
+  def using(parseEntry: TemplateEntryParser): TemplateEntriesParser = _
+    .map(parseEntry(_))
 
   val default: TemplateEntriesParser =
     using(
