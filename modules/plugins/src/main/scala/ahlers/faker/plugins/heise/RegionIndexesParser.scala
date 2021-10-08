@@ -4,7 +4,7 @@ package ahlers.faker.plugins.heise
  * @since September 23, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait RegionIndexesParser extends (Iterator[DictionaryLine] => Seq[RegionIndex])
+trait RegionIndexesParser extends (IndexedSeq[DictionaryLine] => Seq[RegionIndex])
 object RegionIndexesParser {
 
   def using(regions: IndexedSeq[Region]): RegionIndexesParser = {

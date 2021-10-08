@@ -4,7 +4,7 @@ package ahlers.faker.plugins.heise
  * @since September 23, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait CharacterEncodingsParser extends (Iterator[DictionaryLine] => Seq[CharacterEncoding])
+trait CharacterEncodingsParser extends (IndexedSeq[DictionaryLine] => Seq[CharacterEncoding])
 object CharacterEncodingsParser {
 
   val default: CharacterEncodingsParser = {
@@ -13,7 +13,6 @@ object CharacterEncodingsParser {
         .dropWhile(!_.toText.contains("char set"))
         .drop(6)
         .take(67)
-        .toIndexedSeq
         .map(_
           .toText
           .tail.init

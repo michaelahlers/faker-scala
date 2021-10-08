@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets
  * @since September 22, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait DictionaryEntriesParser extends (Iterator[DictionaryLine] => Iterator[DictionaryEntry])
+trait DictionaryEntriesParser extends (IndexedSeq[DictionaryLine] => Seq[DictionaryEntry])
 object DictionaryEntriesParser {
 
   def using(
@@ -20,7 +20,7 @@ object DictionaryEntriesParser {
     val decodeUsage = UsageDecoder()
 
     lines =>
-      val decodeName = TemplateDecoder(characterEncodings.toIndexedSeq)
+      val decodeName = TemplateDecoder(characterEncodings)
       val parseRegionWeights = RegionWeightsParser.using(regionIndexes)
 
       val parseDictionaryEntry =
@@ -29,12 +29,9 @@ object DictionaryEntriesParser {
           decodeName = decodeName,
           parseRegionWeights = parseRegionWeights)
 
-      /* Moves the iterator to the correct position for names. */
       lines
         .dropWhile(!_.toText.contains("begin of name list"))
         .drop(2)
-
-      lines
         .map(parseDictionaryEntry(_))
   }
 
