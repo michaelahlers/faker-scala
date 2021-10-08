@@ -22,8 +22,8 @@ object RegionWeightsParser {
             .trim())
             .filter(_.nonEmpty)
             .map(Integer.parseInt(_, 16))
-            .map { probability =>
-              RegionWeight(region, probability)
+            .map { weight =>
+              RegionWeight(region, Weight(weight))
             }
         }
   }

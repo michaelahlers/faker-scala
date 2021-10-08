@@ -1,5 +1,6 @@
 package ahlers.faker.plugins.heise
 
+import sbt.template
 import sbt._
 
 import java.nio.charset.StandardCharsets
@@ -10,87 +11,89 @@ import java.nio.charset.StandardCharsets
  */
 object DictionaryEntriesCsvWriter {
 
-  implicit val orderingName: Ordering[Template] =
+  implicit val orderingTemplate: Ordering[Template] =
     Ordering.by(_.toText)
 
   def apply(outputDirectory: File, logger: Logger): DictionaryEntriesWriter = {
     dictionaryEntries =>
       outputDirectory.mkdirs()
 
-      val templatesFile = outputDirectory / "index,template.csv"
-      val usageCountryCodeWeightsFile = outputDirectory / "index,usage,country-code,weight.csv"
+      val templatesFile = outputDirectory / "template.csv"
+      val usageFile = outputDirectory / "index,usage.csv"
+      val countryCodeWeightFile = outputDirectory / "index,country-code,weight.csv"
 
       /** Group around unique [[Template]] values. */
-      val entriesByName: Map[Template, Seq[DictionaryEntry]] =
-        dictionaryEntries
-          .toSeq
-          .groupBy(_.template)
-
-      /** Retain an always-sorted collection. */
       val templates: Seq[Template] =
-        entriesByName
-          .keySet
-          .toSeq
-          .sorted
+        dictionaryEntries
+          .sortBy(_.template)
+          .map(_.template)
+          .distinct
 
-      /** Number them for brevity in the output. */
-      val indexByName: Map[Template, Index] =
-        templates
-          .zipWithIndex
-          .toMap
-          .mapValues(Index(_))
+      val usageByTemplate: Seq[(Template, Usage)] =
+        dictionaryEntries
+          .sortBy(_.template)
+          .map(entry =>
+            (entry.template, entry.usage))
+
+      val countryCodeWeightByTemplateUsage: Seq[(Template, Usage, CountryCode, Weight)] =
+        dictionaryEntries
+          .sortBy(_.template)
+          .flatMap(entry =>
+            entry
+              .regionWeights
+              .flatMap(regionWeight =>
+                regionWeight
+                  .region
+                  .countryCodes
+                  .map((entry.template, entry.usage, _, regionWeight.weight))))
 
       IO.writeLines(
         file = templatesFile,
         lines =
           templates
             .map(template =>
-              """%x,%s"""
+              """%s"""
                 .format(
-                  indexByName(template).toInt,
-                  template)),
+                  template.toText)),
         StandardCharsets.UTF_8,
-        append = false
-      )
+        append = false)
 
       IO.writeLines(
-        file = usageCountryCodeWeightsFile,
+        file = usageFile,
         lines =
-          templates
-            .flatMap(
-              entriesByName(_)
-                .flatMap(entry =>
-                  entry
-                    .regionWeights
-                    .flatMap {
-                      case RegionWeight(region, weight) =>
-                        region
-                          .countryCodes
-                          .map(countryCode =>
-                            """%x,%s,%s,%x"""
-                              .format(
-                                indexByName(entry.template).toInt,
-                                entry.usage.toString,
-                                countryCode.toText,
-                                weight))
-                    })),
-        StandardCharsets.UTF_8,
+          usageByTemplate
+            .map { case (template, usage) =>
+              """%x,%s"""
+                .format(
+                  templates.indexOf(template),
+                  usage)
+            },
+        append = false)
+
+      IO.writeLines(
+        file = countryCodeWeightFile,
+        lines =
+          countryCodeWeightByTemplateUsage
+            .map { case (template, usage, countryCode, weight) =>
+              """%x,%s,%x"""
+                .format(
+                  usageByTemplate.indexOf((template, usage)),
+                  countryCode.toText,
+                  weight.toInt)
+            },
         append = false
       )
 
-      logger.info("""Wrote %d bytes to "%s"."""
-        .format(
-          templatesFile.length(),
-          templatesFile))
-
-      logger.info("""Wrote %d bytes to "%s"."""
+      /*logger.info("""Wrote %d bytes to "%s"."""
         .format(
           usageCountryCodeWeightsFile.length(),
-          usageCountryCodeWeightsFile))
+          usageCountryCodeWeightsFile))*/
 
       Seq(
         templatesFile,
-        usageCountryCodeWeightsFile)
+        usageFile,
+        countryCodeWeightFile
+      )
   }
 
 }
