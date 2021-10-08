@@ -31,7 +31,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
     val loadHeiseNameDictionaryRegions = taskKey[Seq[Region]]("Loads region definitions from configuration.")
 
-    val loadHeiseNameDictionaryEntries = taskKey[Iterator[DictionaryEntry]]("Loads and parses the dictionary to classified name models, suitable for serialization to standard formats.")
+    val loadHeiseNameDictionaryEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses the dictionary to classified name models, suitable for serialization to standard formats.")
 
     val writeHeiseNameDictionaryEntries = taskKey[Seq[File]]("Writes entries in the specified output format.")
 
@@ -105,21 +105,21 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
       regions
     }
 
-  private val loadEntriesTask: Setting[Task[Iterator[DictionaryEntry]]] =
+  private val loadEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
     loadHeiseNameDictionaryEntries := {
       val dictionaryFile = downloadHeiseNameDictionaryFile.value
       val regions = loadHeiseNameDictionaryRegions.value
 
-      val dictionaryLines: Iterator[DictionaryLine] =
+      val dictionaryLines: Seq[DictionaryLine] =
         IO.readLines(dictionaryFile, StandardCharsets.ISO_8859_1)
           .map(DictionaryLine(_))
-          .toIterator
 
       val parseDictionaryEntries =
         DictionaryEntriesParser.using(regions.toIndexedSeq)
 
-      val dictionaryEntries: Iterator[DictionaryEntry] =
-        parseDictionaryEntries(dictionaryLines)
+      val dictionaryEntries: Seq[DictionaryEntry] =
+        parseDictionaryEntries(dictionaryLines
+          .toIndexedSeq)
 
       dictionaryEntries
     }
@@ -138,7 +138,10 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
               logger = logger)
         }
 
-      val outputFiles = writeClassifiedNames(classifiedNames)
+      val outputFiles =
+        writeClassifiedNames(classifiedNames
+          .toIndexedSeq)
+
       outputFiles
     }
 
