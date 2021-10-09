@@ -1,7 +1,7 @@
 package ahlers.faker.datasets.heise
 
 /**
- * @since October 02, 2021
+ * @since October 08, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-case class TemplateLine(toText: String, toInt: Int)
+case class UsageIndex(toInt: Int) extends AnyVal

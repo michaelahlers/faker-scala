@@ -12,7 +12,7 @@ trait DictionaryIO {
 
   def loadTemplateEntries(): Seq[TemplateEntry]
 
-  def loadUsageRegionWeightEntries(): Seq[UsageRegionWeightEntry]
+  def loadUsageEntries(): Seq[UsageEntry]
 
 }
 
@@ -20,27 +20,29 @@ object DictionaryIO {
 
   def using(
     parseTemplateEntries: TemplateEntriesParser,
-    parseUsageRegionWeightEntries: UsageRegionWeightEntriesParser
+    parseUsageRegionWeightEntries: UsageEntriesParser
   ): DictionaryIO =
     new DictionaryIO {
 
       override def loadTemplateEntries() =
-        parseTemplateEntries(Resource.my.getAsStream("index,template.csv")
+        parseTemplateEntries(Resource.my.getAsStream("template.csv")
           .lines(StandardCharsets.UTF_8)
-          .toSeq
-          .map(TemplateLine(_)))
+          .zipWithIndex
+          .map(TemplateLine.tupled)
+          .toIndexedSeq)
 
-      override def loadUsageRegionWeightEntries() =
+      override def loadUsageEntries() =
         parseUsageRegionWeightEntries(Resource.my.getAsStream("index,usage,country-code,weight.csv")
-          .lines(StandardCharsets.UTF_8)
-          .toSeq
-          .map(UsageRegionWeightLine(_)))
+          .lines()
+          .zipWithIndex
+          .map(UsageLine.tupled)
+          .toIndexedSeq)
 
     }
 
   val default: DictionaryIO =
     using(
       parseTemplateEntries = TemplateEntriesParser.default,
-      parseUsageRegionWeightEntries = UsageRegionWeightEntriesParser.default)
+      parseUsageRegionWeightEntries = UsageEntriesParser.default)
 
 }
