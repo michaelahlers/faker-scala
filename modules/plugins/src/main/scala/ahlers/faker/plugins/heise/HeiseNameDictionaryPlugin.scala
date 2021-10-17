@@ -23,19 +23,15 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
     val heiseNameDictionaryOutputFormat = settingKey[DictionaryEntriesOutputFormat]("Specifies whether to write—only CSV, for now, with additional formats planned.")
 
-    val heiseNameDictionaryOutputDirectory = settingKey[File]("A staging area for output, typically rooted in a task temporary directory, cleaned up after completion.")
-
-    val heiseNameDictionaryResourceDirectory = settingKey[File]("Where to write all output files, typically rooted in a managed resource directory on the class path.")
+    val heiseNameDictionaryOutputDirectory = settingKey[File]("Where to write all output files, typically a managed resource directory on the class path.")
 
     val downloadHeiseNameDictionaryFile = taskKey[File]("Fetches and extracts the dictionary file from the original source.")
 
     val loadHeiseNameDictionaryRegions = taskKey[Seq[Region]]("Loads region definitions from configuration.")
 
-    val loadHeiseNameDictionaryEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses the dictionary to classified name models, suitable for serialization to standard formats.")
+    val loadHeiseNameDictionaryEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses the dictionary to models suitable for encoding to standard formats.")
 
     val writeHeiseNameDictionaryEntries = taskKey[Seq[File]]("Writes entries in the specified output format.")
-
-    val generateHeiseNameDictionaryEntries = taskKey[Seq[File]]("Once written, serves as a resource generator with caching respective of arguments.")
 
   }
 
@@ -61,16 +57,8 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
     heiseNameDictionaryOutputFormat :=
       DictionaryEntriesOutputFormat.Csv
 
-  private val outputDirectorySetting: Setting[sbt.File] =
+  private val outputDirectorySetting: Setting[File] =
     heiseNameDictionaryOutputDirectory :=
-      taskTemporaryDirectory.value /
-        "ftp.heise.de" /
-        "pub" /
-        "ct" /
-        "listings"
-
-  private val resourceDirectorySetting: Setting[File] =
-    heiseNameDictionaryResourceDirectory :=
       (Compile / resourceManaged).value /
         "ftp.heise.de" /
         "pub" /
@@ -142,32 +130,16 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         writeClassifiedNames(classifiedNames
           .toIndexedSeq)
 
-      outputFiles
-    }
-
-  private val generateEntriesTask: Setting[Task[Seq[File]]] =
-    generateHeiseNameDictionaryEntries := {
-      val logger = streams.value.log
-      val outputFiles = writeHeiseNameDictionaryEntries.value
-      val resourceDirectory = heiseNameDictionaryResourceDirectory.value
-      val resourceFiles =
-        outputFiles
-          .map(_.getName)
-          .map(resourceDirectory / _)
-
-      resourceDirectory.mkdirs()
-      IO.move(outputFiles.zip(resourceFiles))
-
       logger.info(
         """Generated files %s in directory "%s"."""
           .format(
             outputFiles
               .map(_.getName)
               .mkString("\"", "\", \"", "\""),
-            resourceDirectory
+            outputDirectory
           ))
 
-      resourceFiles
+      outputFiles
     }
 
   override val projectSettings =
@@ -177,14 +149,11 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
       fileNameSetting,
       outputFormatSetting,
       outputDirectorySetting,
-      resourceDirectorySetting,
       downloadFileTask,
       loadRegionsTask,
       loadEntriesTask,
       writeEntriesTask,
-      generateEntriesTask,
-      Compile / resourceGenerators +=
-        generateHeiseNameDictionaryEntries
+      Compile / resourceGenerators += writeHeiseNameDictionaryEntries
     )
 
 }
