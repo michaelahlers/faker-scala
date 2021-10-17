@@ -15,7 +15,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
     /**
      * @see [[https://www.heise.de/ct/ftp/07/17/182/ Magazin für Computertechnik: ''40 000 Namen'']]
      */
-    val heiseNameDictionaryArchiveSourceUrl = settingKey[URL]("""Location of the original archive, described by Magazin für Computertechnik's "40 000 Namen".""")
+    val heiseNameDictionaryArchiveSourceUrl = settingKey[URL]("""Location of the original archive, described by "Magazin für Computertechnik's "40 000 Namen".""")
 
     val heiseNameDictionaryDownloadDirectory = settingKey[File]("Destination of downloaded and extracted archive, typically rooted in a task temporary directory, cleaned up after completion.")
 
