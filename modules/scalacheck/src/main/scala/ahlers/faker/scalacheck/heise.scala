@@ -12,13 +12,14 @@ import eu.timepit.refined.api.Refined
  */
 object heise {
 
-  val genPersonGivenName: Gen[PersonGivenName] =
-    /** @todo Restore consideration for variations and equivalents. */
-    oneOf(
+  /** @todo Restore consideration for variations and equivalents. */
+  def genPersonGivenName: Gen[PersonGivenName] =
+    ???
+  /*oneOf(
       givenNames
         .map(_.template)
         .map(name =>
           PersonGivenName(Refined.unsafeApply(name.toText)))
-        .toIndexedSeq)
+        .toIndexedSeq)*/
 
 }
