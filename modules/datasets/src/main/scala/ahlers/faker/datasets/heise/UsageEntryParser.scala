@@ -4,8 +4,8 @@ package ahlers.faker.datasets.heise
  * @since October 04, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait UsageEntryParser extends (UsageLine => UsageEntry)
-object UsageEntryParser {
+private[heise] trait UsageEntryParser extends (UsageLine => UsageEntry)
+private[heise] object UsageEntryParser {
 
   def using(parseUsage: UsageParser): UsageEntryParser = line =>
     line

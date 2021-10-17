@@ -6,7 +6,7 @@ package ahlers.faker.datasets.heise
  */
 case object countryWeights {
 
-  private val entries: Seq[CountryWeightEntry] =
+  private[heise] val entries: Seq[CountryWeightEntry] =
     DictionaryIO.default
       .loadCountryWeightEntries()
 

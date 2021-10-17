@@ -6,7 +6,7 @@ package ahlers.faker.datasets.heise
  */
 case object templates {
 
-  private val entries: Seq[TemplateEntry] =
+  private[heise] val entries: Seq[TemplateEntry] =
     DictionaryIO.default
       .loadTemplateEntries()
 

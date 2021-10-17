@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets
  * @since October 03, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait DictionaryIO {
+private[heise] trait DictionaryIO {
 
   def loadTemplateEntries(): Seq[TemplateEntry]
 
@@ -18,7 +18,7 @@ trait DictionaryIO {
 
 }
 
-object DictionaryIO {
+private[heise] object DictionaryIO {
 
   def using(
     parseTemplateEntries: TemplateEntriesParser,

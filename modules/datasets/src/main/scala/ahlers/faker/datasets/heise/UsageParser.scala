@@ -4,8 +4,8 @@ package ahlers.faker.datasets.heise
  * @since October 04, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait UsageParser extends (String => Usage)
-object UsageParser {
+private[heise] trait UsageParser extends (String => Usage)
+private[heise] object UsageParser {
 
   import Usage._
 

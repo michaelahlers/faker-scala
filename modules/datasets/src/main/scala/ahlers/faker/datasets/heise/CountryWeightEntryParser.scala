@@ -16,8 +16,11 @@ object CountryWeightEntryParser {
         case Array(usageIndex, countryCode, weight) =>
           CountryWeightEntry(
             usageIndex = UsageIndex(Integer.parseInt(usageIndex, 16)),
-            code = CountryCode(countryCode),
-            weight = Weight(Integer.parseInt(weight, 16)))
+            countryWeight =
+              CountryWeight(
+                code = CountryCode(countryCode),
+                weight = Weight(Integer.parseInt(weight, 16)))
+          )
 
         /** @todo Proper error handling. */
         case _ =>
