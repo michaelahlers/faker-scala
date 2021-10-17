@@ -14,13 +14,16 @@ trait DictionaryIO {
 
   def loadUsageEntries(): Seq[UsageEntry]
 
+  def loadCountryWeightEntries(): Seq[CountryWeightEntry]
+
 }
 
 object DictionaryIO {
 
   def using(
     parseTemplateEntries: TemplateEntriesParser,
-    parseUsageRegionWeightEntries: UsageEntriesParser
+    parseUsageRegionWeightEntries: UsageEntriesParser,
+    parseCountryWeightEntries: CountryWeightEntriesParser
   ): DictionaryIO =
     new DictionaryIO {
 
@@ -32,10 +35,17 @@ object DictionaryIO {
           .toIndexedSeq)
 
       override def loadUsageEntries() =
-        parseUsageRegionWeightEntries(Resource.my.getAsStream("index,usage,country-code,weight.csv")
+        parseUsageRegionWeightEntries(Resource.my.getAsStream("index,usage.csv")
           .lines()
           .zipWithIndex
           .map(UsageLine.tupled)
+          .toIndexedSeq)
+
+      override def loadCountryWeightEntries() =
+        parseCountryWeightEntries(Resource.my.getAsStream("index,country-code,weight.csv")
+          .lines()
+          .zipWithIndex
+          .map(CountryWeightLine.tupled)
           .toIndexedSeq)
 
     }
@@ -43,6 +53,8 @@ object DictionaryIO {
   val default: DictionaryIO =
     using(
       parseTemplateEntries = TemplateEntriesParser.default,
-      parseUsageRegionWeightEntries = UsageEntriesParser.default)
+      parseUsageRegionWeightEntries = UsageEntriesParser.default,
+      parseCountryWeightEntries = CountryWeightEntriesParser.default
+    )
 
 }
