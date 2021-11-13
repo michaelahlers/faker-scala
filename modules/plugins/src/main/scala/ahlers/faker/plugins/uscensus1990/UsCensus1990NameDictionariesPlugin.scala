@@ -41,17 +41,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
 
     val downloadUsCensus1990MaleFirstNameDictionaryFile = taskKey[File]("Fetches the male first name dictionary file from the original source.")
 
-    val loadUsCensus1990LastNameDictionaryEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses the last names dictionary to models suitable for encoding to standard formats.")
-
-    val loadUsCensus1990FirstNameFemaleDictionaryEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses the female first names dictionary to models suitable for encoding to standard formats.")
-
-    val loadUsCensus1990FirstNameMaleDictionaryEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses the male first names dictionary to models suitable for encoding to standard formats.")
-
-    val writeUsCensus1990LastNameDictionaryEntries = taskKey[File]("Writes last name dictionary entries in the specified output format and directory.")
-
-    val writeUsCensus1990FemaleFirstNameDictionaryEntries = taskKey[File]("Writes female first name dictionary entries in the specified output format and directory.")
-
-    val writeUsCensus1990MaleFirstNameDictionaryEntries = taskKey[File]("Writes male first name dictionary entries in the specified output format and directory.")
+    val readUsCensus1990DictionaryEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses all name dictionary entries obtained from downloads.")
 
     val writeUsCensus1990DictionaryEntries = taskKey[Seq[File]]("Writes all name dictionary entries in the specified output format and directory, serves as a resource generator.")
 
@@ -98,7 +88,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
       val sourceUrl = usCensus1990LastNameDictionarySourceUrl.value
       val downloadDirectory = census1990NameDictionariesDownloadDirectory.value
 
-      def dictionaryIO: DictionaryIO = ???
+      val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
 
       val dictionaryFile: File =
         dictionaryIO
@@ -116,7 +106,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
       val sourceUrl = census1990FirstNameFemaleDictionaryFileSourceUrl.value
       val downloadDirectory = census1990NameDictionariesDownloadDirectory.value
 
-      def dictionaryIO: DictionaryIO = ???
+      val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
 
       val dictionaryFile: File =
         dictionaryIO
@@ -134,7 +124,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
       val sourceUrl = census1990FirstNameMaleDictionaryFileSourceUrl.value
       val downloadDirectory = census1990NameDictionariesDownloadDirectory.value
 
-      def dictionaryIO: DictionaryIO = ???
+      val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
 
       val dictionaryFile: File =
         dictionaryIO
@@ -145,109 +135,45 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
       dictionaryFile
     }
 
-  private val loadLastNameDictionaryEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
-    loadUsCensus1990LastNameDictionaryEntries := {
+  private val readDictionaryEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
+    readUsCensus1990DictionaryEntries := {
       val logger = streams.value.log
 
-      val dictionaryFile: File = downloadUsCensus1990LastNameDictionaryFile.value
+      val femaleFirstNameFile: File = downloadUsCensus1990FemaleFirstNameDictionaryFile.value
+      val maleFirstNameFile: File = downloadUsCensus1990MaleFirstNameDictionaryFile.value
+      val lastNameFile: File = downloadUsCensus1990LastNameDictionaryFile.value
 
-      def dictionaryIO: DictionaryIO = ???
+      val parseEntries: DictionaryEntriesParser =
+        DictionaryEntriesParser.using(DictionaryEntryParser.default)
 
       val dictionaryEntries: Seq[DictionaryEntry] =
-        dictionaryIO.loadDictionaryEntries(dictionaryFile)
+        parseEntries(Usage.FemaleFirst, femaleFirstNameFile) ++
+          parseEntries(Usage.MaleFirst, maleFirstNameFile) ++
+          parseEntries(Usage.Last, lastNameFile)
 
       dictionaryEntries
-    }
-
-  private val loadFemaleFirstNameDictionaryEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
-    loadUsCensus1990FirstNameFemaleDictionaryEntries := {
-      val logger = streams.value.log
-
-      val dictionaryFile: File = downloadUsCensus1990FemaleFirstNameDictionaryFile.value
-
-      def dictionaryIO: DictionaryIO = ???
-
-      val dictionaryEntries: Seq[DictionaryEntry] =
-        dictionaryIO.loadDictionaryEntries(dictionaryFile)
-
-      dictionaryEntries
-    }
-
-  private val loadMaleFirstNameDictionaryEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
-    loadUsCensus1990FirstNameMaleDictionaryEntries := {
-      val logger = streams.value.log
-
-      val dictionaryFile: File = downloadUsCensus1990MaleFirstNameDictionaryFile.value
-
-      def dictionaryIO: DictionaryIO = ???
-
-      val dictionaryEntries: Seq[DictionaryEntry] =
-        dictionaryIO.loadDictionaryEntries(dictionaryFile)
-
-      dictionaryEntries
-    }
-
-  private val writeLastNameDictionaryEntriesTask: Setting[Task[File]] =
-    writeUsCensus1990LastNameDictionaryEntries := {
-      val logger = streams.value.log
-
-      val dictionaryEntries: Seq[DictionaryEntry] = loadUsCensus1990LastNameDictionaryEntries.value
-      val outputDirectory: File = usCensus1990NameDictionaryOutputDirectory.value
-
-      def dictionaryIO: DictionaryIO = ???
-
-      val outputFile: File =
-        dictionaryIO
-          .writeDictionary(
-            entries = dictionaryEntries,
-            outputDirectory = outputDirectory)
-
-      outputFile
-    }
-
-  private val writeFemaleFirstNameDictionaryEntriesTask: Setting[Task[File]] =
-    writeUsCensus1990FemaleFirstNameDictionaryEntries := {
-      val logger = streams.value.log
-
-      val dictionaryEntries: Seq[DictionaryEntry] = loadUsCensus1990FirstNameFemaleDictionaryEntries.value
-      val outputDirectory: File = usCensus1990NameDictionaryOutputDirectory.value
-
-      def dictionaryIO: DictionaryIO = ???
-
-      val outputFile: File =
-        dictionaryIO
-          .writeDictionary(
-            entries = dictionaryEntries,
-            outputDirectory = outputDirectory)
-
-      outputFile
-    }
-
-  private val writeMaleFirstNameDictionaryEntriesTask: Setting[Task[File]] =
-    writeUsCensus1990MaleFirstNameDictionaryEntries := {
-      val logger = streams.value.log
-
-      val dictionaryEntries: Seq[DictionaryEntry] = loadUsCensus1990FirstNameMaleDictionaryEntries.value
-      val outputDirectory: File = usCensus1990NameDictionaryOutputDirectory.value
-
-      def dictionaryIO: DictionaryIO = ???
-
-      val outputFile: File =
-        dictionaryIO
-          .writeDictionary(
-            entries = dictionaryEntries,
-            outputDirectory = outputDirectory)
-
-      outputFile
     }
 
   private val writeDictionaryEntriesTask: Setting[Task[Seq[File]]] =
     writeUsCensus1990DictionaryEntries := {
-      Seq(
-        writeUsCensus1990LastNameDictionaryEntries.value,
-        writeUsCensus1990FemaleFirstNameDictionaryEntries.value,
-        writeUsCensus1990MaleFirstNameDictionaryEntries.value
-      )
+      val logger = streams.value.log
+
+      val dictionaryEntries: Seq[DictionaryEntry] = readUsCensus1990DictionaryEntries.value
+      val outputDirectory: File = usCensus1990NameDictionaryOutputDirectory.value
+
+      val writeEntries: DictionaryEntriesWriter =
+        census1990NameDictionariesOutputFormat.value match {
+          case DictionaryOutputFormat.Csv =>
+            DictionaryEntriesCsvWriter.using(
+              outputDirectory = outputDirectory,
+              logger = logger
+            )
+        }
+
+      val outputFiles: Seq[File] =
+        writeEntries(dictionaryEntries.toIndexedSeq)
+
+      outputFiles
     }
 
   override val projectSettings =
@@ -261,12 +187,8 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
       downloadLastNameDictionaryFileTask,
       downloadFemaleFirstNameDictionaryFileTask,
       downloadMaleFirstNameDictionaryFileTask,
-      loadLastNameDictionaryEntriesTask,
-      loadFemaleFirstNameDictionaryEntriesTask,
-      loadMaleFirstNameDictionaryEntriesTask,
-      writeLastNameDictionaryEntriesTask,
-      writeFemaleFirstNameDictionaryEntriesTask,
-      writeMaleFirstNameDictionaryEntriesTask,
+      readDictionaryEntriesTask,
+      writeDictionaryEntriesTask,
       Compile / resourceGenerators += writeUsCensus1990DictionaryEntries
     )
 
