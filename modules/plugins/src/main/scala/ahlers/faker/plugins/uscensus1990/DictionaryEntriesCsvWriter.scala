@@ -48,7 +48,13 @@ object DictionaryEntriesCsvWriter {
       lines = dictionaryEntries
         .sortBy(_.name)
         .map { entry =>
-          """%x,%s""".format(indexByName(entry.name), entry.usage)
+          """%x,%s""".format(
+            indexByName(entry.name),
+            entry.usage match {
+              case Usage.FemaleFirst => "F"
+              case Usage.MaleFirst => "M"
+              case Usage.Last => "L"
+            })
         },
       charset = StandardCharsets.US_ASCII,
       append = false
