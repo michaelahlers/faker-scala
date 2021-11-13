@@ -1,1 +1,2 @@
 enablePlugins(HeiseNameDictionaryPlugin)
+enablePlugins(UsCensus1990NameDictionariesPlugin)
