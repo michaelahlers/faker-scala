@@ -12,9 +12,6 @@ import org.scalacheck._
 object census2000 {
 
   val genPersonFamilyName: Gen[PersonFamilyName] =
-    oneOf(
-      FamilyNamesIterator()
-        .map(_.name)
-        .toIndexedSeq)
+    oneOf(personFamilyNames.all)
 
 }

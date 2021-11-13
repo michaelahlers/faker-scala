@@ -11,25 +11,10 @@ import org.scalacheck._
  */
 object census1990 {
 
-  val genPersonGivenNameFemale: Gen[PersonGivenName] =
-    oneOf(
-      GivenNamesFemaleIterator()
-        .map(_.name)
-        .toIndexedSeq)
-
-  val genPersonGivenNameMale: Gen[PersonGivenName] =
-    oneOf(
-      GivenNamesMaleIterator()
-        .map(_.name)
-        .toIndexedSeq)
-
   val genPersonGivenName: Gen[PersonGivenName] =
-    oneOf(genPersonGivenNameFemale, genPersonGivenNameMale)
+    oneOf(personGivenNames.all)
 
   val genPersonFamilyName: Gen[PersonFamilyName] =
-    oneOf(
-      FamilyNamesIterator()
-        .map(_.name)
-        .toIndexedSeq)
+    oneOf(personFamilyNames.all)
 
 }
