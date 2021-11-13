@@ -7,7 +7,8 @@ package ahlers.faker.plugins.uscensus1990
 trait DictionaryEntryParser extends ((Usage, DictionaryLine) => DictionaryEntry)
 object DictionaryEntryParser {
 
-  def using(): DictionaryEntryParser = { (usage, line) =>
+  def using(
+  ): DictionaryEntryParser = { (usage, line) =>
     line.toText
       .split(' ')
       .filter(_.trim.nonEmpty) match {
