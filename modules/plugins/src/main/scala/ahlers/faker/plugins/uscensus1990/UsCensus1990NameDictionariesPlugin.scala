@@ -22,16 +22,16 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
     /**
      * @see [[https://www.census.gov/topics/population/genealogy/data/1990_census/1990_census_namefiles.html United States Census Bureau: Frequently Occurring Surnames from Census 1990]]
      */
-    val census1990FirstNameFemaleDictionaryFileSourceUrl = settingKey[URL]("""Location of the female first names dictionary.""")
+    val usCensus1990FirstNameFemaleDictionaryFileSourceUrl = settingKey[URL]("""Location of the female first names dictionary.""")
 
     /**
      * @see [[https://www.census.gov/topics/population/genealogy/data/1990_census/1990_census_namefiles.html United States Census Bureau: Frequently Occurring Surnames from Census 1990]]
      */
-    val census1990FirstNameMaleDictionaryFileSourceUrl = settingKey[URL]("""Location of the male first names dictionary.""")
+    val usCensus1990FirstNameMaleDictionaryFileSourceUrl = settingKey[URL]("""Location of the male first names dictionary.""")
 
-    val census1990NameDictionariesDownloadDirectory = settingKey[File]("Destination of downloaded name dictionaries, typically rooted in a task temporary directory, cleaned up after completion.")
+    val usCensus1990NameDictionariesDownloadDirectory = settingKey[File]("Destination of downloaded name dictionaries, typically rooted in a task temporary directory, cleaned up after completion.")
 
-    val census1990NameDictionariesOutputFormat = settingKey[DictionaryOutputFormat]("Specifies whether to write—only CSV, for now, with additional formats planned.")
+    val usCensus1990NameDictionariesOutputFormat = settingKey[DictionaryOutputFormat]("Specifies whether to write—only CSV, for now, with additional formats planned.")
 
     val usCensus1990NameDictionaryOutputDirectory = settingKey[File]("Where to write all output files, typically a managed resource directory on the class path.")
 
@@ -54,15 +54,15 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
       url("https://www2.census.gov/topics/genealogy/1990surnames/dist.all.last")
 
   private val femaleFirstNameDictionarySourceUrlSetting: Setting[URL] =
-    census1990FirstNameFemaleDictionaryFileSourceUrl :=
+    usCensus1990FirstNameFemaleDictionaryFileSourceUrl :=
       url("https://www2.census.gov/topics/genealogy/1990surnames/dist.female.first")
 
   private val maleFirstNameDictionarySourceUrlSetting: Setting[URL] =
-    census1990FirstNameMaleDictionaryFileSourceUrl :=
+    usCensus1990FirstNameMaleDictionaryFileSourceUrl :=
       url("https://www2.census.gov/topics/genealogy/1990surnames/dist.male.first")
 
   private val downloadDirectorySetting: Setting[File] =
-    census1990NameDictionariesDownloadDirectory :=
+    usCensus1990NameDictionariesDownloadDirectory :=
       taskTemporaryDirectory.value /
         "www2.census.gov" /
         "topics" /
@@ -70,7 +70,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
         "1990surnames"
 
   private val outputFormatSetting: Setting[DictionaryOutputFormat] =
-    census1990NameDictionariesOutputFormat :=
+    usCensus1990NameDictionariesOutputFormat :=
       DictionaryOutputFormat.Csv
 
   private val outputDirectorySetting: Setting[File] =
@@ -86,7 +86,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
       val logger = streams.value.log
 
       val sourceUrl = usCensus1990LastNameDictionarySourceUrl.value
-      val downloadDirectory = census1990NameDictionariesDownloadDirectory.value
+      val downloadDirectory = usCensus1990NameDictionariesDownloadDirectory.value
       val downloadFile = downloadDirectory / sourceUrl.getFile
 
       val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
@@ -104,8 +104,8 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
     downloadUsCensus1990FemaleFirstNameDictionaryFile := {
       val logger = streams.value.log
 
-      val sourceUrl = census1990FirstNameFemaleDictionaryFileSourceUrl.value
-      val downloadDirectory = census1990NameDictionariesDownloadDirectory.value
+      val sourceUrl = usCensus1990FirstNameFemaleDictionaryFileSourceUrl.value
+      val downloadDirectory = usCensus1990NameDictionariesDownloadDirectory.value
       val downloadFile = downloadDirectory / sourceUrl.getFile
 
       val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
@@ -123,8 +123,8 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
     downloadUsCensus1990MaleFirstNameDictionaryFile := {
       val logger = streams.value.log
 
-      val sourceUrl = census1990FirstNameMaleDictionaryFileSourceUrl.value
-      val downloadDirectory = census1990NameDictionariesDownloadDirectory.value
+      val sourceUrl = usCensus1990FirstNameMaleDictionaryFileSourceUrl.value
+      val downloadDirectory = usCensus1990NameDictionariesDownloadDirectory.value
       val downloadFile = downloadDirectory / sourceUrl.getFile
 
       val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
@@ -165,7 +165,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
       val outputDirectory: File = usCensus1990NameDictionaryOutputDirectory.value
 
       val writeEntries: DictionaryEntriesWriter =
-        census1990NameDictionariesOutputFormat.value match {
+        usCensus1990NameDictionariesOutputFormat.value match {
           case DictionaryOutputFormat.Csv =>
             DictionaryEntriesCsvWriter.using(
               outputDirectory = outputDirectory,
