@@ -6,7 +6,7 @@ package ahlers.faker.datasets.census2000
  */
 case object usages {
 
-  private[census1990] val entries: Seq[UsageEntry] =
+  private[census2000] val entries: Seq[UsageEntry] =
     DictionaryIO.default
       .loadUsageEntries()
 

@@ -1,7 +1,5 @@
 package ahlers.faker.datasets.census1990
 
-import ahlers.faker.datasets.census1990.Usage
-
 /**
  * @since November 13, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
