@@ -13,8 +13,8 @@ import java.nio.charset.StandardCharsets
  * @since November 13, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-class DictionaryEntriesCvsWriterSpec extends FixtureAnyWordSpec {
-  import DictionaryEntriesCvsWriterSpec._
+class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
+  import DictionaryEntriesCsvWriterSpec._
 
   override type FixtureParam = Fixtures
   override protected def withFixture(test: OneArgTest) = {
@@ -119,7 +119,7 @@ class DictionaryEntriesCvsWriterSpec extends FixtureAnyWordSpec {
 
 }
 
-object DictionaryEntriesCvsWriterSpec {
+object DictionaryEntriesCsvWriterSpec {
 
   case class Fixtures(
     nameFile: File,
