@@ -47,7 +47,7 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
       .apply(withFixture(_))
   }
 
-  "Consolidate usages to duplicate names" in { fixtures =>
+  "Read and parse entries file" in { fixtures =>
     import fixtures.{ sourceFile, readEntries }
 
     sourceFile.appendLines(
