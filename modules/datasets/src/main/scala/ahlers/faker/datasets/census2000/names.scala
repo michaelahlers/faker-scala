@@ -1,4 +1,4 @@
-package ahlers.faker.datasets.census1990
+package ahlers.faker.datasets.census2000
 
 /**
  * @since November 13, 2021
@@ -6,7 +6,7 @@ package ahlers.faker.datasets.census1990
  */
 case object names {
 
-  private[census1990] val entries: Seq[NameEntry] =
+  private[census2000] val entries: Seq[NameEntry] =
     DictionaryIO.default
       .loadNameEntries()
 

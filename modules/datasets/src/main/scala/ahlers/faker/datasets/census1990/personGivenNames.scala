@@ -9,7 +9,7 @@ import eu.timepit.refined.api.Refined
  */
 object personGivenNames {
 
-  implicit private[heise] class NameOps(private val self: Name) extends AnyVal {
+  implicit private[census1990] class NameOps(private val self: Name) extends AnyVal {
     import self._
     def toPersonGivenName: PersonGivenName =
       PersonGivenName(Refined.unsafeApply(toText))

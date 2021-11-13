@@ -1,6 +1,6 @@
 package ahlers.faker.datasets.census1990
 
-import ahlers.faker.datasets.heise.Usage
+import ahlers.faker.datasets.census1990.Usage
 
 /**
  * @since November 13, 2021
