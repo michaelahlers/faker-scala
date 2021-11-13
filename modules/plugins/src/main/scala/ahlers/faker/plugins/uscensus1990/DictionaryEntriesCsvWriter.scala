@@ -14,13 +14,12 @@ object DictionaryEntriesCsvWriter {
     Ordering.by(_.toText)
 
   def using(
-    outputDirectory: File,
+    nameFile: File,
+    usageFile: File,
     logger: Logger
   ): DictionaryEntriesWriter = { dictionaryEntries =>
-    outputDirectory.mkdirs()
-
-    val nameFile = outputDirectory / "name.csv"
-    val usageFile = outputDirectory / "index,usage.csv"
+    nameFile.getParentFile.mkdirs()
+    usageFile.getParentFile.mkdirs()
 
     /** Group around unique [[Name]] values. */
     val indexByName: Map[Name, Int] =
@@ -63,6 +62,20 @@ object DictionaryEntriesCsvWriter {
     Seq(
       nameFile,
       usageFile
+    )
+  }
+
+  def using(
+    outputDirectory: File,
+    logger: Logger
+  ): DictionaryEntriesWriter = {
+    val nameFile = outputDirectory / "name.csv"
+    val usageFile = outputDirectory / "index,usage.csv"
+
+    using(
+      nameFile = nameFile,
+      usageFile = usageFile,
+      logger = logger
     )
   }
 
