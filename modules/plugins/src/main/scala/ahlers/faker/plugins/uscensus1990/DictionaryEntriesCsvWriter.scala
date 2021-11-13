@@ -43,7 +43,7 @@ object DictionaryEntriesCsvWriter {
     )
 
     IO.writeLines(
-      file = nameFile,
+      file = usageFile,
       lines = usageNames
         .map { case (usage, name) =>
           """%d,%s""".format(names.indexOf(name), usage)
