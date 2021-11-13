@@ -46,10 +46,12 @@ object DictionaryEntriesCsvWriter {
       file = usageFile,
       lines = dictionaryEntries
         .sortBy(_.name)
-        .map { entry =>
+        .map(entry => (entry.name, entry.usage))
+        .distinct
+        .map { case (name, usage) =>
           """%x,%s""".format(
-            indexByName(entry.name),
-            entry.usage match {
+            indexByName(name),
+            usage match {
               case Usage.FemaleFirst => "F"
               case Usage.MaleFirst => "M"
               case Usage.Last => "L"

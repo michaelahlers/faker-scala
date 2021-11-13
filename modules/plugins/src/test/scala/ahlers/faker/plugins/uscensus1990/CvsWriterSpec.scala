@@ -16,8 +16,6 @@ import java.nio.charset.StandardCharsets
 class CvsWriterSpec extends FixtureAnyWordSpec {
   import CvsWriterSpec._
 
-  better.files.File.temporaryFile()
-
   override type FixtureParam = Fixtures
   override protected def withFixture(test: OneArgTest) = {
     val fixturesF =
@@ -43,18 +41,22 @@ class CvsWriterSpec extends FixtureAnyWordSpec {
               logger = Logger.Null
             )
 
-      } yield Fixtures(
-        nameFile = nameFile,
-        usageFile = usageFile,
-        writeEntries = writer
-      )
+      } yield {
+        info(s"""Name file: "$nameFile"; usage file: "$usageFile".""")
+
+        Fixtures(
+          nameFile = nameFile,
+          usageFile = usageFile,
+          writeEntries = writer
+        )
+      }
 
     fixturesF
       .map(test.toNoArgTest(_))
       .apply(withFixture(_))
   }
 
-  "Consolidate duplicate names" in { fixtures =>
+  "Consolidate usages to duplicate names" in { fixtures =>
     import fixtures.nameFile
     import fixtures.usageFile
     import fixtures.writeEntries
@@ -63,15 +65,26 @@ class CvsWriterSpec extends FixtureAnyWordSpec {
 
     val entries = IndexedSeq(
       partialEntry(Usage.FemaleFirst, Name("Alpha")),
-      partialEntry(Usage.FemaleFirst, Name("Bravo")),
       partialEntry(Usage.MaleFirst, Name("Bravo")),
-      partialEntry(Usage.FemaleFirst, Name("Charlie")),
-      partialEntry(Usage.MaleFirst, Name("Charlie")),
-      partialEntry(Usage.FemaleFirst, Name("Charlie")),
-      partialEntry(Usage.Last, Name("Charlie"))
+      partialEntry(Usage.Last, Name("Charlie")),
+      partialEntry(Usage.FemaleFirst, Name("Delta")),
+      partialEntry(Usage.MaleFirst, Name("Delta")),
+      partialEntry(Usage.FemaleFirst, Name("Echo")),
+      partialEntry(Usage.MaleFirst, Name("Echo")),
+      partialEntry(Usage.Last, Name("Echo")),
+      partialEntry(Usage.FemaleFirst, Name("Foxtrot")),
+      partialEntry(Usage.FemaleFirst, Name("Foxtrot")),
+      partialEntry(Usage.MaleFirst, Name("Foxtrot")),
+      partialEntry(Usage.MaleFirst, Name("Foxtrot")),
+      partialEntry(Usage.Last, Name("Foxtrot")),
+      partialEntry(Usage.Last, Name("Foxtrot"))
     )
 
     writeEntries(entries)
+      .should(matchTo(Seq(
+        nameFile.toJava,
+        usageFile.toJava
+      )))
 
     nameFile
       .lines(StandardCharsets.US_ASCII)
@@ -79,7 +92,10 @@ class CvsWriterSpec extends FixtureAnyWordSpec {
       .should(matchTo(Seq(
         "Alpha",
         "Bravo",
-        "Charlie"
+        "Charlie",
+        "Delta",
+        "Echo",
+        "Foxtrot"
       )))
 
     usageFile
@@ -87,11 +103,16 @@ class CvsWriterSpec extends FixtureAnyWordSpec {
       .toSeq
       .should(matchTo(Seq(
         "0,F",
-        "1,F",
         "1,M",
-        "2,F",
-        "2,M",
-        "2,L"
+        "2,L",
+        "3,F",
+        "3,M",
+        "4,F",
+        "4,M",
+        "4,L",
+        "5,F",
+        "5,M",
+        "5,L"
       )))
 
   }
