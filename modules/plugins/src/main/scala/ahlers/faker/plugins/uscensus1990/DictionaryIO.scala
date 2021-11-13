@@ -15,7 +15,7 @@ import scala.util.control.NonFatal
  */
 trait DictionaryIO {
 
-  def downloadDictionary(sourceUrl: URL, downloadDirectory: File): File
+  def downloadDictionary(sourceUrl: URL, downloadFile: File): File
 
 }
 
@@ -25,8 +25,8 @@ object DictionaryIO {
     logger: Logger
   ): DictionaryIO = new DictionaryIO {
 
-    override def downloadDictionary(sourceUrl: URL, downloadDirectory: File) = {
-      val downloadFile: File = downloadDirectory / sourceUrl.getFile
+    override def downloadDictionary(sourceUrl: URL, downloadFile: File) = {
+      downloadFile.getParentFile().mkdirs()
 
       try Using.urlInputStream(sourceUrl)(IO.transfer(_, downloadFile))
       catch {

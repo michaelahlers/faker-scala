@@ -87,6 +87,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
 
       val sourceUrl = usCensus1990LastNameDictionarySourceUrl.value
       val downloadDirectory = census1990NameDictionariesDownloadDirectory.value
+      val downloadFile = downloadDirectory / sourceUrl.getFile
 
       val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
 
@@ -94,7 +95,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
         dictionaryIO
           .downloadDictionary(
             sourceUrl = sourceUrl,
-            downloadDirectory = downloadDirectory)
+            downloadFile = downloadFile)
 
       dictionaryFile
     }
@@ -105,6 +106,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
 
       val sourceUrl = census1990FirstNameFemaleDictionaryFileSourceUrl.value
       val downloadDirectory = census1990NameDictionariesDownloadDirectory.value
+      val downloadFile = downloadDirectory / sourceUrl.getFile
 
       val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
 
@@ -112,7 +114,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
         dictionaryIO
           .downloadDictionary(
             sourceUrl = sourceUrl,
-            downloadDirectory = downloadDirectory)
+            downloadFile = downloadFile)
 
       dictionaryFile
     }
@@ -123,6 +125,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
 
       val sourceUrl = census1990FirstNameMaleDictionaryFileSourceUrl.value
       val downloadDirectory = census1990NameDictionariesDownloadDirectory.value
+      val downloadFile = downloadDirectory / sourceUrl.getFile
 
       val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
 
@@ -130,7 +133,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
         dictionaryIO
           .downloadDictionary(
             sourceUrl = sourceUrl,
-            downloadDirectory = downloadDirectory)
+            downloadFile = downloadFile)
 
       dictionaryFile
     }
@@ -143,8 +146,8 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
       val maleFirstNameFile: File = downloadUsCensus1990MaleFirstNameDictionaryFile.value
       val lastNameFile: File = downloadUsCensus1990LastNameDictionaryFile.value
 
-      val parseEntries: DictionaryEntriesParser =
-        DictionaryEntriesParser.using(DictionaryEntryParser.default)
+      val parseEntries: DictionaryEntriesReader =
+        DictionaryEntriesReader.using(DictionaryEntryParser.default)
 
       val dictionaryEntries: Seq[DictionaryEntry] =
         parseEntries(Usage.FemaleFirst, femaleFirstNameFile) ++
