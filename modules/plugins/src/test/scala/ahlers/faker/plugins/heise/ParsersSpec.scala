@@ -14,21 +14,15 @@ import java.nio.charset.StandardCharsets
  */
 class ParsersSpec extends FixtureAnyWordSpec {
 
-  override type FixtureParam = Iterator[DictionaryLine]
+  override type FixtureParam = IndexedSeq[DictionaryLine]
   override protected def withFixture(test: OneArgTest) = {
     val lines =
       Resource.my.getAsStream("nam_dict.txt")
         .lines(StandardCharsets.ISO_8859_1)
         .map(DictionaryLine(_))
+        .toIndexedSeq
 
-    val outcome =
-      withFixture(test.toNoArgTest(lines))
-
-    info("Dictionary line iterator had %d remaining after test."
-      .format(
-        lines.size))
-
-    outcome
+    withFixture(test.toNoArgTest(lines))
   }
 
   "Character encodings" in { lines =>
@@ -104,7 +98,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
             Seq(
               RegionWeight(
                 region = Region(RegionLabel("the Netherlands")),
-                weight = 0x4
+                weight = Weight(0x4)
               )))))
 
     entries(3)
@@ -116,7 +110,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
             Seq(
               RegionWeight(
                 region = Region(RegionLabel("Norway")),
-                weight = 0x1
+                weight = Weight(0x1)
               )))))
 
     entries(95)
@@ -128,7 +122,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
             Seq(
               RegionWeight(
                 region = Region(RegionLabel("Arabia/Persia")),
-                weight = 0x2
+                weight = Weight(0x2)
               )))))
 
     entries(186)
@@ -140,7 +134,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
             Seq(
               RegionWeight(
                 region = Region(RegionLabel("U.S.A.")),
-                weight = 0x1
+                weight = Weight(0x1)
               )))))
 
     entries(19982)
@@ -152,51 +146,51 @@ class ParsersSpec extends FixtureAnyWordSpec {
             Seq(
               RegionWeight(
                 region = Region(RegionLabel("Great Britain")),
-                weight = 0x7
+                weight = Weight(0x7)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Ireland")),
-                weight = 0x6
+                weight = Weight(0x6)
               ),
               RegionWeight(
                 region = Region(RegionLabel("U.S.A.")),
-                weight = 0x6
+                weight = Weight(0x6)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Malta")),
-                weight = 0x6
+                weight = Weight(0x6)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Belgium")),
-                weight = 0x1
+                weight = Weight(0x1)
               ),
               RegionWeight(
                 region = Region(RegionLabel("the Netherlands")),
-                weight = 0x2
+                weight = Weight(0x2)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Austria")),
-                weight = 0x2
+                weight = Weight(0x2)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Swiss")),
-                weight = 0x3
+                weight = Weight(0x3)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Denmark")),
-                weight = 0x7
+                weight = Weight(0x7)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Norway")),
-                weight = 0x3
+                weight = Weight(0x3)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Sweden")),
-                weight = 0x3
+                weight = Weight(0x3)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Estonia")),
-                weight = 0x6
+                weight = Weight(0x6)
               )
             )
         )))
@@ -210,7 +204,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
             Seq(
               RegionWeight(
                 region = Region(RegionLabel("Portugal")),
-                weight = 0x3
+                weight = Weight(0x3)
               )))))
 
     entries(48173)
@@ -222,59 +216,59 @@ class ParsersSpec extends FixtureAnyWordSpec {
             Seq(
               RegionWeight(
                 region = Region(RegionLabel("U.S.A.")),
-                weight = 0x1
+                weight = Weight(0x1)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Italy")),
-                weight = 0x1
+                weight = Weight(0x1)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Lithuania")),
-                weight = 0x1
+                weight = Weight(0x1)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Czech Republic")),
-                weight = 0x1
+                weight = Weight(0x1)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Romania")),
-                weight = 0x3
+                weight = Weight(0x3)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Bulgaria")),
-                weight = 0x1
+                weight = Weight(0x1)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Bosnia and Herzegovina")),
-                weight = 0x1
+                weight = Weight(0x1)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Albania")),
-                weight = 0x1
+                weight = Weight(0x1)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Greece")),
-                weight = 0x1
+                weight = Weight(0x1)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Belarus")),
-                weight = 0x2
+                weight = Weight(0x2)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Moldova")),
-                weight = 0x3
+                weight = Weight(0x3)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Armenia")),
-                weight = 0x2
+                weight = Weight(0x2)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Kazakhstan/Uzbekistan,etc.")),
-                weight = 0x2
+                weight = Weight(0x2)
               ),
               RegionWeight(
                 region = Region(RegionLabel("Arabia/Persia")),
-                weight = 0x4
+                weight = Weight(0x4)
               )
             )
         )))
@@ -288,7 +282,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
             Seq(
               RegionWeight(
                 region = Region(RegionLabel("Lithuania")),
-                weight = 0x1
+                weight = Weight(0x1)
               )))))
 
     entries(48508)
@@ -300,7 +294,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
             Seq(
               RegionWeight(
                 region = Region(RegionLabel("Lithuania")),
-                weight = 0x5
+                weight = Weight(0x5)
               )))))
 
     entries(48527)
@@ -312,7 +306,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
             Seq(
               RegionWeight(
                 region = Region(RegionLabel("Poland")),
-                weight = 0x2
+                weight = Weight(0x2)
               )))))
 
   }
