@@ -22,21 +22,16 @@ object DictionaryEntriesCsvWriter {
     val nameFile = outputDirectory / "name.csv"
     val usageFile = outputDirectory / "index,usage.csv"
 
-    val names: Seq[Name] =
+    val entriesIndex: Seq[(DictionaryEntry, Int)] =
       dictionaryEntries
         .sortBy(_.name)
-        .map(_.name)
-
-    val usageNames: Seq[(Usage, Name)] =
-      dictionaryEntries
-        .sortBy(_.name)
-        .map(entry => (entry.usage, entry.name))
+        .zipWithIndex
 
     IO.writeLines(
       file = nameFile,
-      lines = names
-        .map { name =>
-          """%s""".format(name.toText)
+      lines = entriesIndex
+        .map { case (entry, _) =>
+          """%s""".format(entry.name.toText)
         },
       charset = StandardCharsets.US_ASCII,
       append = false
@@ -44,9 +39,9 @@ object DictionaryEntriesCsvWriter {
 
     IO.writeLines(
       file = usageFile,
-      lines = usageNames
-        .map { case (usage, name) =>
-          """%d,%s""".format(names.indexOf(name), usage)
+      lines = entriesIndex
+        .map { case (entry, index) =>
+          """%x,%s""".format(index, entry.usage)
         },
       charset = StandardCharsets.US_ASCII,
       append = false
