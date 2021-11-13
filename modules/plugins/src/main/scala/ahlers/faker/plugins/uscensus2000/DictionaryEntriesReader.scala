@@ -17,6 +17,7 @@ object DictionaryEntriesReader {
     parseEntry: DictionaryEntryParser
   ): DictionaryEntriesReader = { (usage, sourceFile) =>
     IO.readLines(sourceFile, charset = StandardCharsets.US_ASCII)
+      .drop(1)
       .map(DictionaryLine(_))
       .map(parseEntry(usage, _))
   }
