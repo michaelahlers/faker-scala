@@ -16,7 +16,7 @@ class PersonGivenNamesSpec extends AnyWordSpec {
       .foreach(inside(_) { case givenName =>
         givenName
           .toText.value
-          .shouldNot(include("+"))
+          .should(not(include("+").or(include("="))))
       })
 
   }
