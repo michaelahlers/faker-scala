@@ -8,7 +8,10 @@ trait DictionaryEntryParser extends ((Usage, DictionaryLine) => DictionaryEntry)
 object DictionaryEntryParser {
 
   def using(): DictionaryEntryParser = { (usage, line) =>
-    line.toText.split(' ') match {
+    line.toText
+      .split(' ')
+      .filter(_.trim.nonEmpty) match {
+
       case Array(name, frequency, cumulativeFrequency, rank) =>
         DictionaryEntry(
           usage = usage,
@@ -17,6 +20,11 @@ object DictionaryEntryParser {
           cumulativeFrequency = CumulativeFrequency(cumulativeFrequency.toFloat),
           rank = Rank(rank.toInt)
         )
+
+      case _ =>
+        /** @todo Proper error handling. */
+        ???
+
     }
   }
 
