@@ -16,7 +16,7 @@ private[heise] object TemplateEntryParser {
     """^(\w+)=(\w+)$""".r
 
   private val HyphenatedPattern: Regex =
-    """^(\w+)+(\w+)$""".r
+    """^(\w+)\+(\w+)$""".r
 
   val default: TemplateEntryParser = line =>
     TemplateEntry(
