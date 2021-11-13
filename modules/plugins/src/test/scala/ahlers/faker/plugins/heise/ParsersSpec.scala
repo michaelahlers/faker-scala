@@ -82,9 +82,8 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
   "Entries" in { lines =>
     val entries =
-      DictionaryEntriesParser.using(IndexedSeq.empty)
+      DictionaryEntriesReader.using(IndexedSeq.empty)
         .apply(lines)
-        .toSeq
 
     entries
       .should(have(size(48528)))

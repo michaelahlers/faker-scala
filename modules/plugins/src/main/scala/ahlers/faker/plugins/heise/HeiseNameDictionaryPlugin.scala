@@ -102,11 +102,11 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         IO.readLines(dictionaryFile, StandardCharsets.ISO_8859_1)
           .map(DictionaryLine(_))
 
-      val parseDictionaryEntries =
-        DictionaryEntriesParser.using(regions.toIndexedSeq)
+      val readDictionaryEntries =
+        DictionaryEntriesReader.using(regions.toIndexedSeq)
 
       val dictionaryEntries: Seq[DictionaryEntry] =
-        parseDictionaryEntries(dictionaryLines
+        readDictionaryEntries(dictionaryLines
           .toIndexedSeq)
 
       dictionaryEntries

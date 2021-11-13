@@ -9,14 +9,14 @@ import java.nio.charset.StandardCharsets
  * @since September 22, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait DictionaryEntriesParser extends (IndexedSeq[DictionaryLine] => Seq[DictionaryEntry])
-object DictionaryEntriesParser {
+trait DictionaryEntriesReader extends (IndexedSeq[DictionaryLine] => Seq[DictionaryEntry])
+object DictionaryEntriesReader {
 
   def using(
     regions: IndexedSeq[Region],
     characterEncodings: IndexedSeq[CharacterEncoding],
     regionIndexes: IndexedSeq[RegionIndex]
-  ): DictionaryEntriesParser = {
+  ): DictionaryEntriesReader = {
     val decodeUsage = UsageDecoder()
 
     lines =>
@@ -35,7 +35,7 @@ object DictionaryEntriesParser {
         .map(parseDictionaryEntry(_))
   }
 
-  def using(regions: IndexedSeq[Region]): DictionaryEntriesParser = {
+  def using(regions: IndexedSeq[Region]): DictionaryEntriesReader = {
     val parseCharacterEncodings = CharacterEncodingsParser.default
     val parseRegionIndexes = RegionIndexesParser.using(regions)
 
@@ -48,8 +48,8 @@ object DictionaryEntriesParser {
         parseRegionIndexes(lines)
           .toIndexedSeq
 
-      val parseDictionaryEntries: DictionaryEntriesParser =
-        DictionaryEntriesParser.using(
+      val parseDictionaryEntries: DictionaryEntriesReader =
+        DictionaryEntriesReader.using(
           regions = regions,
           characterEncodings = characterEncodings,
           regionIndexes = regionIndexes)
