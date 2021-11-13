@@ -69,9 +69,20 @@ object DictionaryEntriesCsvWriter {
             """%x,%s"""
               .format(
                 templates.indexOf(template),
-                usage)
+                usage match {
+                  case Usage.Female => "F"
+                  case Usage.FirstFemale => "1F"
+                  case Usage.MostlyFemale => "?F"
+                  case Usage.Male => "M"
+                  case Usage.FirstMale => "1M"
+                  case Usage.MostlyMale => "?M"
+                  case Usage.Unisex => "?"
+                  case Usage.Equivalent => "="
+                }
+              )
           },
-      append = false)
+      append = false
+    )
 
     IO.writeLines(
       file = countryCodeWeightFile,

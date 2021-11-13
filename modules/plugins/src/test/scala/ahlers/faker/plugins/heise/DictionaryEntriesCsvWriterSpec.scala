@@ -86,7 +86,10 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
       partialEntry(Usage.FirstFemale, Template("Delta")),
       partialEntry(Usage.MostlyFemale, Template("Delta")),
       partialEntry(Usage.Male, Template("Echo")),
-      partialEntry(Usage.Unisex, Template("Echo"))
+      partialEntry(Usage.FirstMale, Template("Echo")),
+      partialEntry(Usage.MostlyMale, Template("Echo")),
+      partialEntry(Usage.Unisex, Template("Echo")),
+      partialEntry(Usage.Equivalent, Template("Foxtrot"))
     )
 
     writeEntries(entries)
@@ -104,24 +107,28 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
         "Bravo",
         "Charlie",
         "Delta",
-        "Echo"
+        "Echo",
+        "Foxtrot"
       )))
 
     usageFile
       .lines(StandardCharsets.ISO_8859_1)
       .toSeq
       .should(matchTo(Seq(
-        "0,Female",
-        "1,Female",
-        "1,FirstFemale",
-        "2,Female",
-        "2,FirstFemale",
-        "2,MostlyFemale",
-        "3,Female",
-        "3,FirstFemale",
-        "3,MostlyFemale",
-        "4,Male",
-        "4,Unisex"
+        "0,F",
+        "1,F",
+        "1,1F",
+        "2,F",
+        "2,1F",
+        "2,?F",
+        "3,F",
+        "3,1F",
+        "3,?F",
+        "4,M",
+        "4,1M",
+        "4,?M",
+        "4,?",
+        "5,="
       )))
   }
 

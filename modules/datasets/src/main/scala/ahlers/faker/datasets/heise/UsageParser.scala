@@ -10,16 +10,16 @@ private[heise] object UsageParser {
   import Usage._
 
   val default: UsageParser = {
-    case "Male" => Gender.Male
-    case "FirstMale" => Gender.FirstMale
-    case "MostlyMale" => Gender.MostlyMale
+    case "M" => Gender.Male
+    case "1M" => Gender.FirstMale
+    case "?M" => Gender.MostlyMale
 
-    case "Female" => Gender.Female
-    case "FirstFemale" => Gender.FirstFemale
-    case "MostlyFemale" => Gender.MostlyFemale
+    case "F" => Gender.Female
+    case "1F" => Gender.FirstFemale
+    case "?F" => Gender.MostlyFemale
 
-    case "Unisex" => Gender.Unisex
+    case "?" => Gender.Unisex
 
-    case "Equivalent" => Equivalent
+    case "=" => Equivalent
   }
 }
