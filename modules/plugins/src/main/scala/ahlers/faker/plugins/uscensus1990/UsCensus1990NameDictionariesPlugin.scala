@@ -51,15 +51,15 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
 
   private val lastNameDictionarySourceUrlSetting: Setting[URL] =
     usCensus1990LastNameDictionarySourceUrl :=
-      url("http://www2.census.gov/topics/genealogy/1990surnames/dist.all.last")
+      url("https://www2.census.gov/topics/genealogy/1990surnames/dist.all.last")
 
   private val femaleFirstNameDictionarySourceUrlSetting: Setting[URL] =
     census1990FirstNameFemaleDictionaryFileSourceUrl :=
-      url("http://www2.census.gov/topics/genealogy/1990surnames/dist.female.first")
+      url("https://www2.census.gov/topics/genealogy/1990surnames/dist.female.first")
 
   private val maleFirstNameDictionarySourceUrlSetting: Setting[URL] =
     census1990FirstNameMaleDictionaryFileSourceUrl :=
-      url("http://www2.census.gov/topics/genealogy/1990surnames/dist.male.first")
+      url("https://www2.census.gov/topics/genealogy/1990surnames/dist.male.first")
 
   private val downloadDirectorySetting: Setting[File] =
     census1990NameDictionariesDownloadDirectory :=
