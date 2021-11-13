@@ -12,7 +12,7 @@ object DictionaryEntryParser {
     line.toText
       .split(',') match {
 
-      case Array(name, rank, _, _, _, _, _, _, _, _, _, _) =>
+      case Array(name, rank, _, _, _, _, _, _, _, _, _) =>
         DictionaryEntry(
           usage = usage,
           name = Name(name),
