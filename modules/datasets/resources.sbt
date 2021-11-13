@@ -11,3 +11,10 @@ usCensus1990NameDictionaryOutputDirectory :=
     "faker" /
     "datasets" /
     "census1990"
+
+usCensus2000NameDictionaryOutputDirectory :=
+  (Compile / resourceManaged).value /
+    "ahlers" /
+    "faker" /
+    "datasets" /
+    "census2000"
