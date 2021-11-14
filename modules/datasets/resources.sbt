@@ -5,7 +5,7 @@ heiseNameDictionaryOutputDirectory :=
     "datasets" /
     "heise"
 
-opendata500NameDictionaryOutputDirectory :=
+openData500CompanyOutputDirectory :=
   (Compile / resourceManaged).value /
     "ahlers" /
     "faker" /

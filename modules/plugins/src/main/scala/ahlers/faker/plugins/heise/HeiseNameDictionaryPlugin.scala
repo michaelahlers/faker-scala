@@ -4,8 +4,14 @@ import sbt.Keys._
 import sbt._
 
 import java.nio.charset.StandardCharsets
+import scala.util.Try
 
 object HeiseNameDictionaryPlugin extends AutoPlugin {
+
+  /** A quick-and-dirty [[URL]] factory, intended to streamline use of [[sun.net.www.protocol.classpath.Handler]] without manipulating the runtime. */
+  private def url(location: String): URL =
+    Try(new URL(location))
+      .getOrElse(new URL(null, location, sun.net.www.protocol.classpath.Handler))
 
   /** Per [[noTrigger]], this plugin must be manually enabled, even if [[requires requirements]] are met. */
   override val trigger = noTrigger
@@ -37,9 +43,11 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
   import autoImport._
 
+  /** @todo Consider restoring from authoritative source. */
   private val archiveSourceUrlSetting: Setting[URL] =
     heiseNameDictionaryArchiveSourceUrl :=
-      url("ftp://ftp.heise.de/pub/ct/listings/0717-182.zip")
+      //url("ftp://ftp.heise.de/pub/ct/listings/0717-182.zip")
+      url("classpath:ftp.heise.de/pub/ct/listings/0717-182.zip")
 
   private val downloadDirectorySetting: Setting[File] =
     heiseNameDictionaryDownloadDirectory :=

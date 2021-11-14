@@ -3,11 +3,18 @@ package ahlers.faker.plugins.uscensus1990
 import sbt.Keys._
 import sbt._
 
+import scala.util.Try
+
 /**
  * @since October 16, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
 object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
+
+  /** A quick-and-dirty [[URL]] factory, intended to streamline use of [[sun.net.www.protocol.classpath.Handler]] without manipulating the runtime. */
+  private def url(location: String): URL =
+    Try(new URL(location))
+      .getOrElse(new URL(null, location, sun.net.www.protocol.classpath.Handler))
 
   /** Per [[noTrigger]], this plugin must be manually enabled, even if [[requires requirements]] are met. */
   override val trigger = noTrigger
@@ -49,17 +56,23 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
 
   import autoImport._
 
+  /** @todo Consider restoring from authoritative source. */
   private val lastNameDictionarySourceUrlSetting: Setting[URL] =
     usCensus1990LastNameDictionarySourceUrl :=
-      url("https://www2.census.gov/topics/genealogy/1990surnames/dist.all.last")
+      //url("https://www2.census.gov/topics/genealogy/1990surnames/dist.all.last")
+      url("classpath:www2.census.gov/topics/genealogy/1990surnames/dist.all.last")
 
+  /** @todo Consider restoring from authoritative source. */
   private val femaleFirstNameDictionarySourceUrlSetting: Setting[URL] =
     usCensus1990FirstNameFemaleDictionaryFileSourceUrl :=
-      url("https://www2.census.gov/topics/genealogy/1990surnames/dist.female.first")
+      //url("https://www2.census.gov/topics/genealogy/1990surnames/dist.female.first")
+      url("classpath:www2.census.gov/topics/genealogy/1990surnames/dist.female.first")
 
+  /** @todo Consider restoring from authoritative source. */
   private val maleFirstNameDictionarySourceUrlSetting: Setting[URL] =
     usCensus1990FirstNameMaleDictionaryFileSourceUrl :=
-      url("https://www2.census.gov/topics/genealogy/1990surnames/dist.male.first")
+      //url("https://www2.census.gov/topics/genealogy/1990surnames/dist.male.first")
+      url("classpath:www2.census.gov/topics/genealogy/1990surnames/dist.male.first")
 
   private val downloadDirectorySetting: Setting[File] =
     usCensus1990NameDictionariesDownloadDirectory :=

@@ -3,11 +3,17 @@ package ahlers.faker.plugins.uscensus2000
 import sbt.Keys._
 import sbt._
 
+import scala.util.Try
+
 /**
  * @since October 16, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
 object UsCensus2000NameDictionariesPlugin extends AutoPlugin {
+
+  /** A quick-and-dirty [[URL]] factory, intended to streamline use of [[sun.net.www.protocol.classpath.Handler]] without manipulating the runtime. */
+  private def url(location: String): URL =
+    Try(new URL(location)).getOrElse(new URL(null, location, sun.net.www.protocol.classpath.Handler))
 
   /** Per [[noTrigger]], this plugin must be manually enabled, even if [[requires requirements]] are met. */
   override val trigger = noTrigger
@@ -35,9 +41,11 @@ object UsCensus2000NameDictionariesPlugin extends AutoPlugin {
 
   import autoImport._
 
+  /** @todo Consider restoring from authoritative source. */
   private val nameDictionarySourceUrlSetting: Setting[URL] =
     usCensus2000SurnameDictionarySourceUrl :=
-      url("https://www2.census.gov/topics/genealogy/2000surnames/names.zip")
+      //url("https://www2.census.gov/topics/genealogy/2000surnames/names.zip")
+      url("classpath:www2.census.gov/topics/genealogy/2000surnames/names.zip")
 
   private val downloadDirectorySetting: Setting[File] =
     usCensus2000NameDictionariesDownloadDirectory :=

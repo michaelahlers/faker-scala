@@ -1,10 +1,9 @@
 package ahlers.faker.plugins.opendata500
 
-import ahlers.faker.plugins.ClassPathStreamHandler
 import sbt.Keys._
 import sbt._
 
-import java.net.URLStreamHandler
+import scala.util.Try
 
 /**
  * @since November 14, 2021
@@ -12,9 +11,10 @@ import java.net.URLStreamHandler
  */
 object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
 
-  /** A quick-and-dirty [[URL]] factory, intended to streamline use of [[ClassPathStreamHandler]] without manipulating the runtime. */
-  def url(location: String, handler: URLStreamHandler): URL =
-    new URL(null, location, handler)
+  /** A quick-and-dirty [[URL]] factory, intended to streamline use of [[sun.net.www.protocol.classpath.Handler]] without manipulating the runtime. */
+  private def url(location: String): URL =
+    Try(new URL(location))
+      .getOrElse(new URL(null, location, sun.net.www.protocol.classpath.Handler))
 
   /** Per [[noTrigger]], this plugin must be manually enabled, even if [[requires requirements]] are met. */
   override val trigger = noTrigger
@@ -53,13 +53,13 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
   private val usCompanySourceUrlSetting: Setting[URL] =
     openData500UsCompanyDictionarySourceUrl :=
       //url("https://www.opendata500.com/us/download/us_companies.csv")
-      url("classpath:www.opendata500.com/us/download/us_companies.csv", ClassPathStreamHandler)
+      url("classpath:www.opendata500.com/us/download/us_companies.csv")
 
   /** @todo Consider restoring from authoritative source. */
-  private val frCompanySourceUrlSetting: Setting[URL] =
+  private val krCompanySourceUrlSetting: Setting[URL] =
     openData500KrCompanyDictionaryFileSourceUrl :=
       //url("https://www.opendata500.com/kr/download/kr_companies.csv")
-      url("classpath:www.opendata500.com/kr/download/kr_companies.csv", ClassPathStreamHandler)
+      url("classpath:www.opendata500.com/kr/download/kr_companies.csv")
 
   private val downloadDirectorySetting: Setting[File] =
     openData500CompanyDictionaryDownloadDirectory :=
@@ -156,7 +156,7 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
   override val projectSettings =
     Seq(
       usCompanySourceUrlSetting,
-      frCompanySourceUrlSetting,
+      krCompanySourceUrlSetting,
       downloadDirectorySetting,
       outputFormatSetting,
       outputDirectorySetting,
