@@ -128,7 +128,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(matchTo(
         DictionaryEntry(
           usage = Usage.Equivalent,
-          template = Template("Abe Abraham"),
+          template = Template("Abe=Abraham"),
           regionWeights =
             Seq(
               RegionWeight(
@@ -190,6 +190,20 @@ class ParsersSpec extends FixtureAnyWordSpec {
               RegionWeight(
                 region = Region(RegionLabel("Estonia")),
                 weight = Weight(0x6)
+              )
+            )
+        )))
+
+    entries(21651)
+      .should(matchTo(
+        DictionaryEntry(
+          usage = Usage.Equivalent,
+          template = Template("Josi=Josefa"),
+          regionWeights =
+            Seq(
+              RegionWeight(
+                region = Region(RegionLabel("Swiss")),
+                weight = Weight(0x1)
               )
             )
         )))

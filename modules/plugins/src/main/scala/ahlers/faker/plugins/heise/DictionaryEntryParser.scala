@@ -54,7 +54,7 @@ object DictionaryEntryParser {
 
       DictionaryEntry(
         usage = usage,
-        template = decodedName,
+        template = normalizedName,
         regionWeights = regionWeights)
   }
 
