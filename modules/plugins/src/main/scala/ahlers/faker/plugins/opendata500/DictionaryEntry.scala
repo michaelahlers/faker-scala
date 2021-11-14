@@ -6,4 +6,5 @@ package ahlers.faker.plugins.opendata500
  */
 case class DictionaryEntry(
   id: CompanyId,
-  name: CompanyName)
+  name: CompanyName,
+  website: CompanyWebsite)
