@@ -15,11 +15,11 @@ object DictionaryEntriesCsvWriter {
 
   def using(
     nameFile: File,
-    //usageFile: File,
+    websiteFile: File,
     logger: Logger
   ): DictionaryEntriesWriter = { dictionaryEntries =>
     nameFile.getParentFile.mkdirs()
-    //usageFile.getParentFile.mkdirs()
+    websiteFile.getParentFile.mkdirs()
 
     /** Group around unique [[CompanyName]] values. */
     val indexByName: Map[CompanyName, Int] =
@@ -38,32 +38,28 @@ object DictionaryEntriesCsvWriter {
         .map { name =>
           """%s""".format(name.toText)
         },
-      charset = StandardCharsets.US_ASCII,
+      charset = StandardCharsets.UTF_8,
       append = false
     )
 
-    //IO.writeLines(
-    //  file = usageFile,
-    //  lines = dictionaryEntries
-    //    .sortBy(_.name)
-    //    .map(entry => (entry.name, entry.usage))
-    //    .distinct
-    //    .map { case (name, usage) =>
-    //      """%x,%s""".format(
-    //        indexByName(name),
-    //        usage match {
-    //          case Usage.FemaleFirst => "F"
-    //          case Usage.MaleFirst => "M"
-    //          case Usage.Last => "L"
-    //        })
-    //    },
-    //  charset = StandardCharsets.US_ASCII,
-    //  append = false
-    //)
+    IO.writeLines(
+      file = websiteFile,
+      lines = dictionaryEntries
+        .sortBy(_.name)
+        .map(entry => (entry.name, entry.website))
+        .distinct
+        .map { case (name, website) =>
+          """%x,%s""".format(
+            indexByName(name),
+            website.toText)
+        },
+      charset = StandardCharsets.UTF_8,
+      append = false
+    )
 
     Seq(
-      nameFile
-      //usageFile
+      nameFile,
+      websiteFile
     )
   }
 
@@ -72,11 +68,11 @@ object DictionaryEntriesCsvWriter {
     logger: Logger
   ): DictionaryEntriesWriter = {
     val nameFile = outputDirectory / "name.csv"
-    //val usageFile = outputDirectory / "index,usage.csv"
+    val websiteFile = outputDirectory / "index,website.csv"
 
     using(
       nameFile = nameFile,
-      //usageFile = usageFile,
+      websiteFile = websiteFile,
       logger = logger
     )
   }
