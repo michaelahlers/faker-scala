@@ -12,11 +12,21 @@ import Template.Hyphenated
 private[heise] trait TemplateEntryParser extends (TemplateLine => TemplateEntry)
 private[heise] object TemplateEntryParser {
 
-  private val EquivalentPattern: Regex =
-    """^(\w+)=(\w+)$""".r
+  private object EquivalentPattern {
+    def unapply(fromText: String): Option[(String, String)] =
+      fromText.split(' ') match {
+        case Array(short, long) => Some((short, long))
+        case _ => None
+      }
+  }
 
-  private val HyphenatedPattern: Regex =
-    """^(\w+)\+(\w+)$""".r
+  private object HyphenatedPattern {
+    def unapply(fromText: String): Option[(String, String)] =
+      fromText.split('+') match {
+        case Array(short, long) => Some((short, long))
+        case _ => None
+      }
+  }
 
   val default: TemplateEntryParser = line =>
     TemplateEntry(

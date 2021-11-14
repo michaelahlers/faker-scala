@@ -18,7 +18,6 @@ class PersonGivenNamesSpec extends AnyWordSpec {
           .toText.value
           .should(not(include("+").or(include("="))))
       })
-
   }
 
 }
