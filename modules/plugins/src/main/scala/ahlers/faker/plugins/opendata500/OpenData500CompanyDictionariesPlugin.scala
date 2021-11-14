@@ -10,7 +10,7 @@ import java.net.URLStreamHandler
  * @since November 14, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-object Opendata500CompanyDictionariesPlugin extends AutoPlugin {
+object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
 
   /** A quick-and-dirty [[URL]] factory, intended to streamline use of [[ClassPathStreamHandler]] without manipulating the runtime. */
   def url(location: String, handler: URLStreamHandler): URL =
@@ -24,64 +24,64 @@ object Opendata500CompanyDictionariesPlugin extends AutoPlugin {
     /**
      * @see [[https://www.opendata500.com/us/ Open Data 500: United States Companies]]
      */
-    val opendata500UsCompaniesDictionarySourceUrl = settingKey[URL]("""Location of the States companies dictionary.""")
+    val openData500UsCompanyDictionarySourceUrl = settingKey[URL]("""Location of the States companies dictionary.""")
 
     /**
      * @see [[https://www.opendata500.com/kr/ Open Data 500: Korean Companies]]
      */
-    val opendata500KrCompaniesDictionaryFileSourceUrl = settingKey[URL]("""Location of the Korean companies dictionary.""")
+    val openData500KrCompanyDictionaryFileSourceUrl = settingKey[URL]("""Location of the Korean companies dictionary.""")
 
-    val opendata500CompanyDictionariesDownloadDirectory = settingKey[File]("Destination of downloaded company dictionaries, typically rooted in a task temporary directory, cleaned up after completion.")
+    val openData500CompanyDictionaryDownloadDirectory = settingKey[File]("Destination of downloaded company dictionaries, typically rooted in a task temporary directory, cleaned up after completion.")
 
-    val opendata500NameDictionariesOutputFormat = settingKey[DictionaryOutputFormat]("Specifies whether to write—only CSV, for now, with additional formats planned.")
+    val openData500CompanyOutputFormat = settingKey[DictionaryOutputFormat]("Specifies whether to write—only CSV, for now, with additional formats planned.")
 
-    val opendata500NameDictionaryOutputDirectory = settingKey[File]("Where to write all output files, typically a managed resource directory on the class path.")
+    val openData500CompanyOutputDirectory = settingKey[File]("Where to write all output files, typically a managed resource directory on the class path.")
 
-    val downloadOpendata500UsCompaniesDictionaryFile = taskKey[File]("Fetches the United States companies dictionary file from the original source.")
+    val downloadOpenData500UsCompanyDictionaryFile = taskKey[File]("Fetches the United States companies dictionary file from the original source.")
 
-    val downloadOpendata500KoreanNameDictionaryFile = taskKey[File]("Fetches the Korean companies dictionary file from the original source.")
+    val downloadOpenData500KoreanCompanyDictionaryFile = taskKey[File]("Fetches the Korean companies dictionary file from the original source.")
 
-    val readOpendata500DictionaryEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses all company dictionary entries obtained from downloads.")
+    val readOpenData500CompanyEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses all company dictionary entries obtained from downloads.")
 
-    val writeOpendata500DictionaryEntries = taskKey[Seq[File]]("Writes all companies dictionary entries in the specified output format and directory, serves as a resource generator.")
+    val writeOpenData500CompanyEntries = taskKey[Seq[File]]("Writes all companies dictionary entries in the specified output format and directory, serves as a resource generator.")
 
   }
 
   import autoImport._
 
   /** @todo Consider restoring from authoritative source. */
-  private val lastNameDictionarySourceUrlSetting: Setting[URL] =
-    opendata500UsCompaniesDictionarySourceUrl :=
+  private val usCompanySourceUrlSetting: Setting[URL] =
+    openData500UsCompanyDictionarySourceUrl :=
       //url("https://www.opendata500.com/us/download/us_companies.csv")
       url("classpath:www.opendata500.com/us/download/us_companies.csv", ClassPathStreamHandler)
 
   /** @todo Consider restoring from authoritative source. */
-  private val femaleFirstNameDictionarySourceUrlSetting: Setting[URL] =
-    opendata500KrCompaniesDictionaryFileSourceUrl :=
+  private val frCompanySourceUrlSetting: Setting[URL] =
+    openData500KrCompanyDictionaryFileSourceUrl :=
       //url("https://www.opendata500.com/kr/download/kr_companies.csv")
       url("classpath:www.opendata500.com/kr/download/kr_companies.csv", ClassPathStreamHandler)
 
   private val downloadDirectorySetting: Setting[File] =
-    opendata500CompanyDictionariesDownloadDirectory :=
+    openData500CompanyDictionaryDownloadDirectory :=
       taskTemporaryDirectory.value /
         "www.opendata500.com" /
         "download"
 
   private val outputFormatSetting: Setting[DictionaryOutputFormat] =
-    opendata500NameDictionariesOutputFormat :=
+    openData500CompanyOutputFormat :=
       DictionaryOutputFormat.Csv
 
   private val outputDirectorySetting: Setting[File] =
-    opendata500NameDictionaryOutputDirectory :=
+    openData500CompanyOutputDirectory :=
       (Compile / resourceManaged).value /
         "www.opendata500.com"
 
   private val downloadLastNameDictionaryFileTask: Setting[Task[File]] =
-    downloadOpendata500UsCompaniesDictionaryFile := {
+    downloadOpenData500UsCompanyDictionaryFile := {
       val logger = streams.value.log
 
-      val sourceUrl = opendata500UsCompaniesDictionarySourceUrl.value
-      val downloadDirectory = opendata500CompanyDictionariesDownloadDirectory.value
+      val sourceUrl = openData500UsCompanyDictionarySourceUrl.value
+      val downloadDirectory = openData500CompanyDictionaryDownloadDirectory.value
       val downloadFile = downloadDirectory / sourceUrl.getFile
 
       val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
@@ -95,12 +95,12 @@ object Opendata500CompanyDictionariesPlugin extends AutoPlugin {
       dictionaryFile
     }
 
-  private val downloadFemaleFirstNameDictionaryFileTask: Setting[Task[File]] =
-    downloadOpendata500KoreanNameDictionaryFile := {
+  private val downloadCompanyDictionaryFileTask: Setting[Task[File]] =
+    downloadOpenData500KoreanCompanyDictionaryFile := {
       val logger = streams.value.log
 
-      val sourceUrl = opendata500KrCompaniesDictionaryFileSourceUrl.value
-      val downloadDirectory = opendata500CompanyDictionariesDownloadDirectory.value
+      val sourceUrl = openData500KrCompanyDictionaryFileSourceUrl.value
+      val downloadDirectory = openData500CompanyDictionaryDownloadDirectory.value
       val downloadFile = downloadDirectory / sourceUrl.getFile
 
       val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
@@ -114,12 +114,12 @@ object Opendata500CompanyDictionariesPlugin extends AutoPlugin {
       dictionaryFile
     }
 
-  private val readDictionaryEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
-    readOpendata500DictionaryEntries := {
+  private val readCompanyEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
+    readOpenData500CompanyEntries := {
       val logger = streams.value.log
 
-      val femaleFirstNameFile: File = downloadOpendata500KoreanNameDictionaryFile.value
-      val lastNameFile: File = downloadOpendata500UsCompaniesDictionaryFile.value
+      val femaleFirstNameFile: File = downloadOpenData500KoreanCompanyDictionaryFile.value
+      val lastNameFile: File = downloadOpenData500UsCompanyDictionaryFile.value
 
       val parseEntries: DictionaryEntriesReader =
         DictionaryEntriesReader.using()
@@ -131,15 +131,15 @@ object Opendata500CompanyDictionariesPlugin extends AutoPlugin {
       dictionaryEntries
     }
 
-  private val writeDictionaryEntriesTask: Setting[Task[Seq[File]]] =
-    writeOpendata500DictionaryEntries := {
+  private val writeCompanyEntriesTask: Setting[Task[Seq[File]]] =
+    writeOpenData500CompanyEntries := {
       val logger = streams.value.log
 
-      val dictionaryEntries: Seq[DictionaryEntry] = readOpendata500DictionaryEntries.value
-      val outputDirectory: File = opendata500NameDictionaryOutputDirectory.value
+      val dictionaryEntries: Seq[DictionaryEntry] = readOpenData500CompanyEntries.value
+      val outputDirectory: File = openData500CompanyOutputDirectory.value
 
       val writeEntries: DictionaryEntriesWriter =
-        opendata500NameDictionariesOutputFormat.value match {
+        openData500CompanyOutputFormat.value match {
           case DictionaryOutputFormat.Csv =>
             DictionaryEntriesCsvWriter.usingDir(
               outputDirectory = outputDirectory,
@@ -155,16 +155,16 @@ object Opendata500CompanyDictionariesPlugin extends AutoPlugin {
 
   override val projectSettings =
     Seq(
-      lastNameDictionarySourceUrlSetting,
-      femaleFirstNameDictionarySourceUrlSetting,
+      usCompanySourceUrlSetting,
+      frCompanySourceUrlSetting,
       downloadDirectorySetting,
       outputFormatSetting,
       outputDirectorySetting,
       downloadLastNameDictionaryFileTask,
-      downloadFemaleFirstNameDictionaryFileTask,
-      readDictionaryEntriesTask,
-      writeDictionaryEntriesTask,
-      Compile / resourceGenerators += writeOpendata500DictionaryEntries
+      downloadCompanyDictionaryFileTask,
+      readCompanyEntriesTask,
+      writeCompanyEntriesTask,
+      Compile / resourceGenerators += writeOpenData500CompanyEntries
     )
 
 }
