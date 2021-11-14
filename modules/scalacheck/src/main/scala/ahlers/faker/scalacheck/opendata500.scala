@@ -11,8 +11,11 @@ import org.scalacheck._
  */
 object opendata500 {
 
-  val genCompanyKr: Gen[Company] = oneOf(CompanyKrIterator().toIndexedSeq)
-  val genCompanyUs: Gen[Company] = oneOf(CompanyUsIterator().toIndexedSeq)
+  /** @todo */
+  val genCompanyKr: Gen[Company] = oneOf(Nil) // companies.all.toIndexedSeq)
+
+  /** @todo */
+  val genCompanyUs: Gen[Company] = oneOf(Nil) // companies.all.toIndexedSeq)
 
   val genCompany: Gen[Company] =
     oneOf(genCompanyKr, genCompanyUs)
