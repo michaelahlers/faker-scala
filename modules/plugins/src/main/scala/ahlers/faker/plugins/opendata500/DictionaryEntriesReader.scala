@@ -1,15 +1,7 @@
 package ahlers.faker.plugins.opendata500
 
+import kantan.csv._
 import sbt._
-
-import java.nio.charset.StandardCharsets
-import kantan.csv.DecodeError.TypeError
-import kantan.csv.CellDecoder
-import kantan.csv._
-import kantan.csv.generic._
-import kantan.csv.ops._
-import kantan.csv.refined._
-import kantan.csv._
 import kantan.csv.generic._
 import kantan.csv.ops._
 import kantan.csv.refined._
