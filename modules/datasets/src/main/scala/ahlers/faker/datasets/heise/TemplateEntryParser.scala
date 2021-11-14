@@ -1,9 +1,8 @@
 package ahlers.faker.datasets.heise
 
-import scala.util.matching.Regex
-import Template.Literal
-import Template.Equivalent
-import Template.Hyphenated
+import ahlers.faker.datasets.heise.Template.Equivalent
+import ahlers.faker.datasets.heise.Template.Hyphenated
+import ahlers.faker.datasets.heise.Template.Literal
 
 /**
  * @since October 02, 2021
@@ -14,7 +13,7 @@ private[heise] object TemplateEntryParser {
 
   private object EquivalentPattern {
     def unapply(fromText: String): Option[(String, String)] =
-      fromText.split(' ') match {
+      fromText.split('=') match {
         case Array(short, long) => Some((short, long))
         case _ => None
       }
