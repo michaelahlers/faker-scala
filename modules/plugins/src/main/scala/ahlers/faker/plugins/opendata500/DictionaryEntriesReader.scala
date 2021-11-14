@@ -44,6 +44,7 @@ object DictionaryEntriesReader {
   ): DictionaryEntriesReader = { sourceFile =>
     sourceFile
       .asUnsafeCsvReader[DictionaryEntry](rfc.withHeader)
+      .seq
   }
 
 }
