@@ -67,7 +67,7 @@ object DictionaryEntriesCsvWriter {
     )
   }
 
-  def using(
+  def usingDir(
     outputDirectory: File,
     logger: Logger
   ): DictionaryEntriesWriter = {
