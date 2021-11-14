@@ -5,6 +5,13 @@ heiseNameDictionaryOutputDirectory :=
     "datasets" /
     "heise"
 
+opendata500NameDictionaryOutputDirectory :=
+  (Compile / resourceManaged).value /
+    "ahlers" /
+    "faker" /
+    "datasets" /
+    "opendata500"
+
 usCensus1990NameDictionaryOutputDirectory :=
   (Compile / resourceManaged).value /
     "ahlers" /
