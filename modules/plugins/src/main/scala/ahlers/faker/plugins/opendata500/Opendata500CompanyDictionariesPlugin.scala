@@ -1,13 +1,20 @@
 package ahlers.faker.plugins.opendata500
 
+import ahlers.faker.plugins.ClassPathStreamHandler
 import sbt.Keys._
 import sbt._
+
+import java.net.URLStreamHandler
 
 /**
  * @since November 14, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
 object Opendata500CompanyDictionariesPlugin extends AutoPlugin {
+
+  /** A quick-and-dirty [[URL]] factory, intended to streamline use of [[ClassPathStreamHandler]] without manipulating the runtime. */
+  def url(location: String, handler: URLStreamHandler): URL =
+    new URL(null, location, handler)
 
   /** Per [[noTrigger]], this plugin must be manually enabled, even if [[requires requirements]] are met. */
   override val trigger = noTrigger
@@ -42,13 +49,17 @@ object Opendata500CompanyDictionariesPlugin extends AutoPlugin {
 
   import autoImport._
 
+  /** @todo Consider restoring from authoritative source. */
   private val lastNameDictionarySourceUrlSetting: Setting[URL] =
     opendata500UsCompaniesDictionarySourceUrl :=
-      url("https://www.opendata500.com/us/download/us_companies.csv")
+      //url("https://www.opendata500.com/us/download/us_companies.csv")
+      url("classpath:www.opendata500.com/us/download/us_companies.csv", ClassPathStreamHandler)
 
+  /** @todo Consider restoring from authoritative source. */
   private val femaleFirstNameDictionarySourceUrlSetting: Setting[URL] =
     opendata500KrCompaniesDictionaryFileSourceUrl :=
-      url("https://www.opendata500.com/kr/download/kr_companies.csv")
+      //url("https://www.opendata500.com/kr/download/kr_companies.csv")
+      url("classpath:www.opendata500.com/kr/download/kr_companies.csv", ClassPathStreamHandler)
 
   private val downloadDirectorySetting: Setting[File] =
     opendata500CompanyDictionariesDownloadDirectory :=
