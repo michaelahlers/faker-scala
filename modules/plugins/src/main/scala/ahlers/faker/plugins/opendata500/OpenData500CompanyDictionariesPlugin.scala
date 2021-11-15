@@ -61,12 +61,6 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
       //url("https://www.opendata500.com/kr/download/kr_companies.csv")
       url("classpath:www.opendata500.com/kr/download/kr_companies.csv")
 
-  private val downloadDirectorySetting: Setting[File] =
-    openData500CompanyDictionaryDownloadDirectory :=
-      taskTemporaryDirectory.value /
-        "www.opendata500.com" /
-        "download"
-
   private val outputFormatSetting: Setting[DictionaryOutputFormat] =
     openData500CompanyOutputFormat :=
       DictionaryOutputFormat.Csv
@@ -76,50 +70,12 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
       (Compile / resourceManaged).value /
         "www.opendata500.com"
 
-  private val downloadLastNameDictionaryFileTask: Setting[Task[File]] =
-    downloadOpenData500UsCompanyDictionaryFile := {
-      val logger = streams.value.log
-
-      val sourceUrl = openData500UsCompanyDictionarySourceUrl.value
-      val downloadDirectory = openData500CompanyDictionaryDownloadDirectory.value
-      val downloadFile = downloadDirectory / sourceUrl.getFile
-
-      val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
-
-      val dictionaryFile: File =
-        dictionaryIO
-          .downloadDictionary(
-            sourceUrl = sourceUrl,
-            downloadFile = downloadFile)
-
-      dictionaryFile
-    }
-
-  private val downloadCompanyDictionaryFileTask: Setting[Task[File]] =
-    downloadOpenData500KoreanCompanyDictionaryFile := {
-      val logger = streams.value.log
-
-      val sourceUrl = openData500KrCompanyDictionarySourceUrl.value
-      val downloadDirectory = openData500CompanyDictionaryDownloadDirectory.value
-      val downloadFile = downloadDirectory / sourceUrl.getFile
-
-      val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
-
-      val dictionaryFile: File =
-        dictionaryIO
-          .downloadDictionary(
-            sourceUrl = sourceUrl,
-            downloadFile = downloadFile)
-
-      dictionaryFile
-    }
-
   private val readCompanyEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
     readOpenData500CompanyEntries := {
       val logger = streams.value.log
 
       val parseEntries: DictionaryEntriesReader =
-        DictionaryEntriesReader.using()
+        DictionaryEntriesReader.using(logger)
 
       val dictionaryEntries: Seq[DictionaryEntry] = {
         import better.files._
@@ -167,11 +123,8 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
     Seq(
       usCompanySourceUrlSetting,
       krCompanySourceUrlSetting,
-      downloadDirectorySetting,
       outputFormatSetting,
       outputDirectorySetting,
-      downloadLastNameDictionaryFileTask,
-      downloadCompanyDictionaryFileTask,
       readCompanyEntriesTask,
       writeCompanyEntriesTask,
       Compile / resourceGenerators += writeOpenData500CompanyEntries
