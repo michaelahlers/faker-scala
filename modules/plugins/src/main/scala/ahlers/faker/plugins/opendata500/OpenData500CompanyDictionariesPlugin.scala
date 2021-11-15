@@ -29,7 +29,7 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
     /**
      * @see [[https://www.opendata500.com/kr/ Open Data 500: Korean Companies]]
      */
-    val openData500KrCompanyDictionaryFileSourceUrl = settingKey[URL]("""Location of the Korean companies dictionary.""")
+    val openData500KrCompanyDictionarySourceUrl = settingKey[URL]("""Location of the Korean companies dictionary.""")
 
     val openData500CompanyDictionaryDownloadDirectory = settingKey[File]("Destination of downloaded company dictionaries, typically rooted in a task temporary directory, cleaned up after completion.")
 
@@ -57,7 +57,7 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
 
   /** @todo Consider restoring from authoritative source. */
   private val krCompanySourceUrlSetting: Setting[URL] =
-    openData500KrCompanyDictionaryFileSourceUrl :=
+    openData500KrCompanyDictionarySourceUrl :=
       //url("https://www.opendata500.com/kr/download/kr_companies.csv")
       url("classpath:www.opendata500.com/kr/download/kr_companies.csv")
 
@@ -99,7 +99,7 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
     downloadOpenData500KoreanCompanyDictionaryFile := {
       val logger = streams.value.log
 
-      val sourceUrl = openData500KrCompanyDictionaryFileSourceUrl.value
+      val sourceUrl = openData500KrCompanyDictionarySourceUrl.value
       val downloadDirectory = openData500CompanyDictionaryDownloadDirectory.value
       val downloadFile = downloadDirectory / sourceUrl.getFile
 
@@ -118,15 +118,25 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
     readOpenData500CompanyEntries := {
       val logger = streams.value.log
 
-      val femaleFirstNameFile: File = downloadOpenData500KoreanCompanyDictionaryFile.value
-      val lastNameFile: File = downloadOpenData500UsCompanyDictionaryFile.value
-
       val parseEntries: DictionaryEntriesReader =
         DictionaryEntriesReader.using()
 
-      val dictionaryEntries: Seq[DictionaryEntry] =
-        parseEntries(femaleFirstNameFile) ++
-          parseEntries(lastNameFile)
+      val dictionaryEntries: Seq[DictionaryEntry] = {
+        import better.files._
+        (for {
+          krCompanyEntries <-
+            openData500KrCompanyDictionarySourceUrl.value
+              .openStream()
+              .autoClosed
+              .map(parseEntries(_))
+          usCompanyEntries <-
+            openData500UsCompanyDictionarySourceUrl.value
+              .openStream()
+              .autoClosed
+              .map(parseEntries(_))
+        } yield krCompanyEntries ++ usCompanyEntries)
+          .get()
+      }
 
       dictionaryEntries
     }
