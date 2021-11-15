@@ -19,10 +19,14 @@ trait DictionaryEntriesReader {
 object DictionaryEntriesReader {
 
   implicit private[opendata500] val CellDecoderCompanyId: CellDecoder[CompanyId] =
-    CellDecoder[String].map(CompanyId(_))
+    CellDecoder[String]
+      .map(_.trim)
+      .map(CompanyId(_))
 
   implicit private[opendata500] val CellDecoderCompanyName: CellDecoder[CompanyName] =
-    CellDecoder[String].map(CompanyName(_))
+    CellDecoder[String]
+      .map(_.trim)
+      .map(CompanyName(_))
 
   /**
    * Excludes values known to be invalid.
