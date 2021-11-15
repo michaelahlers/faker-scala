@@ -1,10 +1,8 @@
 package ahlers.faker.plugins.opendata500
 
 import kantan.csv._
-import sbt._
-import kantan.csv.generic._
 import kantan.csv.ops._
-import kantan.csv.refined._
+import sbt._
 
 import java.io.InputStream
 
@@ -32,19 +30,22 @@ object DictionaryEntriesReader {
    * Excludes values known to be invalid.
    * @todo Restore exclusions.
    */
-  implicit private[opendata500] val CellDecoderCompanyWebsites: CellDecoder[CompanyWebsite] =
-    CellDecoder[String].map(CompanyWebsite(_))
-  //.recover {
-  //  case TypeError(message)
-  //      if message.contains("Predicate isEmpty() did not fail") ||
-  //        message.contains("http://H^8UDCC3>F8.6{.kr/") =>
-  //    Seq()
-  //}
+  implicit private[opendata500] val CellDecoderCompanyWebsites: CellDecoder[Option[CompanyWebsite]] =
+    CellDecoder[String]
+      .map(_.trim)
+      .map(Option(_)
+        .filter(value =>
+          value.nonEmpty ||
+            value.equalsIgnoreCase("http://H^8UDCC3>F8.6{.kr/"))
+        .map(CompanyWebsite(_)))
+
+  implicit private val HeaderDecoderDictionaryEntry: HeaderDecoder[DictionaryEntry] =
+    HeaderDecoder.decoder("company_name_id", "company_name", "url")(DictionaryEntry.apply)
 
   def using(
     logger: Logger
   ): DictionaryEntriesReader = _
-    .asUnsafeCsvReader[DictionaryEntry](rfc.withHeader)
+    .asUnsafeCsvReader[DictionaryEntry](rfc.withoutHeader)
     .seq
 
 }

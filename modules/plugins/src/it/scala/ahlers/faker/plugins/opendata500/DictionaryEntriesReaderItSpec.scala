@@ -59,7 +59,7 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
         DictionaryEntry(
           id = CompanyId("-airblack-inc"),
           name = CompanyName("airblack Inc."),
-          website = CompanyWebsite("www.airblack.com")
+          website = Some(CompanyWebsite("www.airblack.com"))
         )))
 
     companies(99).should(
@@ -67,7 +67,7 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
         DictionaryEntry(
           id = CompanyId("i-s-m-s-"),
           name = CompanyName("I S M S"),
-          website = CompanyWebsite("http://www.isms.re.kr")
+          website = Some(CompanyWebsite("http://www.isms.re.kr"))
         )))
 
     companies(199).should(
@@ -75,7 +75,7 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
         DictionaryEntry(
           id = CompanyId("onycom-"),
           name = CompanyName("onycom"),
-          website = CompanyWebsite("http://www.onycom.com")
+          website = Some(CompanyWebsite("http://www.onycom.com"))
         )))
 
     companies(299).should(
@@ -83,7 +83,7 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
         DictionaryEntry(
           id = CompanyId("ywmobile"),
           name = CompanyName("YWMobile"),
-          website = CompanyWebsite("http://www.evercon.me/homepage/index.html")
+          website = Some(CompanyWebsite("http://www.evercon.me/homepage/index.html"))
         )))
   }
 
@@ -100,7 +100,7 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
         DictionaryEntry(
           id = CompanyId("3-round-stones-inc"),
           name = CompanyName("3 Round Stones, Inc."),
-          website = CompanyWebsite("http://3RoundStones.com")
+          website = Some(CompanyWebsite("http://3RoundStones.com"))
         )))
 
     companies(99).should(
@@ -108,7 +108,7 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
         DictionaryEntry(
           id = CompanyId("cloudspyre"),
           name = CompanyName("Cloudspyre"),
-          website = CompanyWebsite("http://www.cloudspyre.com")
+          website = Some(CompanyWebsite("http://www.cloudspyre.com"))
         )))
 
     companies(199).should(
@@ -116,7 +116,7 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
         DictionaryEntry(
           id = CompanyId("govtribe"),
           name = CompanyName("GovTribe"),
-          website = CompanyWebsite("govtribe.com")
+          website = Some(CompanyWebsite("govtribe.com"))
         )))
 
     companies(299).should(
@@ -124,7 +124,7 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
         DictionaryEntry(
           id = CompanyId("mhealthcoach"),
           name = CompanyName("mHealthCoach"),
-          website = CompanyWebsite("http://mhealthcoach.com")
+          website = Some(CompanyWebsite("http://mhealthcoach.com"))
         )))
 
     companies(399).should(
@@ -132,7 +132,7 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
         DictionaryEntry(
           id = CompanyId("reed-elsevier"),
           name = CompanyName("Reed Elsevier"),
-          website = CompanyWebsite("http://www.reedelsevier.com/Pages/Home.aspx")
+          website = Some(CompanyWebsite("http://www.reedelsevier.com/Pages/Home.aspx"))
         )))
 
     companies(499).should(
@@ -140,7 +140,7 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
         DictionaryEntry(
           id = CompanyId("walk-score"),
           name = CompanyName("Walk Score"),
-          website = CompanyWebsite("www.walkscore.com")
+          website = Some(CompanyWebsite("www.walkscore.com"))
         )))
 
   }

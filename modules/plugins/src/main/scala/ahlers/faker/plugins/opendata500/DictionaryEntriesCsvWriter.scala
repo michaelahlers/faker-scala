@@ -46,7 +46,7 @@ object DictionaryEntriesCsvWriter {
       file = websiteFile,
       lines = dictionaryEntries
         .sortBy(_.name)
-        .map(entry => (entry.name, entry.website))
+        .flatMap(entry => entry.website.map((entry.name, _)))
         .distinct
         .map { case (name, website) =>
           """%x,%s""".format(
