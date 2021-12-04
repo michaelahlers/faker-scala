@@ -64,9 +64,9 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
     val partialEntry = DictionaryEntry(CompanyId(""), _, _)
 
     val entries = IndexedSeq(
-      partialEntry(CompanyName("Alpha"), CompanyWebsite("http://alpha.com")),
-      partialEntry(CompanyName("Bravo"), CompanyWebsite("http://bravo0.com")),
-      partialEntry(CompanyName("Bravo"), CompanyWebsite("http://bravo1.com"))
+      partialEntry(CompanyName("Alpha"), Some(CompanyWebsite("http://alpha.com"))),
+      partialEntry(CompanyName("Bravo"), Some(CompanyWebsite("http://bravo0.com"))),
+      partialEntry(CompanyName("Bravo"), Some(CompanyWebsite("http://bravo1.com")))
     )
 
     writeEntries(entries)

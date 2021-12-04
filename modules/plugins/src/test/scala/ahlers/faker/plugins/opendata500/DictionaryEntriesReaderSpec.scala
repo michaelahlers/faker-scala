@@ -7,7 +7,10 @@ import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec.FixtureAnyWordSpec
 import sbt.Logger
 
+import java.io.InputStream
 import java.nio.charset.StandardCharsets
+import scala.io.Codec
+import scala.io.Source
 
 /**
  * @since November 14, 2021
@@ -21,24 +24,19 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
     val fixturesF =
       for {
 
-        nameFile <-
-          File.temporaryFile(
-            prefix = "entries",
-            suffix = ".txt"
-          )
+        entriesSource <-
+          Resource.my
+            .getAsStream("DictionaryEntriesReaderSpec.csv")
+            .autoClosed
 
         reader =
           DictionaryEntriesReader
-            .using()
+            .using(Logger.Null)
 
-      } yield {
-        info(s"""Source file: "$nameFile".""")
-
-        Fixtures(
-          sourceFile = nameFile,
-          readEntries = reader
-        )
-      }
+      } yield Fixtures(
+        entriesSource = entriesSource,
+        readEntries = reader
+      )
 
     fixturesF
       .map(test.toNoArgTest(_))
@@ -46,19 +44,12 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
   }
 
   "Read and parse entries file" in { fixtures =>
-    import fixtures.{ sourceFile, readEntries }
+    import fixtures.{ entriesSource, readEntries }
 
-    sourceFile.appendLines(
-      """company_name_id,company_name,url,year_founded,city,state,country,zip_code,full_time_employees,company_type,company_category,revenue_source,business_model,social_impact,description,description_short,source_count,data_types,example_uses,data_impacts,financial_info,last_updated""",
-      """alpha,"Alpha, Inc.",http://alpha.com,0,City,State,County,00000,0,Type,Category,Revenue Source,Business Model,Social Impact,Description (long),Description (short),Count,Types,Usages,[],Financial Info.,1970-01-01 00:00:00.000000""",
-      """bravo,"Bravo, LLC",http://bravo.com,1,City,State,County,00001,1,Type,Category,Revenue Source,Business Model,Social Impact,Description (long),Description (short),Count,Types,Usages,[u'Bravo'],Financial Info.,1970-01-01 00:00:01.000000"""
-    )
-
-    readEntries(
-      sourceFile = sourceFile.toJava)
+    readEntries(entriesSource)
       .should(matchTo(Seq(
-        DictionaryEntry(CompanyId("alpha"), CompanyName("Alpha, Inc."), CompanyWebsite("http://alpha.com")),
-        DictionaryEntry(CompanyId("bravo"), CompanyName("Bravo, LLC"), CompanyWebsite("http://bravo.com"))
+        DictionaryEntry(CompanyId("alpha"), CompanyName("Alpha, Inc."), Some(CompanyWebsite("http://alpha.com"))),
+        DictionaryEntry(CompanyId("bravo"), CompanyName("Bravo, LLC"), Some(CompanyWebsite("http://bravo.com")))
       )))
   }
 
@@ -66,7 +57,7 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
 
 object DictionaryEntriesReaderSpec {
   case class Fixtures(
-    sourceFile: File,
+    entriesSource: InputStream,
     readEntries: DictionaryEntriesReader)
 
 }

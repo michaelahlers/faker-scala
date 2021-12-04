@@ -45,7 +45,7 @@ object DictionaryEntriesReader {
   def using(
     logger: Logger
   ): DictionaryEntriesReader = _
-    .asUnsafeCsvReader[DictionaryEntry](rfc.withoutHeader)
+    .asUnsafeCsvReader[DictionaryEntry](rfc.withHeader)
     .seq
 
 }
