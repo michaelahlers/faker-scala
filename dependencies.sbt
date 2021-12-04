@@ -9,8 +9,3 @@ ThisBuild / libraryDependencies ++=
     "org.scalatest" %% "scalatest" % "3.2.9" % Test ::
     "org.scalatestplus" %% "scalatestplus-scalacheck" % "1.0.0-M2" % Test ::
     Nil
-
-ThisBuild / libraryDependencies ++=
-  "com.softwaremill.diffx" %% "diffx-scalatest" % "0.5.6" % IntegrationTest ::
-    "org.scalatest" %% "scalatest" % "3.2.9" % IntegrationTest ::
-    Nil
