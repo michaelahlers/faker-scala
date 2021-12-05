@@ -7,6 +7,7 @@ import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec.FixtureAnyWordSpec
 import sbt.Logger
 
+import java.io.InputStream
 import java.nio.charset.StandardCharsets
 
 /**
@@ -18,47 +19,34 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
 
   override type FixtureParam = Fixtures
   override protected def withFixture(test: OneArgTest) = {
-    val fixturesF =
+    val outcomeF =
       for {
 
-        nameFile <-
-          File.temporaryFile(
-            prefix = "entries",
-            suffix = ".txt"
-          )
+        entriesStream <-
+          Resource.my
+            .getAsStream("given_entries.csv")
+            .autoClosed
 
-        reader =
+        readEntries =
           DictionaryEntriesReader
             .using(
               parseEntry = DictionaryEntryParser.default
             )
 
-      } yield {
-        info(s"""Source file: "$nameFile".""")
+      } yield withFixture(test.toNoArgTest(Fixtures(
+        entriesStream = entriesStream,
+        readEntries = readEntries
+      )))
 
-        Fixtures(
-          sourceFile = nameFile,
-          readEntries = reader
-        )
-      }
-
-    fixturesF
-      .map(test.toNoArgTest(_))
-      .apply(withFixture(_))
+    outcomeF.get()
   }
 
   "Read and parse entries file" in { fixtures =>
-    import fixtures.{ sourceFile, readEntries }
-
-    sourceFile.appendLines(
-      "Alpha 0.1 0.1 1",
-      "Bravo  0.2  0.3  2",
-      "Charlie   0.3   0.6   3"
-    )
+    import fixtures.{ entriesStream, readEntries }
 
     readEntries(
       usage = Usage.FemaleFirst,
-      sourceFile = sourceFile.toJava)
+      entriesStream = entriesStream)
       .should(matchTo(Seq(
         DictionaryEntry(Usage.FemaleFirst, Name("Alpha"), Frequency(0.1f), CumulativeFrequency(0.1f), Rank(1)),
         DictionaryEntry(Usage.FemaleFirst, Name("Bravo"), Frequency(0.2f), CumulativeFrequency(0.3f), Rank(2)),
@@ -72,7 +60,7 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
 object DictionaryEntriesReaderSpec {
 
   case class Fixtures(
-    sourceFile: File,
+    entriesStream: InputStream,
     readEntries: DictionaryEntriesReader)
 
 }

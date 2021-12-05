@@ -4,6 +4,7 @@ import kantan.csv._
 import kantan.csv.ops._
 import sbt._
 
+import java.io.FileInputStream
 import java.io.InputStream
 
 /**
@@ -11,7 +12,18 @@ import java.io.InputStream
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
 trait DictionaryEntriesReader {
-  def apply(entriesSource: InputStream): Seq[DictionaryEntry]
+
+  def apply(entriesStream: InputStream): Seq[DictionaryEntry]
+
+  final def apply(entriesFile: File): Seq[DictionaryEntry] = {
+    val entriesStream = new FileInputStream(entriesFile)
+
+    try apply(
+      entriesStream = entriesStream
+    )
+    finally entriesStream.close()
+  }
+
 }
 
 object DictionaryEntriesReader {

@@ -21,17 +21,19 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
     val outcomeF =
       for {
 
-        entriesSource <-
+        entriesStream <-
           Resource.my
             .getAsStream("given_companies.csv")
             .autoClosed
 
         readEntries =
           DictionaryEntriesReader
-            .using(Logger.Null)
+            .using(
+              logger = Logger.Null
+            )
 
       } yield withFixture(test.toNoArgTest(Fixtures(
-        entriesSource = entriesSource,
+        entriesStream = entriesStream,
         readEntries = readEntries
       )))
 
@@ -39,9 +41,9 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
   }
 
   "Read and parse entries file" in { fixtures =>
-    import fixtures.{ entriesSource, readEntries }
+    import fixtures.{ entriesStream, readEntries }
 
-    readEntries(entriesSource)
+    readEntries(entriesStream)
       .should(matchTo(Seq(
         DictionaryEntry(CompanyId("alpha"), CompanyName("Alpha, Inc."), Some(CompanyWebsite("http://alpha.com"))),
         DictionaryEntry(CompanyId("bravo"), CompanyName("Bravo, LLC"), Some(CompanyWebsite("http://bravo.com")))
@@ -53,7 +55,7 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
 object DictionaryEntriesReaderSpec {
 
   case class Fixtures(
-    entriesSource: InputStream,
+    entriesStream: InputStream,
     readEntries: DictionaryEntriesReader)
 
 }
