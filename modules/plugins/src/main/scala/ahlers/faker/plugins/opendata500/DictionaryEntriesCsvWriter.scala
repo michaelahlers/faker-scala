@@ -2,25 +2,55 @@ package ahlers.faker.plugins.opendata500
 
 import sbt._
 
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
+import java.io.PrintWriter
 import java.nio.charset.StandardCharsets
 
 /**
  * @since November 13, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
+trait DictionaryEntriesCsvWriter {
+
+  def apply(
+    dictionaryEntries: IndexedSeq[DictionaryEntry],
+    nameStream: OutputStream,
+    websiteStream: OutputStream
+  ): Unit
+
+  final def apply(
+    dictionaryEntries: IndexedSeq[DictionaryEntry],
+    nameFile: File,
+    websiteFile: File
+  ): Unit = {
+    val nameStream = new FileOutputStream(nameFile, false)
+    val websiteStream = new FileOutputStream(websiteFile, false)
+
+    try apply(
+      dictionaryEntries = dictionaryEntries,
+      nameStream = nameStream,
+      websiteStream = websiteStream
+    )
+    finally {
+      nameStream.flush()
+      websiteStream.flush()
+
+      nameStream.close()
+      websiteStream.close()
+    }
+  }
+
+}
 object DictionaryEntriesCsvWriter {
 
   implicit val orderingName: Ordering[CompanyName] =
     Ordering.by(_.toText)
 
   def using(
-    nameFile: File,
-    websiteFile: File,
     logger: Logger
-  ): DictionaryEntriesWriter = { dictionaryEntries =>
-    nameFile.getParentFile.mkdirs()
-    websiteFile.getParentFile.mkdirs()
-
+  ): DictionaryEntriesCsvWriter = { (dictionaryEntries, nameStream, websiteStream) =>
     /** Group around unique [[CompanyName]] values. */
     val indexByName: Map[CompanyName, Int] =
       dictionaryEntries
@@ -31,19 +61,17 @@ object DictionaryEntriesCsvWriter {
         .toMap
 
     IO.writeLines(
-      file = nameFile,
+      writer = new PrintWriter(nameStream, true),
       lines = indexByName
         .keys.toSeq
         .sorted
         .map { name =>
           """%s""".format(name.toText)
-        },
-      charset = StandardCharsets.UTF_8,
-      append = false
+        }
     )
 
     IO.writeLines(
-      file = websiteFile,
+      writer = new PrintWriter(websiteStream, true),
       lines = dictionaryEntries
         .sortBy(_.name)
         .flatMap(entry => entry.website.map((entry.name, _)))
@@ -52,29 +80,10 @@ object DictionaryEntriesCsvWriter {
           """%x,%s""".format(
             indexByName(name),
             website.toText)
-        },
-      charset = StandardCharsets.UTF_8,
-      append = false
+        }
     )
 
-    Seq(
-      nameFile,
-      websiteFile
-    )
-  }
-
-  def usingDir(
-    outputDirectory: File,
-    logger: Logger
-  ): DictionaryEntriesWriter = {
-    val nameFile = outputDirectory / "name.csv"
-    val websiteFile = outputDirectory / "index,website.csv"
-
-    using(
-      nameFile = nameFile,
-      websiteFile = websiteFile,
-      logger = logger
-    )
+    ()
   }
 
 }

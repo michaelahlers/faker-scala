@@ -29,7 +29,7 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
 
         websiteFile <-
           File.temporaryFile(
-            prefix = "website",
+            prefix = "index,website",
             suffix = ".csv"
           )
 
@@ -42,11 +42,11 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
             )
 
       } yield {
-        info(s"""Name file: "$nameFile"; usage file: "$websiteFile".""")
+        info(s"""Name file: "$nameFile"; website file: "$websiteFile".""")
 
         Fixtures(
           nameFile = nameFile,
-          usageFile = websiteFile,
+          websiteFile = websiteFile,
           writeEntries = writer
         )
       }
@@ -56,9 +56,9 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
       .apply(withFixture(_))
   }
 
-  "Consolidate usages to duplicate names" in { fixtures =>
+  "Consolidate duplicate company names" in { fixtures =>
     import fixtures.nameFile
-    import fixtures.usageFile
+    import fixtures.websiteFile
     import fixtures.writeEntries
 
     val partialEntry = DictionaryEntry(CompanyId(""), _, _)
@@ -70,10 +70,6 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
     )
 
     writeEntries(entries)
-      .should(matchTo(Seq(
-        nameFile.toJava,
-        usageFile.toJava
-      )))
 
     nameFile
       .lines(StandardCharsets.UTF_8)
@@ -83,7 +79,7 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
         "Bravo"
       )))
 
-    usageFile
+    websiteFile
       .lines(StandardCharsets.UTF_8)
       .toSeq
       .should(matchTo(Seq(
@@ -100,7 +96,7 @@ object DictionaryEntriesCsvWriterSpec {
 
   case class Fixtures(
     nameFile: File,
-    usageFile: File,
+    websiteFile: File,
     writeEntries: DictionaryEntriesWriter)
 
 }

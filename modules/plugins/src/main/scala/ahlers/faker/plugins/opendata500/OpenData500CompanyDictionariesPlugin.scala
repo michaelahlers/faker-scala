@@ -104,19 +104,37 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
       val dictionaryEntries: Seq[DictionaryEntry] = readOpenData500CompanyEntries.value
       val outputDirectory: File = openData500CompanyOutputDirectory.value
 
-      val writeEntries: DictionaryEntriesWriter =
-        openData500CompanyOutputFormat.value match {
-          case DictionaryOutputFormat.Csv =>
-            DictionaryEntriesCsvWriter.usingDir(
-              outputDirectory = outputDirectory,
+      outputDirectory.mkdirs()
+
+      openData500CompanyOutputFormat.value match {
+
+        case DictionaryOutputFormat.Csv =>
+          val nameFile = outputDirectory / "name.csv"
+          val websiteFile = outputDirectory / "index,website.csv"
+
+          val outputFiles =
+            Seq(
+              nameFile,
+              websiteFile
+            )
+
+          val writeEntries =
+            DictionaryEntriesCsvWriter.using(
               logger = logger
             )
-        }
 
-      val outputFiles: Seq[File] =
-        writeEntries(dictionaryEntries.toIndexedSeq)
+          writeEntries(
+            dictionaryEntries = dictionaryEntries.toIndexedSeq,
+            nameFile = nameFile,
+            websiteFile = websiteFile
+          )
 
-      outputFiles
+          outputFiles
+
+        //case DictionaryOutputFormat.Yaml =>
+        //  ???
+
+      }
     }
 
   override val projectSettings =
