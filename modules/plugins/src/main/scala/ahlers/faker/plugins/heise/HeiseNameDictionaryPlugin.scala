@@ -126,17 +126,37 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
       val outputFormat = heiseNameDictionaryOutputFormat.value
       val outputDirectory = heiseNameDictionaryOutputDirectory.value
       val classifiedNames = loadHeiseNameDictionaryEntries.value
-      val writeClassifiedNames: DictionaryEntriesWriter =
-        outputFormat match {
-          case DictionaryEntriesOutputFormat.Csv =>
-            DictionaryEntriesCsvWriter(
-              outputDirectory = outputDirectory,
-              logger = logger)
-        }
 
       val outputFiles =
-        writeClassifiedNames(classifiedNames
-          .toIndexedSeq)
+        outputFormat match {
+
+          case DictionaryEntriesOutputFormat.Csv =>
+            val templatesFile = outputDirectory / "template.csv"
+            val usageFile = outputDirectory / "index,usage.csv"
+            val countryCodeWeightFile = outputDirectory / "index,country-code,weight.csv"
+
+            val writeEntries =
+              DictionaryEntriesCsvWriter.using(
+                logger = logger
+              )
+
+            writeEntries(
+              dictionaryEntries = classifiedNames.toIndexedSeq,
+              templatesFile = templatesFile,
+              usageFile = usageFile,
+              countryCodeWeightFile = countryCodeWeightFile
+            )
+
+            Seq(
+              templatesFile,
+              usageFile,
+              countryCodeWeightFile
+            )
+
+          //case DictionaryOutputFormat.Yaml =>
+          //  ???
+
+        }
 
       logger.info(
         """Generated files %s in directory "%s"."""

@@ -18,7 +18,7 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
 
   override type FixtureParam = Fixtures
   override protected def withFixture(test: OneArgTest) = {
-    val fixturesF =
+    val outcomeF =
       for {
 
         nameFile <-
@@ -33,27 +33,19 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
             suffix = ".csv"
           )
 
-        writer =
+        writeEntries =
           DictionaryEntriesCsvWriter
             .using(
-              nameFile = nameFile.toJava,
-              usageFile = usageFile.toJava,
               logger = Logger.Null
             )
 
-      } yield {
-        info(s"""Name file: "$nameFile"; usage file: "$usageFile".""")
+      } yield withFixture(test.toNoArgTest(Fixtures(
+        nameFile = nameFile,
+        usageFile = usageFile,
+        writeEntries = writeEntries
+      )))
 
-        Fixtures(
-          nameFile = nameFile,
-          usageFile = usageFile,
-          writeEntries = writer
-        )
-      }
-
-    fixturesF
-      .map(test.toNoArgTest(_))
-      .apply(withFixture(_))
+    outcomeF.get()
   }
 
   "Consolidate usages to duplicate names" in { fixtures =>
@@ -67,25 +59,27 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
       partialEntry(Usage.Sur, Name("Alpha"))
     )
 
-    writeEntries(entries)
-      .should(matchTo(Seq(
-        nameFile.toJava,
-        usageFile.toJava
-      )))
+    writeEntries(
+      dictionaryEntries = entries,
+      nameFile = nameFile.toJava,
+      usageFile = usageFile.toJava
+    )
 
     nameFile
-      .lines(StandardCharsets.US_ASCII)
+      .lines(StandardCharsets.UTF_8)
       .toSeq
-      .should(matchTo(Seq(
-        "Alpha"
-      )))
+      .should(matchTo(Resource.my
+        .getAsStream("expected_name.csv")
+        .lines(StandardCharsets.UTF_8)
+        .toSeq))
 
     usageFile
-      .lines(StandardCharsets.US_ASCII)
+      .lines(StandardCharsets.UTF_8)
       .toSeq
-      .should(matchTo(Seq(
-        "0,S"
-      )))
+      .should(matchTo(Resource.my
+        .getAsStream("expected_index,usage.csv")
+        .lines(StandardCharsets.UTF_8)
+        .toSeq))
 
   }
 
@@ -96,6 +90,6 @@ object DictionaryEntriesCsvWriterSpec {
   case class Fixtures(
     nameFile: File,
     usageFile: File,
-    writeEntries: DictionaryEntriesWriter)
+    writeEntries: DictionaryEntriesCsvWriter)
 
 }

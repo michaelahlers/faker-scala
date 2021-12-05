@@ -106,35 +106,44 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
 
       outputDirectory.mkdirs()
 
-      openData500CompanyOutputFormat.value match {
+      val outputFiles =
+        openData500CompanyOutputFormat.value match {
 
-        case DictionaryOutputFormat.Csv =>
-          val nameFile = outputDirectory / "name.csv"
-          val websiteFile = outputDirectory / "index,website.csv"
+          case DictionaryOutputFormat.Csv =>
+            val nameFile = outputDirectory / "name.csv"
+            val websiteFile = outputDirectory / "index,website.csv"
 
-          val outputFiles =
+            val writeEntries =
+              DictionaryEntriesCsvWriter.using(
+                logger = logger
+              )
+
+            writeEntries(
+              dictionaryEntries = dictionaryEntries.toIndexedSeq,
+              nameFile = nameFile,
+              websiteFile = websiteFile
+            )
+
             Seq(
               nameFile,
               websiteFile
             )
 
-          val writeEntries =
-            DictionaryEntriesCsvWriter.using(
-              logger = logger
-            )
+          //case DictionaryOutputFormat.Yaml =>
+          //  ???
 
-          writeEntries(
-            dictionaryEntries = dictionaryEntries.toIndexedSeq,
-            nameFile = nameFile,
-            websiteFile = websiteFile
-          )
+        }
 
-          outputFiles
+      logger.info(
+        """Generated files %s in directory "%s"."""
+          .format(
+            outputFiles
+              .map(_.getName)
+              .mkString("\"", "\", \"", "\""),
+            outputDirectory
+          ))
 
-        //case DictionaryOutputFormat.Yaml =>
-        //  ???
-
-      }
+      outputFiles
     }
 
   override val projectSettings =

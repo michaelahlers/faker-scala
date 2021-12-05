@@ -2,25 +2,55 @@ package ahlers.faker.plugins.uscensus2000
 
 import sbt._
 
+import java.io.FileOutputStream
+import java.io.OutputStream
+import java.io.PrintWriter
 import java.nio.charset.StandardCharsets
 
 /**
  * @since November 13, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
+trait DictionaryEntriesCsvWriter {
+
+  def apply(
+    dictionaryEntries: IndexedSeq[DictionaryEntry],
+    nameStream: OutputStream,
+    usageStream: OutputStream
+  ): Unit
+
+  final def apply(
+    dictionaryEntries: IndexedSeq[DictionaryEntry],
+    nameFile: File,
+    usageFile: File
+  ): Unit = {
+    val nameStream = new FileOutputStream(nameFile, false)
+    val websiteStream = new FileOutputStream(usageFile, false)
+
+    try apply(
+      dictionaryEntries = dictionaryEntries,
+      nameStream = nameStream,
+      usageStream = websiteStream
+    )
+    finally {
+      nameStream.flush()
+      websiteStream.flush()
+
+      nameStream.close()
+      websiteStream.close()
+    }
+  }
+
+}
+
 object DictionaryEntriesCsvWriter {
 
   implicit val orderingName: Ordering[Name] =
     Ordering.by(_.toText)
 
   def using(
-    nameFile: File,
-    usageFile: File,
     logger: Logger
-  ): DictionaryEntriesWriter = { dictionaryEntries =>
-    nameFile.getParentFile.mkdirs()
-    usageFile.getParentFile.mkdirs()
-
+  ): DictionaryEntriesCsvWriter = { (dictionaryEntries, nameStream, usageStream) =>
     /** Group around unique [[Name]] values. */
     val indexByName: Map[Name, Int] =
       dictionaryEntries
@@ -31,19 +61,17 @@ object DictionaryEntriesCsvWriter {
         .toMap
 
     IO.writeLines(
-      file = nameFile,
+      writer = new PrintWriter(nameStream, true),
       lines = indexByName
         .keys.toSeq
         .sorted
         .map { name =>
           """%s""".format(name.toText)
-        },
-      charset = StandardCharsets.US_ASCII,
-      append = false
+        }
     )
 
     IO.writeLines(
-      file = usageFile,
+      writer = new PrintWriter(usageStream, true),
       lines = dictionaryEntries
         .sortBy(_.name)
         .map(entry => (entry.name, entry.usage))
@@ -54,28 +82,7 @@ object DictionaryEntriesCsvWriter {
             usage match {
               case Usage.Sur => "S"
             })
-        },
-      charset = StandardCharsets.US_ASCII,
-      append = false
-    )
-
-    Seq(
-      nameFile,
-      usageFile
-    )
-  }
-
-  def using(
-    outputDirectory: File,
-    logger: Logger
-  ): DictionaryEntriesWriter = {
-    val nameFile = outputDirectory / "name.csv"
-    val usageFile = outputDirectory / "index,usage.csv"
-
-    using(
-      nameFile = nameFile,
-      usageFile = usageFile,
-      logger = logger
+        }
     )
   }
 

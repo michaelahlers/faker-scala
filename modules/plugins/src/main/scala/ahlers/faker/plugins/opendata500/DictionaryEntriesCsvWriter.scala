@@ -43,6 +43,7 @@ trait DictionaryEntriesCsvWriter {
   }
 
 }
+
 object DictionaryEntriesCsvWriter {
 
   implicit val orderingName: Ordering[CompanyName] =

@@ -8,9 +8,6 @@ import org.scalatest.wordspec.FixtureAnyWordSpec
 import sbt.Logger
 
 import java.io.InputStream
-import java.nio.charset.StandardCharsets
-import scala.io.Codec
-import scala.io.Source
 
 /**
  * @since November 14, 2021
@@ -21,26 +18,24 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
 
   override type FixtureParam = Fixtures
   override protected def withFixture(test: OneArgTest) = {
-    val fixturesF =
+    val outcomeF =
       for {
 
         entriesSource <-
           Resource.my
-            .getAsStream("DictionaryEntriesReaderSpec.csv")
+            .getAsStream("given_companies.csv")
             .autoClosed
 
-        reader =
+        readEntries =
           DictionaryEntriesReader
             .using(Logger.Null)
 
-      } yield Fixtures(
+      } yield withFixture(test.toNoArgTest(Fixtures(
         entriesSource = entriesSource,
-        readEntries = reader
-      )
+        readEntries = readEntries
+      )))
 
-    fixturesF
-      .map(test.toNoArgTest(_))
-      .apply(withFixture(_))
+    outcomeF.get()
   }
 
   "Read and parse entries file" in { fixtures =>
@@ -56,6 +51,7 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
 }
 
 object DictionaryEntriesReaderSpec {
+
   case class Fixtures(
     entriesSource: InputStream,
     readEntries: DictionaryEntriesReader)

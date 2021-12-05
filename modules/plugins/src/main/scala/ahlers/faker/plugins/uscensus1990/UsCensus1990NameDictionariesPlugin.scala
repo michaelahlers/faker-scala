@@ -177,17 +177,42 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
       val dictionaryEntries: Seq[DictionaryEntry] = readUsCensus1990DictionaryEntries.value
       val outputDirectory: File = usCensus1990NameDictionaryOutputDirectory.value
 
-      val writeEntries: DictionaryEntriesWriter =
+      val outputFiles =
         usCensus1990NameDictionariesOutputFormat.value match {
+
           case DictionaryOutputFormat.Csv =>
-            DictionaryEntriesCsvWriter.using(
-              outputDirectory = outputDirectory,
-              logger = logger
+            val nameFile = outputDirectory / "name.csv"
+            val usageFile = outputDirectory / "index,usage.csv"
+
+            val writeEntries =
+              DictionaryEntriesCsvWriter.using(
+                logger = logger
+              )
+
+            writeEntries(
+              dictionaryEntries = dictionaryEntries.toIndexedSeq,
+              nameFile = nameFile,
+              usageFile = usageFile
             )
+
+            Seq(
+              nameFile,
+              usageFile
+            )
+
+          //case DictionaryOutputFormat.Yaml =>
+          //  ???
+
         }
 
-      val outputFiles: Seq[File] =
-        writeEntries(dictionaryEntries.toIndexedSeq)
+      logger.info(
+        """Generated files %s in directory "%s"."""
+          .format(
+            outputFiles
+              .map(_.getName)
+              .mkString("\"", "\", \"", "\""),
+            outputDirectory
+          ))
 
       outputFiles
     }

@@ -18,7 +18,7 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
 
   override type FixtureParam = Fixtures
   override protected def withFixture(test: OneArgTest) = {
-    val fixturesF =
+    val outcomeF =
       for {
 
         templateFile <-
@@ -39,29 +39,20 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
             suffix = ".csv"
           )
 
-        writer =
+        writeEntries =
           DictionaryEntriesCsvWriter
             .using(
-              templatesFile = templateFile.toJava,
-              usageFile = usageFile.toJava,
-              countryCodeWeightFile = countryCodeWeightFile.toJava,
               logger = Logger.Null
             )
 
-      } yield {
-        info(s"""Template file: "$templateFile"; usage file: "$usageFile"; country-code, weight file: "$countryCodeWeightFile".""")
+      } yield withFixture(test.toNoArgTest(Fixtures(
+        templatesFile = templateFile,
+        usageFile = usageFile,
+        countryCodeWeightFile = countryCodeWeightFile,
+        writeEntries = writeEntries
+      )))
 
-        Fixtures(
-          templatesFile = templateFile,
-          usageFile = usageFile,
-          countryCodeWeightFile = countryCodeWeightFile,
-          writeEntries = writer
-        )
-      }
-
-    fixturesF
-      .map(test.toNoArgTest(_))
-      .apply(withFixture(_))
+    outcomeF.get()
   }
 
   "Consolidate usages to duplicate templates" in { fixtures =>
@@ -92,44 +83,28 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
       partialEntry(Usage.Equivalent, Template("Foxtrot"))
     )
 
-    writeEntries(entries)
-      .should(matchTo(Seq(
-        templatesFile.toJava,
-        usageFile.toJava,
-        countryCodeWeightFile.toJava
-      )))
+    writeEntries(
+      dictionaryEntries = entries,
+      templatesFile = templatesFile.toJava,
+      usageFile = usageFile.toJava,
+      countryCodeWeightFile = countryCodeWeightFile.toJava
+    )
 
     templatesFile
-      .lines(StandardCharsets.ISO_8859_1)
+      .lines(StandardCharsets.UTF_8)
       .toSeq
-      .should(matchTo(Seq(
-        "Alpha",
-        "Bravo",
-        "Charlie",
-        "Delta",
-        "Echo",
-        "Foxtrot"
-      )))
+      .should(matchTo(Resource.my
+        .getAsStream("expected_name.csv")
+        .lines(StandardCharsets.UTF_8)
+        .toSeq))
 
     usageFile
       .lines(StandardCharsets.ISO_8859_1)
       .toSeq
-      .should(matchTo(Seq(
-        "0,F",
-        "1,F",
-        "1,1F",
-        "2,F",
-        "2,1F",
-        "2,?F",
-        "3,F",
-        "3,1F",
-        "3,?F",
-        "4,M",
-        "4,1M",
-        "4,?M",
-        "4,?",
-        "5,="
-      )))
+      .should(matchTo(Resource.my
+        .getAsStream("expected_index,usage.csv")
+        .lines(StandardCharsets.UTF_8)
+        .toSeq))
   }
 
 }
@@ -140,6 +115,6 @@ object DictionaryEntriesCsvWriterSpec {
     templatesFile: File,
     usageFile: File,
     countryCodeWeightFile: File,
-    writeEntries: DictionaryEntriesWriter)
+    writeEntries: DictionaryEntriesCsvWriter)
 
 }
