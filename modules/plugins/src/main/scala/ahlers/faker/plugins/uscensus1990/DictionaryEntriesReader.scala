@@ -43,7 +43,7 @@ object DictionaryEntriesReader {
       .getLines()
       .map(DictionaryLine(_))
       .map(parseEntry(usage, _))
-      .toSeq
+      .toIndexedSeq
   }
 
 }

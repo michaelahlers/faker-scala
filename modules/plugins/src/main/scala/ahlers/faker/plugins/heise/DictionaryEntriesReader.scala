@@ -9,7 +9,10 @@ import java.nio.charset.StandardCharsets
  * @since September 22, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait DictionaryEntriesReader extends (IndexedSeq[DictionaryLine] => Seq[DictionaryEntry])
+trait DictionaryEntriesReader {
+  def apply(lines: IndexedSeq[DictionaryLine]): Seq[DictionaryEntry]
+}
+
 object DictionaryEntriesReader {
 
   def using(

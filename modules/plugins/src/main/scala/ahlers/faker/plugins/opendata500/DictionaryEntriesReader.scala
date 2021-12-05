@@ -58,6 +58,6 @@ object DictionaryEntriesReader {
     logger: Logger
   ): DictionaryEntriesReader = _
     .asUnsafeCsvReader[DictionaryEntry](rfc.withHeader)
-    .seq
+    .toIndexedSeq
 
 }

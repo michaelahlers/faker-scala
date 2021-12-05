@@ -45,7 +45,7 @@ object DictionaryEntriesReader {
       .drop(1)
       .map(DictionaryLine(_))
       .map(parseEntry(usage, _))
-      .toSeq
+      .toIndexedSeq
   }
 
 }
