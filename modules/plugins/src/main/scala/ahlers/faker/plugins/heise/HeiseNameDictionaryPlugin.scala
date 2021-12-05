@@ -127,6 +127,8 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
       val outputDirectory = heiseNameDictionaryOutputDirectory.value
       val classifiedNames = loadHeiseNameDictionaryEntries.value
 
+      outputDirectory.mkdirs()
+
       val outputFiles =
         outputFormat match {
 

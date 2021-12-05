@@ -109,6 +109,8 @@ object UsCensus2000NameDictionariesPlugin extends AutoPlugin {
       val dictionaryEntries: Seq[DictionaryEntry] = readUsCensus2000DictionaryEntries.value
       val outputDirectory: File = usCensus2000NameDictionaryOutputDirectory.value
 
+      outputDirectory.mkdirs()
+
       val outputFiles =
         usCensus2000NameDictionariesOutputFormat.value match {
 
