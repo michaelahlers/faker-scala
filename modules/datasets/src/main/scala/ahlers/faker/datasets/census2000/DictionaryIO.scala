@@ -42,7 +42,7 @@ object DictionaryIO {
             case Array(nameIndex, usage) =>
               UsageEntry(
                 index = UsageIndex(line.toInt),
-                name = NameIndex(nameIndex.toInt),
+                name = NameIndex(Integer.parseInt(nameIndex, 16)),
                 usage =
                   usage match {
                     case "S" => Usage.Sur
