@@ -10,7 +10,8 @@ openData500CompanyOutputDirectory :=
     "ahlers" /
     "faker" /
     "datasets" /
-    "opendata500"
+    "opendata500" /
+    "companies"
 
 usCensus1990NameDictionaryOutputDirectory :=
   (Compile / resourceManaged).value /

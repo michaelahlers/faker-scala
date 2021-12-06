@@ -10,9 +10,9 @@ import org.scalatestplus.scalacheck._
  */
 class AllSpec extends AnyWordSpec {
 
-  "Companies" in {
+  "Company names" in {
     import ScalaCheckPropertyChecks._
-    forAll(genCompany) { _ => }
+    forAll(genCompanyName) { _ => }
   }
 
   "Person given names" in {
