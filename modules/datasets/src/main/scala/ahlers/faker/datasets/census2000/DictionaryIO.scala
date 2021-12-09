@@ -39,6 +39,7 @@ object DictionaryIO {
         .map(UsageLine.tupled)
         .map(line =>
           line.toText.split(',') match {
+
             case Array(nameIndex, usage) =>
               UsageEntry(
                 index = UsageIndex(line.toInt),
@@ -48,6 +49,11 @@ object DictionaryIO {
                     case "S" => Usage.Sur
                   }
               )
+
+            /** @todo Proper error-handling. */
+            case _ =>
+              ???
+
           })
         .toSeq
 
