@@ -39,6 +39,7 @@ private[census1990] object DictionaryIO {
         .map(UsageLine.tupled)
         .map(line =>
           line.toText.split(',') match {
+
             case Array(nameIndex, usage) =>
               UsageEntry(
                 index = UsageIndex(line.toInt),
@@ -50,6 +51,11 @@ private[census1990] object DictionaryIO {
                     case "L" => Usage.Last
                   }
               )
+
+            /** @todo Proper error-handling. */
+            case _ =>
+              ???
+
           })
         .toSeq
 
