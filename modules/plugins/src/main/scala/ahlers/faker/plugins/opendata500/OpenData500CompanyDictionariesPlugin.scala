@@ -24,7 +24,7 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
     /**
      * @see [[https://www.opendata500.com/us/ Open Data 500: United States Companies]]
      */
-    val openData500UsCompanyDictionarySourceUrl = settingKey[URL]("""Location of the States companies dictionary.""")
+    val openData500UsCompanyDictionarySourceUrl = settingKey[URL]("""Location of the United States companies dictionary.""")
 
     /**
      * @see [[https://www.opendata500.com/kr/ Open Data 500: Korean Companies]]

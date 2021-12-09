@@ -4,6 +4,7 @@ import sbt.Keys._
 import sbt._
 
 import scala.util.Try
+import scala.collection.convert.ImplicitConversionsToScala._
 
 /**
  * @since October 16, 2021
@@ -25,13 +26,13 @@ object UsCensus2000NameDictionariesPlugin extends AutoPlugin {
      */
     val usCensus2000SurnameDictionarySourceUrl = settingKey[URL]("""Location of the surnames names dictionary.""")
 
-    val usCensus2000NameDictionariesDownloadDirectory = settingKey[File]("Destination of downloaded name dictionaries, typically rooted in a task temporary directory, cleaned up after completion.")
+    val usCensus2000NameDictionariesExtractDirectory = settingKey[File]("Destination of extracted name dictionary files, typically rooted in a task temporary directory, cleaned up after completion.")
 
     val usCensus2000NameDictionariesOutputFormat = settingKey[DictionaryOutputFormat]("Specifies whether to write—only CSV, for now, with additional formats planned.")
 
     val usCensus2000NameDictionaryOutputDirectory = settingKey[File]("Where to write all output files, typically a managed resource directory on the class path.")
 
-    val downloadUsCensus2000SurnameDictionaryFile = taskKey[File]("Fetches the surname dictionary file from the original source.")
+    val extractUsCensus2000SurnameDictionaryFiles = taskKey[Set[File]]("Extracts the surname dictionary file from the original source archive.")
 
     val readUsCensus2000DictionaryEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses all name dictionary entries obtained from downloads.")
 
@@ -48,7 +49,7 @@ object UsCensus2000NameDictionariesPlugin extends AutoPlugin {
       url("classpath:www2.census.gov/topics/genealogy/2000surnames/names.zip")
 
   private val downloadDirectorySetting: Setting[File] =
-    usCensus2000NameDictionariesDownloadDirectory :=
+    usCensus2000NameDictionariesExtractDirectory :=
       taskTemporaryDirectory.value /
         "www2.census.gov" /
         "topics" /
@@ -67,31 +68,51 @@ object UsCensus2000NameDictionariesPlugin extends AutoPlugin {
         "genealogy" /
         "2000surnames"
 
-  private val downloadLastNameDictionaryFileTask: Setting[Task[File]] =
-    downloadUsCensus2000SurnameDictionaryFile := {
+  private val extractSurnameDictionaryFilesTaskSetting: Setting[Task[Set[File]]] =
+    extractUsCensus2000SurnameDictionaryFiles := {
       val logger = streams.value.log
 
       val sourceUrl = usCensus2000SurnameDictionarySourceUrl.value
-      val downloadDirectory = usCensus2000NameDictionariesDownloadDirectory.value
-      val downloadFile = downloadDirectory / sourceUrl.getFile
+      val extractDirectory = usCensus2000NameDictionariesExtractDirectory.value
 
-      val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
+      val extractFiles =
+        IO.unzipURL(
+          sourceUrl,
+          extractDirectory)
 
-      val dictionaryFile: File =
-        dictionaryIO
-          .downloadDictionary(
-            sourceUrl = sourceUrl,
-            downloadDirectory = downloadDirectory,
-            dictionaryFileName = "app_c.csv")
+      logger.info("""Extracted %d files from archive "%s" to "%s": %s."""
+        .format(
+          extractFiles.size,
+          sourceUrl,
+          extractDirectory,
+          extractFiles
+            .map(_
+              .toPath
+              .drop(extractDirectory
+                .toPath
+                .size)
+              .reduce(_.resolve(_)))
+            .mkString("\"", "\", \"", "\"")
+        ))
 
-      dictionaryFile
+      extractFiles
     }
 
   private val readDictionaryEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
     readUsCensus2000DictionaryEntries := {
       val logger = streams.value.log
 
-      val surnameFile: File = downloadUsCensus2000SurnameDictionaryFile.value
+      val extractFiles: Set[File] = extractUsCensus2000SurnameDictionaryFiles.value
+
+      val surnameFile =
+        extractFiles
+          .find(_.getName == "app_c.txt")
+          .getOrElse(throw new MessageOnlyException(
+            """File "%s" wasn't found among extracted files: %s."""
+              .format(
+                "app_c.txt",
+                extractFiles.mkString("\"", "\", \"", "\"")
+              )))
 
       val parseEntries: DictionaryEntriesReader =
         DictionaryEntriesReader.using(DictionaryEntryParser.default)
@@ -157,7 +178,7 @@ object UsCensus2000NameDictionariesPlugin extends AutoPlugin {
       downloadDirectorySetting,
       outputFormatSetting,
       outputDirectorySetting,
-      downloadLastNameDictionaryFileTask,
+      extractSurnameDictionaryFilesTaskSetting,
       readDictionaryEntriesTask,
       writeDictionaryEntriesTask,
       Compile / resourceGenerators += writeUsCensus2000DictionaryEntries

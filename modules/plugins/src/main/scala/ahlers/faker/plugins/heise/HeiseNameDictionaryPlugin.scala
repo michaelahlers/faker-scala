@@ -5,6 +5,7 @@ import sbt._
 
 import java.nio.charset.StandardCharsets
 import scala.util.Try
+import scala.collection.convert.ImplicitConversionsToScala._
 
 object HeiseNameDictionaryPlugin extends AutoPlugin {
 
@@ -23,15 +24,13 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
      */
     val heiseNameDictionaryArchiveSourceUrl = settingKey[URL]("""Location of the original archive, described by "Magazin für Computertechnik's "40 000 Namen".""")
 
-    val heiseNameDictionaryDownloadDirectory = settingKey[File]("Destination of downloaded and extracted archive, typically rooted in a task temporary directory, cleaned up after completion.")
-
-    val heiseNameDictionaryFileName = settingKey[String]("Names the file inside the dictionary archive containing classified names.")
+    val heiseNameDictionaryExtractDirectory = settingKey[File]("Destination of extracted name dictionary file, typically rooted in a task temporary directory, cleaned up after completion.")
 
     val heiseNameDictionaryOutputFormat = settingKey[DictionaryEntriesOutputFormat]("Specifies whether to write—only CSV, for now, with additional formats planned.")
 
     val heiseNameDictionaryOutputDirectory = settingKey[File]("Where to write all output files, typically a managed resource directory on the class path.")
 
-    val downloadHeiseNameDictionaryFile = taskKey[File]("Fetches and extracts the dictionary file from the original source.")
+    val extractHeiseNameDictionaryFiles = taskKey[Set[File]]("Extracts the name dictionary source archive.")
 
     val loadHeiseNameDictionaryRegions = taskKey[Seq[Region]]("Loads region definitions from configuration.")
 
@@ -49,17 +48,13 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
       //url("ftp://ftp.heise.de/pub/ct/listings/0717-182.zip")
       url("classpath:ftp.heise.de/pub/ct/listings/0717-182.zip")
 
-  private val downloadDirectorySetting: Setting[File] =
-    heiseNameDictionaryDownloadDirectory :=
+  private val dictionaryExtractDirectorySetting: Setting[File] =
+    heiseNameDictionaryExtractDirectory :=
       taskTemporaryDirectory.value /
         "ftp.heise.de" /
         "pub" /
         "ct" /
         "listings"
-
-  private val fileNameSetting: Setting[String] =
-    heiseNameDictionaryFileName :=
-      "nam_dict.txt"
 
   private val outputFormatSetting: Setting[DictionaryEntriesOutputFormat] =
     heiseNameDictionaryOutputFormat :=
@@ -73,24 +68,34 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         "ct" /
         "listings"
 
-  private val downloadFileTask: Setting[Task[File]] =
-    downloadHeiseNameDictionaryFile := {
+  private val extractDictionaryFilesSetting: Setting[Task[Set[File]]] =
+    extractHeiseNameDictionaryFiles := {
       val logger = streams.value.log
 
       val sourceUrl = heiseNameDictionaryArchiveSourceUrl.value
-      val downloadDirectory = heiseNameDictionaryDownloadDirectory.value
-      val dictionaryFileName = heiseNameDictionaryFileName.value
+      val extractDirectory = heiseNameDictionaryExtractDirectory.value
 
-      val dictionaryIO = DictionaryIO(logger)
+      val extractFiles =
+        IO.unzipURL(
+          sourceUrl,
+          extractDirectory)
 
-      val dictionaryFile =
-        dictionaryIO
-          .downloadDictionary(
-            sourceUrl = sourceUrl,
-            downloadDirectory = downloadDirectory,
-            dictionaryFileName = dictionaryFileName)
+      logger.info("""Extracted %d files from archive at "%s" to "%s": %s."""
+        .format(
+          extractFiles.size,
+          sourceUrl,
+          extractDirectory,
+          extractFiles
+            .map(_
+              .toPath
+              .drop(extractDirectory
+                .toPath
+                .size)
+              .reduce(_.resolve(_)))
+            .mkString("\"", "\", \"", "\"")
+        ))
 
-      dictionaryFile
+      extractFiles
     }
 
   private val loadRegionsTask: Setting[Task[Seq[Region]]] =
@@ -103,8 +108,18 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
   private val loadEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
     loadHeiseNameDictionaryEntries := {
-      val dictionaryFile = downloadHeiseNameDictionaryFile.value
+      val extractFiles = extractHeiseNameDictionaryFiles.value
       val regions = loadHeiseNameDictionaryRegions.value
+
+      val dictionaryFile =
+        extractFiles
+          .find(_.getName == "nam_dict.txt")
+          .getOrElse(throw new MessageOnlyException(
+            """File "%s" wasn't found among extracted files: %s."""
+              .format(
+                "nam_dict.txt",
+                extractFiles.mkString("\"", "\", \"", "\"")
+              )))
 
       val dictionaryLines: Seq[DictionaryLine] =
         IO.readLines(dictionaryFile, StandardCharsets.ISO_8859_1)
@@ -175,11 +190,10 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
   override val projectSettings =
     Seq(
       archiveSourceUrlSetting,
-      downloadDirectorySetting,
-      fileNameSetting,
+      dictionaryExtractDirectorySetting,
       outputFormatSetting,
       outputDirectorySetting,
-      downloadFileTask,
+      extractDictionaryFilesSetting,
       loadRegionsTask,
       loadEntriesTask,
       writeEntriesTask,
