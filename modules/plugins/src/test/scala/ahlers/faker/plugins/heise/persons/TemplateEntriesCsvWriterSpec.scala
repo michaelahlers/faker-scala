@@ -29,7 +29,7 @@ class TemplateEntriesCsvWriterSpec extends FixtureAnyWordSpec {
 
         usageFile <-
           File.temporaryFile(
-            prefix = "index,usage",
+            prefix = "template-index,usage",
             suffix = ".csv"
           )
 
@@ -94,7 +94,7 @@ class TemplateEntriesCsvWriterSpec extends FixtureAnyWordSpec {
       .lines(StandardCharsets.UTF_8)
       .toSeq
       .should(matchTo(Resource.my
-        .getAsStream("expected_name.csv")
+        .getAsStream("expected_template.csv")
         .lines(StandardCharsets.UTF_8)
         .toSeq))
 
@@ -102,7 +102,7 @@ class TemplateEntriesCsvWriterSpec extends FixtureAnyWordSpec {
       .lines(StandardCharsets.ISO_8859_1)
       .toSeq
       .should(matchTo(Resource.my
-        .getAsStream("expected_index,usage.csv")
+        .getAsStream("expected_template-index,usage.csv")
         .lines(StandardCharsets.UTF_8)
         .toSeq))
   }

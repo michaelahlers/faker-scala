@@ -159,7 +159,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
           case TemplateEntriesOutputFormat.Csv =>
             val templatesFile = outputDirectory / "template.csv"
-            val usageFile = outputDirectory / "index,usage.csv"
+            val usageFile = outputDirectory / "template-index,usage.csv"
             val countryCodeWeightFile = outputDirectory / "index,country-code,weight.csv"
 
             val writeEntries =

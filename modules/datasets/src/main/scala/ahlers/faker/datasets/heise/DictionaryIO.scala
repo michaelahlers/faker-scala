@@ -35,7 +35,7 @@ private[heise] object DictionaryIO {
           .toIndexedSeq)
 
       override def loadUsageEntries() =
-        parseUsageRegionWeightEntries(Resource.my.getAsStream("index,usage.csv")
+        parseUsageRegionWeightEntries(Resource.my.getAsStream("template-index,usage.csv")
           .lines()
           .zipWithIndex
           .map(UsageLine.tupled)
