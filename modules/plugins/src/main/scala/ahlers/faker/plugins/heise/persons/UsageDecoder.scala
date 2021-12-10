@@ -1,5 +1,7 @@
 package ahlers.faker.plugins.heise.persons
 
+import scala.util.control.NoStackTrace
+
 /**
  * @since September 23, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
@@ -10,6 +12,7 @@ object UsageDecoder {
 
   case class UnknownUsageException(token: String)
     extends Exception(s"""Unexpected usage token "$token".""")
+      with NoStackTrace
 
   def apply(): UsageDecoder = {
     case "M" => Male
