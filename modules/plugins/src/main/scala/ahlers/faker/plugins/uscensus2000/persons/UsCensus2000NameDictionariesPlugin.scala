@@ -106,11 +106,11 @@ object UsCensus2000NameDictionariesPlugin extends AutoPlugin {
 
       val surnameFile =
         extractFiles
-          .find(_.getName == "app_c.txt")
+          .find(_.getName == "app_c.csv")
           .getOrElse(throw new MessageOnlyException(
             """File "%s" wasn't found among extracted files: %s."""
               .format(
-                "app_c.txt",
+                "app_c.csv",
                 extractFiles.mkString("\"", "\", \"", "\"")
               )))
 

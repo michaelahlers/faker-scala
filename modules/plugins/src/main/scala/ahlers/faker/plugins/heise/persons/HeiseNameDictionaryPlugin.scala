@@ -1,11 +1,13 @@
 package ahlers.faker.plugins.heise.persons
 
+import com.typesafe.config.ConfigFactory
 import sbt.Keys._
 import sbt._
 
 import java.nio.charset.StandardCharsets
 import scala.util.Try
 import scala.collection.convert.ImplicitConversionsToScala._
+import net.ceedubs.ficus.Ficus._
 
 object HeiseNameDictionaryPlugin extends AutoPlugin {
 
@@ -101,8 +103,16 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
   private val loadRegionsTask: Setting[Task[Seq[Region]]] =
     loadHeiseNameDictionaryRegions := {
       val logger = streams.value.log
-      val regionIO = RegionIO(logger)
-      val regions = regionIO.loadRegions()
+      val regions =
+        ConfigFactory
+          .load(getClass.getClassLoader)
+          .as[Seq[Region]]("regions")
+
+      logger.info("Loaded %d regions, defining %d ISO country codes, from configuration."
+        .format(
+          regions.size,
+          regions.flatMap(_.countryCodes).size))
+
       regions
     }
 
