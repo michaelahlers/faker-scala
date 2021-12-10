@@ -26,7 +26,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
     val heiseNameDictionaryExtractDirectory = settingKey[File]("Destination of extracted name dictionary file, typically rooted in a task temporary directory, cleaned up after completion.")
 
-    val heiseNameDictionaryOutputFormat = settingKey[DictionaryEntriesOutputFormat]("Specifies whether to write—only CSV, for now, with additional formats planned.")
+    val heiseNameDictionaryOutputFormat = settingKey[TemplateEntriesOutputFormat]("Specifies whether to write—only CSV, for now, with additional formats planned.")
 
     val heiseNameDictionaryOutputDirectory = settingKey[File]("Where to write all output files, typically a managed resource directory on the class path.")
 
@@ -34,7 +34,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
 
     val loadHeiseNameDictionaryRegions = taskKey[Seq[Region]]("Loads region definitions from configuration.")
 
-    val loadHeiseNameDictionaryEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses the dictionary to models suitable for encoding to standard formats.")
+    val loadHeiseNameDictionaryEntries = taskKey[Seq[TemplateEntry]]("Loads and parses the dictionary to models suitable for encoding to standard formats.")
 
     val writeHeiseNameDictionaryEntries = taskKey[Seq[File]]("Writes entries in the specified output format.")
 
@@ -56,9 +56,9 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
         "ct" /
         "listings"
 
-  private val outputFormatSetting: Setting[DictionaryEntriesOutputFormat] =
+  private val outputFormatSetting: Setting[TemplateEntriesOutputFormat] =
     heiseNameDictionaryOutputFormat :=
-      DictionaryEntriesOutputFormat.Csv
+      TemplateEntriesOutputFormat.Csv
 
   private val outputDirectorySetting: Setting[File] =
     heiseNameDictionaryOutputDirectory :=
@@ -106,7 +106,7 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
       regions
     }
 
-  private val loadEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
+  private val loadEntriesTask: Setting[Task[Seq[TemplateEntry]]] =
     loadHeiseNameDictionaryEntries := {
       val extractFiles = extractHeiseNameDictionaryFiles.value
       val regions = loadHeiseNameDictionaryRegions.value
@@ -126,9 +126,9 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
           .map(DictionaryLine(_))
 
       val readDictionaryEntries =
-        DictionaryEntriesReader.using(regions.toIndexedSeq)
+        TemplateEntriesReader.using(regions.toIndexedSeq)
 
-      val dictionaryEntries: Seq[DictionaryEntry] =
+      val dictionaryEntries: Seq[TemplateEntry] =
         readDictionaryEntries(dictionaryLines
           .toIndexedSeq)
 
@@ -147,13 +147,13 @@ object HeiseNameDictionaryPlugin extends AutoPlugin {
       val outputFiles =
         outputFormat match {
 
-          case DictionaryEntriesOutputFormat.Csv =>
+          case TemplateEntriesOutputFormat.Csv =>
             val templatesFile = outputDirectory / "template.csv"
             val usageFile = outputDirectory / "index,usage.csv"
             val countryCodeWeightFile = outputDirectory / "index,country-code,weight.csv"
 
             val writeEntries =
-              DictionaryEntriesCsvWriter.using(
+              TemplateEntriesCsvWriter.using(
                 logger = logger
               )
 

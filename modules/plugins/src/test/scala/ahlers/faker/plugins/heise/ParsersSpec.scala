@@ -82,7 +82,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
   "Entries" in { lines =>
     val entries =
-      DictionaryEntriesReader.using(IndexedSeq.empty)
+      TemplateEntriesReader.using(IndexedSeq.empty)
         .apply(lines)
 
     entries
@@ -90,7 +90,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
     entries(0)
       .should(matchTo(
-        DictionaryEntry(
+        TemplateEntry(
           usage = Usage.Male,
           template = Template("Aad"),
           regionWeights =
@@ -102,7 +102,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
     entries(3)
       .should(matchTo(
-        DictionaryEntry(
+        TemplateEntry(
           usage = Usage.Male,
           template = Template("Ådne"),
           regionWeights =
@@ -114,7 +114,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
     entries(95)
       .should(matchTo(
-        DictionaryEntry(
+        TemplateEntry(
           usage = Usage.Male,
           template = Template("Abdel+Hafiz"),
           regionWeights =
@@ -126,7 +126,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
     entries(186)
       .should(matchTo(
-        DictionaryEntry(
+        TemplateEntry(
           usage = Usage.Equivalent,
           template = Template("Abe=Abraham"),
           regionWeights =
@@ -138,7 +138,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
     entries(19982)
       .should(matchTo(
-        DictionaryEntry(
+        TemplateEntry(
           usage = Usage.Female,
           template = Template("Jane"),
           regionWeights =
@@ -196,7 +196,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
     entries(21651)
       .should(matchTo(
-        DictionaryEntry(
+        TemplateEntry(
           usage = Usage.Equivalent,
           template = Template("Josi=Josefa"),
           regionWeights =
@@ -210,7 +210,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
     entries(27155)
       .should(matchTo(
-        DictionaryEntry(
+        TemplateEntry(
           usage = Usage.Female,
           template = Template("Maria da Conceição"),
           regionWeights =
@@ -222,7 +222,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
     entries(48173)
       .should(matchTo(
-        DictionaryEntry(
+        TemplateEntry(
           usage = Usage.Female,
           template = Template("Zina"),
           regionWeights =
@@ -288,7 +288,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
     entries(48507)
       .should(matchTo(
-        DictionaryEntry(
+        TemplateEntry(
           usage = Usage.Female,
           template = Template("Žydronė"),
           regionWeights =
@@ -300,7 +300,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
     entries(48508)
       .should(matchTo(
-        DictionaryEntry(
+        TemplateEntry(
           usage = Usage.Male,
           template = Template("Žydrūnas"),
           regionWeights =
@@ -312,7 +312,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
 
     entries(48527)
       .should(matchTo(
-        DictionaryEntry(
+        TemplateEntry(
           usage = Usage.Female,
           template = Template("Zyta"),
           regionWeights =

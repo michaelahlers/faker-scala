@@ -13,8 +13,8 @@ import java.nio.charset.StandardCharsets
  * @since November 13, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
-  import DictionaryEntriesCsvWriterSpec._
+class TemplateEntriesCsvWriterSpec extends FixtureAnyWordSpec {
+  import TemplateEntriesCsvWriterSpec._
 
   override type FixtureParam = Fixtures
   override protected def withFixture(test: OneArgTest) = {
@@ -40,7 +40,7 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
           )
 
         writeEntries =
-          DictionaryEntriesCsvWriter
+          TemplateEntriesCsvWriter
             .using(
               logger = Logger.Null
             )
@@ -61,7 +61,7 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
     import fixtures.countryCodeWeightFile
     import fixtures.writeEntries
 
-    val partialEntry = DictionaryEntry(_, _, Nil)
+    val partialEntry = TemplateEntry(_, _, Nil)
 
     val entries = IndexedSeq(
       partialEntry(Usage.Female, Template("Alpha")),
@@ -109,12 +109,12 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
 
 }
 
-object DictionaryEntriesCsvWriterSpec {
+object TemplateEntriesCsvWriterSpec {
 
   case class Fixtures(
     templatesFile: File,
     usageFile: File,
     countryCodeWeightFile: File,
-    writeEntries: DictionaryEntriesCsvWriter)
+    writeEntries: TemplateEntriesCsvWriter)
 
 }

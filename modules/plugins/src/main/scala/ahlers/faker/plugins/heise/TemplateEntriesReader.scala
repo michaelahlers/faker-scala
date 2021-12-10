@@ -9,17 +9,17 @@ import java.nio.charset.StandardCharsets
  * @since September 22, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait DictionaryEntriesReader {
-  def apply(lines: IndexedSeq[DictionaryLine]): Seq[DictionaryEntry]
+trait TemplateEntriesReader {
+  def apply(lines: IndexedSeq[DictionaryLine]): Seq[TemplateEntry]
 }
 
-object DictionaryEntriesReader {
+object TemplateEntriesReader {
 
   def using(
     regions: IndexedSeq[Region],
     characterEncodings: IndexedSeq[CharacterEncoding],
     regionIndexes: IndexedSeq[RegionIndex]
-  ): DictionaryEntriesReader = {
+  ): TemplateEntriesReader = {
     val decodeUsage = UsageDecoder()
 
     lines =>
@@ -27,7 +27,7 @@ object DictionaryEntriesReader {
       val parseRegionWeights = RegionWeightsParser.using(regionIndexes)
 
       val parseDictionaryEntry =
-        DictionaryEntryParser.using(
+        TemplateEntryParser.using(
           decodeUsage = decodeUsage,
           decodeName = decodeName,
           parseRegionWeights = parseRegionWeights)
@@ -38,7 +38,7 @@ object DictionaryEntriesReader {
         .map(parseDictionaryEntry(_))
   }
 
-  def using(regions: IndexedSeq[Region]): DictionaryEntriesReader = {
+  def using(regions: IndexedSeq[Region]): TemplateEntriesReader = {
     val parseCharacterEncodings = CharacterEncodingsParser.default
     val parseRegionIndexes = RegionIndexesParser.using(regions)
 
@@ -51,8 +51,8 @@ object DictionaryEntriesReader {
         parseRegionIndexes(lines)
           .toIndexedSeq
 
-      val parseDictionaryEntries: DictionaryEntriesReader =
-        DictionaryEntriesReader.using(
+      val parseDictionaryEntries: TemplateEntriesReader =
+        TemplateEntriesReader.using(
           regions = regions,
           characterEncodings = characterEncodings,
           regionIndexes = regionIndexes)

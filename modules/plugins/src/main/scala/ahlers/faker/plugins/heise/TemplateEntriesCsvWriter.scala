@@ -12,17 +12,17 @@ import java.nio.charset.StandardCharsets
  * @since September 24, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait DictionaryEntriesCsvWriter {
+trait TemplateEntriesCsvWriter {
 
   def apply(
-    dictionaryEntries: IndexedSeq[DictionaryEntry],
+    dictionaryEntries: IndexedSeq[TemplateEntry],
     templatesStream: OutputStream,
     usageStream: OutputStream,
     countryCodeWeightStream: OutputStream
   ): Unit
 
   final def apply(
-    dictionaryEntries: IndexedSeq[DictionaryEntry],
+    dictionaryEntries: IndexedSeq[TemplateEntry],
     templatesFile: File,
     usageFile: File,
     countryCodeWeightFile: File
@@ -50,14 +50,14 @@ trait DictionaryEntriesCsvWriter {
 
 }
 
-object DictionaryEntriesCsvWriter {
+object TemplateEntriesCsvWriter {
 
   implicit val orderingTemplate: Ordering[Template] =
     Ordering.by(_.toText)
 
   def using(
     logger: Logger
-  ): DictionaryEntriesCsvWriter = {
+  ): TemplateEntriesCsvWriter = {
     (
       dictionaryEntries,
       templatesStream,

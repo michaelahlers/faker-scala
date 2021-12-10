@@ -4,14 +4,14 @@ package ahlers.faker.plugins.heise
  * @since September 25, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-trait DictionaryEntryParser extends (DictionaryLine => DictionaryEntry)
-object DictionaryEntryParser {
+trait TemplateEntryParser extends (DictionaryLine => TemplateEntry)
+object TemplateEntryParser {
 
   def using(
     decodeUsage: UsageDecoder,
     decodeName: TemplateDecoder,
     parseRegionWeights: RegionWeightsParser
-  ): DictionaryEntryParser = {
+  ): TemplateEntryParser = {
     line =>
       val usage: Usage =
         decodeUsage(line
@@ -52,7 +52,7 @@ object DictionaryEntryParser {
           require(!normalizedName.toText.contains('='), s"Expected no '=' characters $normalizedName normalized from $decodedName with usage $usage.")
       }
 
-      DictionaryEntry(
+      TemplateEntry(
         usage = usage,
         template = normalizedName,
         regionWeights = regionWeights)
