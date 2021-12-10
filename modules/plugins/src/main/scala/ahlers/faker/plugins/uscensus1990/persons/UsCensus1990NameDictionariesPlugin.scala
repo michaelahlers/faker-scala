@@ -42,12 +42,6 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
 
     val usCensus1990NameDictionaryOutputDirectory = settingKey[File]("Where to write all output files, typically a managed resource directory on the class path.")
 
-    val downloadUsCensus1990LastNameDictionaryFile = taskKey[File]("Fetches the last name dictionary file from the original source.")
-
-    val downloadUsCensus1990FemaleFirstNameDictionaryFile = taskKey[File]("Fetches the female first name dictionary file from the original source.")
-
-    val downloadUsCensus1990MaleFirstNameDictionaryFile = taskKey[File]("Fetches the male first name dictionary file from the original source.")
-
     val readUsCensus1990DictionaryEntries = taskKey[Seq[DictionaryEntry]]("Loads and parses all name dictionary entries obtained from downloads.")
 
     val writeUsCensus1990DictionaryEntries = taskKey[Seq[File]]("Writes all name dictionary entries in the specified output format and directory, serves as a resource generator.")
@@ -94,78 +88,34 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
         "genealogy" /
         "1990surnames"
 
-  private val downloadLastNameDictionaryFileTask: Setting[Task[File]] =
-    downloadUsCensus1990LastNameDictionaryFile := {
-      val logger = streams.value.log
-
-      val sourceUrl = usCensus1990LastNameDictionarySourceUrl.value
-      val downloadDirectory = usCensus1990NameDictionariesDownloadDirectory.value
-      val downloadFile = downloadDirectory / sourceUrl.getFile
-
-      val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
-
-      val dictionaryFile: File =
-        dictionaryIO
-          .downloadDictionary(
-            sourceUrl = sourceUrl,
-            downloadFile = downloadFile)
-
-      dictionaryFile
-    }
-
-  private val downloadFemaleFirstNameDictionaryFileTask: Setting[Task[File]] =
-    downloadUsCensus1990FemaleFirstNameDictionaryFile := {
-      val logger = streams.value.log
-
-      val sourceUrl = usCensus1990FirstNameFemaleDictionaryFileSourceUrl.value
-      val downloadDirectory = usCensus1990NameDictionariesDownloadDirectory.value
-      val downloadFile = downloadDirectory / sourceUrl.getFile
-
-      val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
-
-      val dictionaryFile: File =
-        dictionaryIO
-          .downloadDictionary(
-            sourceUrl = sourceUrl,
-            downloadFile = downloadFile)
-
-      dictionaryFile
-    }
-
-  private val downloadMaleFirstNameDictionaryFileTask: Setting[Task[File]] =
-    downloadUsCensus1990MaleFirstNameDictionaryFile := {
-      val logger = streams.value.log
-
-      val sourceUrl = usCensus1990FirstNameMaleDictionaryFileSourceUrl.value
-      val downloadDirectory = usCensus1990NameDictionariesDownloadDirectory.value
-      val downloadFile = downloadDirectory / sourceUrl.getFile
-
-      val dictionaryIO: DictionaryIO = DictionaryIO.using(logger)
-
-      val dictionaryFile: File =
-        dictionaryIO
-          .downloadDictionary(
-            sourceUrl = sourceUrl,
-            downloadFile = downloadFile)
-
-      dictionaryFile
-    }
-
   private val readDictionaryEntriesTask: Setting[Task[Seq[DictionaryEntry]]] =
     readUsCensus1990DictionaryEntries := {
       val logger = streams.value.log
 
-      val femaleFirstNameFile: File = downloadUsCensus1990FemaleFirstNameDictionaryFile.value
-      val maleFirstNameFile: File = downloadUsCensus1990MaleFirstNameDictionaryFile.value
-      val lastNameFile: File = downloadUsCensus1990LastNameDictionaryFile.value
-
       val parseEntries: DictionaryEntriesReader =
         DictionaryEntriesReader.using(DictionaryEntryParser.default)
 
-      val dictionaryEntries: Seq[DictionaryEntry] =
-        parseEntries(Usage.FemaleFirst, femaleFirstNameFile) ++
-          parseEntries(Usage.MaleFirst, maleFirstNameFile) ++
-          parseEntries(Usage.Last, lastNameFile)
+      val dictionaryEntries: Seq[DictionaryEntry] = {
+        import better.files._
+        (for {
+          lastNameEntries <-
+            usCensus1990LastNameDictionarySourceUrl.value
+              .openStream()
+              .autoClosed
+              .map(parseEntries(Usage.Last, _))
+          femaleFirstNameEntries <-
+            usCensus1990FirstNameFemaleDictionaryFileSourceUrl.value
+              .openStream()
+              .autoClosed
+              .map(parseEntries(Usage.FemaleFirst, _))
+          maleFirstNameEntries <-
+            usCensus1990FirstNameMaleDictionaryFileSourceUrl.value
+              .openStream()
+              .autoClosed
+              .map(parseEntries(Usage.MaleFirst, _))
+        } yield lastNameEntries ++ femaleFirstNameEntries ++ maleFirstNameEntries)
+          .get()
+      }
 
       dictionaryEntries
     }
@@ -227,9 +177,6 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
       downloadDirectorySetting,
       outputFormatSetting,
       outputDirectorySetting,
-      downloadLastNameDictionaryFileTask,
-      downloadFemaleFirstNameDictionaryFileTask,
-      downloadMaleFirstNameDictionaryFileTask,
       readDictionaryEntriesTask,
       writeDictionaryEntriesTask,
       Compile / resourceGenerators += writeUsCensus1990DictionaryEntries
