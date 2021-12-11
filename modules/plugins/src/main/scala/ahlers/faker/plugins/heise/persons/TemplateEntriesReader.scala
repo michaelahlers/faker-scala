@@ -1,4 +1,4 @@
-package ahlers.faker.plugins.heise.persons
+package ahlers.faker.plugins.jörgmichael.persons
 
 import better.files._
 import sbt.File

@@ -1,4 +1,4 @@
-package ahlers.faker.plugins.heise.persons
+package ahlers.faker.plugins.jörgmichael.persons
 
 import java.util.Locale
 import net.ceedubs.ficus.readers.ValueReader

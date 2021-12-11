@@ -1,4 +1,4 @@
-package ahlers.faker.plugins.heise.persons
+package ahlers.faker.plugins.jörgmichael.persons
 
 import com.softwaremill.diffx.scalatest.DiffMatcher._
 import com.softwaremill.diffx.generic.auto._
