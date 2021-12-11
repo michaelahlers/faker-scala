@@ -1,9 +1,10 @@
-heiseNameDictionaryOutputDirectory :=
+jörgMichaelNameDictionaryOutputDirectory :=
   (Compile / resourceManaged).value /
     "ahlers" /
     "faker" /
     "datasets" /
-    "heise"
+    "jörgmichael" /
+    "persons"
 
 openData500CompanyOutputDirectory :=
   (Compile / resourceManaged).value /

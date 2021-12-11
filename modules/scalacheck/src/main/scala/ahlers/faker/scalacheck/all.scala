@@ -14,7 +14,7 @@ object all {
     opendata500.companies.names.genCompanyName
 
   val genPersonGivenName: Gen[PersonGivenName] =
-    oneOf(census1990.genPersonGivenName, heise.genPersonGivenName)
+    oneOf(census1990.genPersonGivenName, jörgMichael.genPersonGivenName)
 
   val genPersonFamilyName: Gen[PersonFamilyName] =
     oneOf(census1990.genPersonFamilyName, census2000.genPersonFamilyName)
