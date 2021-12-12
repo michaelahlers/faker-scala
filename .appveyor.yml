@@ -110,9 +110,6 @@ for:
 
     cache: *cache-linux
 
-    artifacts:
-      - path: $(HOME)/.ivy2
-
   - matrix:
       only:
         - image: Visual Studio 2019
@@ -162,6 +159,9 @@ for:
     install: *install-windows
 
     cache: *cache-windows
+
+artifacts:
+  - path: $(HOME)/projects/faker-scala/README.md
 
 deploy:
   - provider: S3
