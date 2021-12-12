@@ -170,7 +170,7 @@ before_deploy:
   - sh: 'echo "$AWS_ACCESS_KEY_ID"'
 
 deploy:
-  - provider: BOGUS
+  - provider: S3
     access_key_id:
       secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
     secret_access_key:
