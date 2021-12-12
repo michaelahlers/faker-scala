@@ -164,7 +164,6 @@ for:
 
 artifacts:
   - path: README.md
-    name: foo
 
 before_deploy:
   - sh: 'echo "$AWS_ACCESS_KEY_ID"'
@@ -178,7 +177,6 @@ deploy:
     bucket: ahlers-consulting-artifacts-public
     set_public: true
 #    folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
-    artifact: foo
-    on:
-      image: Ubuntu
-      stack: jdk 8
+#    on:
+#      image: Ubuntu
+#      stack: jdk 8
