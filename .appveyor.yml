@@ -166,6 +166,9 @@ for:
 artifacts:
   - path: project
 
+before_deploy:
+  - sh: 'echo "PUBLISH_ARTIFACTS=$PUBLISH_ARTIFACTS"'
+
 deploy:
   - provider: S3
     access_key_id:
