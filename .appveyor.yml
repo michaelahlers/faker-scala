@@ -31,13 +31,6 @@ test_script:
 #  - 'sbt faker-plugins/IntegrationTest/test'
 #  - 'sbt +Test/test'
 
-artifacts:
-  - path: README.md
-    name: test
-
-before_deploy:
-  - sh: 'echo "$AWS_ACCESS_KEY_ID"'
-
 deploy:
   - provider: S3
     access_key_id:
@@ -132,6 +125,13 @@ for:
         secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
       AWS_SECRET_KEY:
         secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
+
+    artifacts:
+      - path: README.md
+        name: test
+
+    before_deploy:
+      - sh: 'echo "$AWS_ACCESS_KEY_ID"'
 
   - matrix:
       only:
