@@ -75,6 +75,9 @@ This library and tools are fully-tested on and supported for these Java versions
 ## Acknowledgements
 
 - [The answer](https://stackoverflow.com/a/24871136/700420) by [lpiepiora](https://stackoverflow.com/users/480975/lpiepiora) to [_Add plugins under a same project in sbt_](https://stackoverflow.com/q/24864296/700420) on Stack Overflow was helpful in factoring out resource generators and using them as plugins as part of this same project.
+  - See also:
+    - [_How to reference external sbt project from another sbt project?_](https://stackoverflow.com/q/11653435)
+    - [_In sbt, how do you add a plugin that's in the local filesystem?_](https://stackoverflow.com/q/8568821)
 
 [appveyor-build]: https://ci.appveyor.com/project/michaelahlers/faker-scala
 [appveyor-status-badge]: https://ci.appveyor.com/api/projects/status/erw16d62o5erwy95/branch/v0.0.x?svg=true
