@@ -99,6 +99,24 @@ for:
 
   - matrix:
       only:
+        - image: Ubuntu
+        - stack: jdk 8
+
+      install: *install-linux
+
+      cache: *cache-linux
+
+      environment:
+        AWS_ACCESS_KEY_ID:
+          secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
+        AWS_SECRET_KEY:
+          secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
+
+      deploy_script:
+        - 'sbt publish'
+
+  - matrix:
+      only:
         - image: Visual Studio 2019
           stack: jdk 8
 
@@ -147,11 +165,11 @@ for:
 
     cache: *cache-windows
 
-deploy:
-  provider: S3
-  access_key_id:
-    secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
-  secret_access_key:
-    secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
-  bucket: ahlers-consulting-artifacts-public
-  folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
+#deploy:
+#  provider: S3
+#  access_key_id:
+#    secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
+#  secret_access_key:
+#    secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
+#  bucket: ahlers-consulting-artifacts-public
+#  folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
