@@ -16,8 +16,8 @@ class MatchEmailDomainHostSpec extends AnyWordSpec {
     val isValid = Validate[String, MatchEmailDomainHost].isValid(_)
 
     isValid("example.com").should(be(true))
-    //isValid("(comment)example.com").should(be(true))
-    //isValid("example.com(comment)").should(be(true))
+    // isValid("(comment)example.com").should(be(true))
+    // isValid("example.com(comment)").should(be(true))
   }
 
   "notValid" in {
