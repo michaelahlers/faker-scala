@@ -161,7 +161,7 @@ for:
     cache: *cache-windows
 
 artifacts:
-  - path: $(HOME)/projects/faker-scala/README.md
+  - path: projects/**
 
 deploy:
   - provider: S3
