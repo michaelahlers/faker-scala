@@ -1,6 +1,6 @@
 package ahlers.faker.plugins.jörgmichael.persons
 
-import com.softwaremill.diffx.scalatest.DiffMatcher._
+import com.softwaremill.diffx.scalatest.DiffShouldMatcher._
 import com.softwaremill.diffx.generic.auto._
 import org.scalatest.wordspec.FixtureAnyWordSpec
 import org.scalatest.matchers.should.Matchers._
@@ -34,22 +34,22 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(have(size(79)))
 
     characterEncodings(0)
-      .should(matchTo(CharacterEncoding("<A/>", "Ā")))
+      .shouldMatchTo(CharacterEncoding("<A/>", "Ā"))
 
     characterEncodings(61)
-      .should(matchTo(CharacterEncoding("\u009A", "š")))
+      .shouldMatchTo(CharacterEncoding("\u009A", "š"))
 
     characterEncodings(62)
-      .should(matchTo(CharacterEncoding("<s^>", "š")))
+      .shouldMatchTo(CharacterEncoding("<s^>", "š"))
 
     characterEncodings(63)
-      .should(matchTo(CharacterEncoding("<sch>", "š")))
+      .shouldMatchTo(CharacterEncoding("<sch>", "š"))
 
     characterEncodings(64)
-      .should(matchTo(CharacterEncoding("<sh>", "š")))
+      .shouldMatchTo(CharacterEncoding("<sh>", "š"))
 
     characterEncodings(78)
-      .should(matchTo(CharacterEncoding("<ß>", "ẞ")))
+      .shouldMatchTo(CharacterEncoding("<ß>", "ẞ"))
   }
 
   "Region indexes" in { lines =>
@@ -61,22 +61,22 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(have(size(55)))
 
     regionIndexes(0)
-      .should(matchTo(RegionIndex(
+      .shouldMatchTo(RegionIndex(
         region = Region(RegionLabel("Great Britain"), Set.empty),
         index = 0
-      )))
+      ))
 
     regionIndexes(20)
-      .should(matchTo(RegionIndex(
+      .shouldMatchTo(RegionIndex(
         region = Region(RegionLabel("Estonia"), Set.empty),
         index = 20
-      )))
+      ))
 
     regionIndexes(54)
-      .should(matchTo(RegionIndex(
+      .shouldMatchTo(RegionIndex(
         region = Region(RegionLabel("other countries"), Set.empty),
         index = 54
-      )))
+      ))
 
   }
 
@@ -89,7 +89,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
       .should(have(size(48528)))
 
     entries(0)
-      .should(matchTo(
+      .shouldMatchTo(
         TemplateEntry(
           usage = Usage.Male,
           template = Template("Aad"),
@@ -98,10 +98,10 @@ class ParsersSpec extends FixtureAnyWordSpec {
               RegionWeight(
                 region = Region(RegionLabel("the Netherlands")),
                 weight = Weight(0x4)
-              )))))
+              ))))
 
     entries(3)
-      .should(matchTo(
+      .shouldMatchTo(
         TemplateEntry(
           usage = Usage.Male,
           template = Template("Ådne"),
@@ -110,10 +110,10 @@ class ParsersSpec extends FixtureAnyWordSpec {
               RegionWeight(
                 region = Region(RegionLabel("Norway")),
                 weight = Weight(0x1)
-              )))))
+              ))))
 
     entries(95)
-      .should(matchTo(
+      .shouldMatchTo(
         TemplateEntry(
           usage = Usage.Male,
           template = Template("Abdel+Hafiz"),
@@ -122,10 +122,10 @@ class ParsersSpec extends FixtureAnyWordSpec {
               RegionWeight(
                 region = Region(RegionLabel("Arabia/Persia")),
                 weight = Weight(0x2)
-              )))))
+              ))))
 
     entries(186)
-      .should(matchTo(
+      .shouldMatchTo(
         TemplateEntry(
           usage = Usage.Equivalent,
           template = Template("Abe=Abraham"),
@@ -134,10 +134,10 @@ class ParsersSpec extends FixtureAnyWordSpec {
               RegionWeight(
                 region = Region(RegionLabel("U.S.A.")),
                 weight = Weight(0x1)
-              )))))
+              ))))
 
     entries(19982)
-      .should(matchTo(
+      .shouldMatchTo(
         TemplateEntry(
           usage = Usage.Female,
           template = Template("Jane"),
@@ -192,10 +192,10 @@ class ParsersSpec extends FixtureAnyWordSpec {
                 weight = Weight(0x6)
               )
             )
-        )))
+        ))
 
     entries(21651)
-      .should(matchTo(
+      .shouldMatchTo(
         TemplateEntry(
           usage = Usage.Equivalent,
           template = Template("Josi=Josefa"),
@@ -206,10 +206,10 @@ class ParsersSpec extends FixtureAnyWordSpec {
                 weight = Weight(0x1)
               )
             )
-        )))
+        ))
 
     entries(27155)
-      .should(matchTo(
+      .shouldMatchTo(
         TemplateEntry(
           usage = Usage.Female,
           template = Template("Maria da Conceição"),
@@ -218,10 +218,10 @@ class ParsersSpec extends FixtureAnyWordSpec {
               RegionWeight(
                 region = Region(RegionLabel("Portugal")),
                 weight = Weight(0x3)
-              )))))
+              ))))
 
     entries(48173)
-      .should(matchTo(
+      .shouldMatchTo(
         TemplateEntry(
           usage = Usage.Female,
           template = Template("Zina"),
@@ -284,10 +284,10 @@ class ParsersSpec extends FixtureAnyWordSpec {
                 weight = Weight(0x4)
               )
             )
-        )))
+        ))
 
     entries(48507)
-      .should(matchTo(
+      .shouldMatchTo(
         TemplateEntry(
           usage = Usage.Female,
           template = Template("Žydronė"),
@@ -296,10 +296,10 @@ class ParsersSpec extends FixtureAnyWordSpec {
               RegionWeight(
                 region = Region(RegionLabel("Lithuania")),
                 weight = Weight(0x1)
-              )))))
+              ))))
 
     entries(48508)
-      .should(matchTo(
+      .shouldMatchTo(
         TemplateEntry(
           usage = Usage.Male,
           template = Template("Žydrūnas"),
@@ -308,10 +308,10 @@ class ParsersSpec extends FixtureAnyWordSpec {
               RegionWeight(
                 region = Region(RegionLabel("Lithuania")),
                 weight = Weight(0x5)
-              )))))
+              ))))
 
     entries(48527)
-      .should(matchTo(
+      .shouldMatchTo(
         TemplateEntry(
           usage = Usage.Female,
           template = Template("Zyta"),
@@ -320,7 +320,7 @@ class ParsersSpec extends FixtureAnyWordSpec {
               RegionWeight(
                 region = Region(RegionLabel("Poland")),
                 weight = Weight(0x2)
-              )))))
+              ))))
 
   }
 

@@ -2,7 +2,7 @@ package ahlers.faker.plugins.uscensus2000.persons
 
 import better.files._
 import com.softwaremill.diffx.generic.auto._
-import com.softwaremill.diffx.scalatest.DiffMatcher._
+import com.softwaremill.diffx.scalatest.DiffShouldMatcher._
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec.FixtureAnyWordSpec
 
@@ -45,11 +45,11 @@ class DictionaryEntriesReaderSpec extends FixtureAnyWordSpec {
     readEntries(
       usage = Usage.Sur,
       entriesStream = entriesStream)
-      .should(matchTo(Seq(
+      .shouldMatchTo(Seq(
         DictionaryEntry(Usage.Sur, Name("Alpha"), Rank(1)),
         DictionaryEntry(Usage.Sur, Name("Bravo"), Rank(2)),
         DictionaryEntry(Usage.Sur, Name("Charlie"), Rank(3))
-      )))
+      ))
 
   }
 

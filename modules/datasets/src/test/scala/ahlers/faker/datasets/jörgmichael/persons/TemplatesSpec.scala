@@ -1,7 +1,7 @@
 package ahlers.faker.datasets.jörgmichael.persons
 
 import com.softwaremill.diffx.generic.auto._
-import com.softwaremill.diffx.scalatest.DiffMatcher._
+import com.softwaremill.diffx.scalatest.DiffShouldMatcher._
 import org.scalatest.Inside._
 import org.scalatest.LoneElement._
 import org.scalatest.matchers.should.Matchers._
@@ -41,7 +41,7 @@ class TemplatesSpec extends AnyWordSpec {
             usages
               .byTemplateIndex(entry.index)
               .loneElement
-              .should(matchTo(Usage.Equivalent: Usage))
+              .shouldMatchTo(Usage.Equivalent: Usage)
 
           case template: Hyphenated =>
             inside(template.left) { case part =>
@@ -67,45 +67,45 @@ class TemplatesSpec extends AnyWordSpec {
 
     templates
       .entries(85)
-      .should(matchTo(TemplateEntry(
+      .shouldMatchTo(TemplateEntry(
         index = TemplateIndex(85),
         template = Hyphenated(Part("Abdel"), Part("Hafiz"))
-      )))
+      ))
 
     templates
       .entries(45640)
-      .should(matchTo(TemplateEntry(
+      .shouldMatchTo(TemplateEntry(
         index = TemplateIndex(45640),
         template = Literal("Ådne")
-      )))
+      ))
 
     templates
       .entries(170)
-      .should(matchTo(TemplateEntry(
+      .shouldMatchTo(TemplateEntry(
         index = TemplateIndex(170),
         template = Equivalent(Literal("Abe"), Literal("Abraham"))
-      )))
+      ))
 
     templates
       .entries(18740)
-      .should(matchTo(TemplateEntry(
+      .shouldMatchTo(TemplateEntry(
         index = TemplateIndex(18740),
         template = Literal("Jane")
-      )))
+      ))
 
     templates
       .entries(25480)
-      .should(matchTo(TemplateEntry(
+      .shouldMatchTo(TemplateEntry(
         index = TemplateIndex(25480),
         template = Literal("Maria da Conceição")
-      )))
+      ))
 
     templates
       .entries(46101)
-      .should(matchTo(TemplateEntry(
+      .shouldMatchTo(TemplateEntry(
         index = TemplateIndex(46101),
         template = Literal("Žydronė")
-      )))
+      ))
 
   }
 

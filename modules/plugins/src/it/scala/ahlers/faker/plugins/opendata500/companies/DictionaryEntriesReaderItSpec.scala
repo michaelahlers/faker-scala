@@ -2,7 +2,7 @@ package ahlers.faker.plugins.opendata500.companies
 
 import better.files._
 import com.softwaremill.diffx.generic.auto._
-import com.softwaremill.diffx.scalatest.DiffMatcher._
+import com.softwaremill.diffx.scalatest.DiffShouldMatcher._
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec.FixtureAnyWordSpec
 import sbt.Logger

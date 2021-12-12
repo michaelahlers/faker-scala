@@ -2,7 +2,7 @@ package ahlers.faker.refined
 
 import string._
 import org.scalatestplus.scalacheck._
-import com.softwaremill.diffx.scalatest.DiffMatcher._
+import com.softwaremill.diffx.scalatest.DiffShouldMatcher._
 import eu.timepit.refined.api._
 import org.scalatest._
 import org.scalatest.matchers.should.Matchers._
@@ -43,7 +43,7 @@ class MatchEmailLocalSpec extends AnyWordSpec {
 
   "showExpr" in {
     val showExpr = Validate[String, MatchEmailLocal].showExpr(_)
-    showExpr("jane.smith").should(matchTo("jane.smith is a valid email local part"))
+    showExpr("jane.smith").shouldMatchTo("jane.smith is a valid email local part")
   }
 
 }

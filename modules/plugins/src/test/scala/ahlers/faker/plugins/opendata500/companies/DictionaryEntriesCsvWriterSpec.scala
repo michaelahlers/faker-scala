@@ -4,7 +4,7 @@ import better.files._
 import org.scalatest.wordspec.FixtureAnyWordSpec
 import sbt.Logger
 import org.scalatest.matchers.should.Matchers._
-import com.softwaremill.diffx.scalatest.DiffMatcher._
+import com.softwaremill.diffx.scalatest.DiffShouldMatcher._
 import com.softwaremill.diffx.generic.auto._
 
 import java.nio.charset.StandardCharsets
@@ -70,18 +70,18 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
     nameFile
       .lines(StandardCharsets.UTF_8)
       .toSeq
-      .should(matchTo(Resource.my
+      .shouldMatchTo(Resource.my
         .getAsStream("expected_name.csv")
         .lines(StandardCharsets.UTF_8)
-        .toSeq))
+        .toSeq)
 
     websiteFile
       .lines(StandardCharsets.UTF_8)
       .toSeq
-      .should(matchTo(Resource.my
+      .shouldMatchTo(Resource.my
         .getAsStream("expected_index,website.csv")
         .lines(StandardCharsets.UTF_8)
-        .toSeq))
+        .toSeq)
 
   }
 
