@@ -166,16 +166,17 @@ artifacts:
   - path: README.md
 
 before_deploy:
-  - sh: 'echo "$AWS_ACCESS_KEY_ID"'
+- sh: 'echo "$AWS_ACCESS_KEY_ID"'
 
 deploy:
-  - provider: S3
-    access_key_id: bogus
-    secret_access_key:
-      secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
-    bucket: ahlers-consulting-artifacts-public
-    set_public: true
-    folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
+- provider: S3
+  access_key_id:
+    secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
+  secret_access_key:
+    secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
+  bucket: ahlers-consulting-artifacts-public
+  set_public: true
+#    folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
 #    on:
 #      image: Ubuntu
 #      stack: jdk 8
