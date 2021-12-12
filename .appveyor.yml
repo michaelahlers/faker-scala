@@ -6,14 +6,14 @@ platform:
   - x64
 
 image:
-  - macOS
+#  - macOS
   - Ubuntu
-  - Visual Studio 2019
+#  - Visual Studio 2019
 
 stack:
   - jdk 8
   - jdk 11
-  - jdk 15
+#  - jdk 15
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
@@ -24,12 +24,12 @@ build_script:
   - 'java -version'
   - 'sbt faker-plugins/Test/compile'
   - 'sbt faker-plugins/IntegrationTest/compile'
-  - 'sbt +Test/compile'
+#  - 'sbt +Test/compile'
 
 test_script:
-  - 'sbt faker-plugins/Test/test'
-  - 'sbt faker-plugins/IntegrationTest/test'
-  - 'sbt +Test/test'
+#  - 'sbt faker-plugins/Test/test'
+#  - 'sbt faker-plugins/IntegrationTest/test'
+#  - 'sbt +Test/test'
 
 for:
 
