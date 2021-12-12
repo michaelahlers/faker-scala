@@ -31,6 +31,10 @@ test_script:
 #  - 'sbt faker-plugins/IntegrationTest/test'
 #  - 'sbt +Test/test'
 
+after_test:
+  - 'sbt faker-plugins/publishLocal'
+  - 'sbt +publishLocal'
+
 for:
 
   - matrix:
@@ -173,6 +177,6 @@ deploy:
     set_public: true
     folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
     artifact: test
-    on:
+#    on:
 #      image: Ubuntu
-      stack: jdk 8
+#      stack: jdk 8
