@@ -1,8 +1,8 @@
 package ahlers.faker.datasets.jörgmichael.persons
 
-import better.files._
-
 import java.nio.charset.StandardCharsets
+import scala.io.Codec
+import scala.io.Source
 
 /**
  * @since October 03, 2021
@@ -28,22 +28,22 @@ private[jörgmichael] object DictionaryIO {
     new DictionaryIO {
 
       override def loadTemplateEntries() =
-        parseTemplateEntries(Resource.my.getAsStream("template.csv")
-          .lines(StandardCharsets.UTF_8)
+        parseTemplateEntries(Source.fromResource("ahlers/faker/datasets/jörgmichael/persons/template.csv")(Codec.UTF8)
+          .getLines()
           .zipWithIndex
           .map(TemplateLine.tupled)
           .toIndexedSeq)
 
       override def loadUsageEntries() =
-        parseUsageRegionWeightEntries(Resource.my.getAsStream("template-index,usage.csv")
-          .lines()
+        parseUsageRegionWeightEntries(Source.fromResource("ahlers/faker/datasets/jörgmichael/persons/template-index,usage.csv")(Codec.UTF8)
+          .getLines()
           .zipWithIndex
           .map(UsageLine.tupled)
           .toIndexedSeq)
 
       override def loadCountryWeightEntries() =
-        parseCountryWeightEntries(Resource.my.getAsStream("template-index,country-code,weight.csv")
-          .lines()
+        parseCountryWeightEntries(Source.fromResource("ahlers/faker/datasets/jörgmichael/persons/template-index,country-code,weight.csv")(Codec.UTF8)
+          .getLines()
           .zipWithIndex
           .map(CountryWeightLine.tupled)
           .toIndexedSeq)

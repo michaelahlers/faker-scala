@@ -1,8 +1,8 @@
 package ahlers.faker.datasets.uscensus1990.persons
 
-import better.files._
-
 import java.nio.charset.StandardCharsets
+import scala.io.Codec
+import scala.io.Source
 
 /**
  * @since November 13, 2021
@@ -21,8 +21,8 @@ private[uscensus1990] object DictionaryIO {
   def using(): DictionaryIO = new DictionaryIO {
 
     override def loadNameEntries() =
-      Resource.my.getAsStream("name.csv")
-        .lines(StandardCharsets.UTF_8)
+      Source.fromResource("ahlers/faker/datasets/uscensus1990/persons/name.csv")(Codec.UTF8)
+        .getLines()
         .zipWithIndex
         .map(NameLine.tupled)
         .map(line =>
@@ -33,8 +33,8 @@ private[uscensus1990] object DictionaryIO {
         .toSeq
 
     override def loadUsageEntries() =
-      Resource.my.getAsStream("name-index,usage.csv")
-        .lines(StandardCharsets.UTF_8)
+      Source.fromResource("ahlers/faker/datasets/uscensus1990/persons/name-index,usage.csv")(Codec.UTF8)
+        .getLines()
         .zipWithIndex
         .map(UsageLine.tupled)
         .map(line =>

@@ -1,8 +1,8 @@
 package ahlers.faker.datasets.opendata500.companies
 
-import better.files._
-
 import java.nio.charset.StandardCharsets
+import scala.io.Codec
+import scala.io.Source
 
 /**
  * @since December 6, 2021
@@ -21,8 +21,8 @@ object DictionaryIO {
   def using(): DictionaryIO = new DictionaryIO {
 
     override def loadNameEntries() =
-      Resource.my.getAsStream("name.csv")
-        .lines(StandardCharsets.UTF_8)
+      Source.fromResource("ahlers/faker/datasets/opendata500/companies/name.csv")(Codec.UTF8)
+        .getLines()
         .zipWithIndex
         .map(NameLine.tupled)
         .map(line =>
@@ -33,8 +33,8 @@ object DictionaryIO {
         .toSeq
 
     //override def loadWebsiteEntries() =
-    //  Resource.my.getAsStream("index,website.csv")
-    //    .lines(StandardCharsets.UTF_8)
+    //  Source.fromResource("ahlers/faker/datasets/opendata500/companies/name.csv")(Codec.UTF8)
+    //    .getLines()
     //    .zipWithIndex
     //    .map(WebsiteLine.tupled)
     //    .map(line =>
