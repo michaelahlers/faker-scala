@@ -112,9 +112,6 @@ for:
       AWS_SECRET_KEY:
         secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
 
-    before_deploy:
-      - 'echo "before_deploy"'
-
   - matrix:
       only:
         - image: Visual Studio 2019
@@ -167,6 +164,9 @@ for:
 
 artifacts:
   - path: README.md
+
+before_deploy:
+  - 'echo "$AWS_ACCESS_KEY_ID"'
 
 deploy:
   provider: S3
