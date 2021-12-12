@@ -1,7 +1,7 @@
 package ahlers.faker.refined
 
 import string._
-import com.softwaremill.diffx.scalatest.DiffMatcher._
+import com.softwaremill.diffx.scalatest.DiffShouldMatcher._
 import eu.timepit.refined.api._
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec._
@@ -31,7 +31,7 @@ class MatchEmailDomainIPv6Spec extends AnyWordSpec {
 
   "showExpr" in {
     val showExpr = Validate[String, MatchEmailDomainIPv6].showExpr(_)
-    showExpr("[::1]").should(matchTo("[::1] is a valid email domain IPv6 address"))
+    showExpr("[::1]").shouldMatchTo("[::1] is a valid email domain IPv6 address")
   }
 
 }

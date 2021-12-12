@@ -22,10 +22,14 @@ build_script:
   - sh: 'echo $JAVA_HOME'
   - cmd: 'echo %JAVA_HOME%'
   - 'java -version'
-  - 'sbt +test:compile'
+  - 'sbt faker-plugins/Test/compile'
+  - 'sbt faker-plugins/IntegrationTest/compile'
+  - 'sbt +Test/compile'
 
 test_script:
-  - 'sbt +test'
+  - 'sbt faker-plugins/Test/test'
+  - 'sbt faker-plugins/IntegrationTest/test'
+  - 'sbt +Test/test'
 
 for:
 
@@ -117,8 +121,7 @@ for:
       - '%USERPROFILE%\.ivy2 -> **\dependencies.sbt, project\*'
       - '%USERPROFILE%\.sbt -> **\dependencies.sbt, project\*'
 
-  -
-    matrix:
+  - matrix:
       only:
         - image: Visual Studio 2019
           stack: jdk 11

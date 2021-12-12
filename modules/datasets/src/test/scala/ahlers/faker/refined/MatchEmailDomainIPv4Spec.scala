@@ -1,7 +1,7 @@
 package ahlers.faker.refined
 
 import string._
-import com.softwaremill.diffx.scalatest.DiffMatcher._
+import com.softwaremill.diffx.scalatest.DiffShouldMatcher._
 import eu.timepit.refined.api._
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec._
@@ -31,7 +31,7 @@ class MatchEmailDomainIPv4Spec extends AnyWordSpec {
 
   "showExpr" in {
     val showExpr = Validate[String, MatchEmailDomainIPv4].showExpr(_)
-    showExpr("[192.168.1.1]").should(matchTo("[192.168.1.1] is a valid email domain IPv4 address"))
+    showExpr("[192.168.1.1]").shouldMatchTo("[192.168.1.1] is a valid email domain IPv4 address")
   }
 
 }

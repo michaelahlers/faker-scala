@@ -10,13 +10,17 @@ import org.scalacheck.Gen._
  */
 object all {
 
-  val genCompany: Gen[Company] =
-    opendata500.genCompany
+  val genCompanyName: Gen[CompanyName] =
+    opendata500.companies.names.genCompanyName
 
   val genPersonGivenName: Gen[PersonGivenName] =
-    oneOf(census1990.genPersonGivenName, heise.genPersonGivenName)
+    oneOf(
+      uscensus1990.persons.names.genPersonGivenName,
+      jörgmichael.persons.names.genPersonGivenName)
 
   val genPersonFamilyName: Gen[PersonFamilyName] =
-    oneOf(census1990.genPersonFamilyName, census2000.genPersonFamilyName)
+    oneOf(
+      uscensus1990.persons.names.genPersonFamilyName,
+      uscensus2000.persons.names.genPersonFamilyName)
 
 }

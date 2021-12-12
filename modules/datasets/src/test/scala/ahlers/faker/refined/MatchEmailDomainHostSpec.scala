@@ -1,7 +1,7 @@
 package ahlers.faker.refined
 
 import string._
-import com.softwaremill.diffx.scalatest.DiffMatcher._
+import com.softwaremill.diffx.scalatest.DiffShouldMatcher._
 import eu.timepit.refined.api._
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec._
@@ -28,7 +28,7 @@ class MatchEmailDomainHostSpec extends AnyWordSpec {
 
   "showExpr" in {
     val showExpr = Validate[String, MatchEmailDomainHost].showExpr(_)
-    showExpr("example.com").should(matchTo("example.com is a valid email domain host"))
+    showExpr("example.com").shouldMatchTo("example.com is a valid email domain host")
   }
 
 }

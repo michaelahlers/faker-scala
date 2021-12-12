@@ -17,7 +17,7 @@ Various parts (_e.g._, name, homepage, locality) of businesses from these source
 
 ### Emails
 
-Made available as component parts (local, domain, and comment) with strict validation according to applicable IETF standards (_e.g._, [RFC 5322](https://tools.ietf.org/html/rfc5322)). Synthesized using this library's person name and company generators.
+Made available as component parts (local, domain, and comment) with strict validation according to applicable IETF standards (_e.g._, [RFC 5322][RFC-5322]). Synthesized using this library's person name and company generators.
 
 ### Person Names
 
@@ -25,7 +25,15 @@ As name prefix, given name, middle name, family name, nickname, and name suffix 
 
 - [United States Census Bureau: Frequently Occurring Surnames from Census 1990](https://www.census.gov/topics/population/genealogy/data/1990_census/1990_census_namefiles.html)
 - [United States Census Bureau: Frequently Occurring Surnames from the Census 2000](https://census.gov/topics/population/genealogy/data/2000_surnames.html)
-- [Magazin für Computertechnik: 40 000 Namen](https://www.heise.de/ct/ftp/07/17/182/)
+- [Magazin für Computertechnik: _40 000 Namen_](https://www.heise.de/ct/ftp/07/17/182/)
+
+## Plugins
+
+This module provides what are, essentially, small [ETL][wikipedia-ETL] pipelines with the aim of reducing complexity, payload, and dependencies in dataset modules, used by this same project to ship for consumers a set of concise, trivially-parsed formats.
+
+**Most consumers of these libraries will not use this library of plugins**; the preprocessing is made available to document how upstream sources are obtained and modified, and make available additional output formats should consumers wish to repurpose their output. For example, power users might want to use different output formats (planned are JSON and YAML) in different ways.
+
+Over time, this is expected to grow in to a larger and more elaborate corpus of sources and normalizations. These upstream sources often provide greater detail than is used by this library. Also, over time, greater detail will be made available in the output of generators.
 
 ## Inspiration
 
@@ -44,7 +52,7 @@ And means to fill gaps left by those for Scala which haven't seen recent activit
 
 ## Dependencies
 
-This project's working to keep transitive dependencies at a minimum, and includes the following:
+Because this project preprocesses upstream sources, it's able to be largely free of extraneous dependencies in modules intended for end users. Confined to the [Plugins][#plugins] module, noteworthy dependencies include: 
 
 - [kantan.csv](https://github.com/nrinaudo/kantan.csv)
 - [NewType](https://github.com/estatico/scala-newtype)
@@ -70,5 +78,9 @@ This library and tools are fully-tested on and supported for these Java versions
 [codacy-build]: https://codacy.com/app/michaelahlers/faker-scala
 [codacy-status-badge]: https://api.codacy.com/project/badge/Grade/73e169149c3d49c6b4b3c8f1e8c65dc1?branch=v0.0.x
 
+[RFC-5322]: https://tools.ietf.org/html/rfc5322
+
 [scala-steward-status-badge]: https://img.shields.io/badge/Scala_Steward-helping-blue.svg
 [scala-steward-overview]: https://scala-steward.org
+
+[wikipedia-ETL]: https://en.wikipedia.org/wiki/Extract,_transform,_load 

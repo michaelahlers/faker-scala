@@ -1,53 +1,31 @@
-import sbt.nio.file.FileTreeView
+jörgMichaelNameDictionaryOutputDirectory :=
+  (Compile / resourceManaged).value /
+    "ahlers" /
+    "faker" /
+    "datasets" /
+    "jörgmichael" /
+    "persons"
 
-import scala.collection.convert.ImplicitConversionsToScala._
+openData500CompanyOutputDirectory :=
+  (Compile / resourceManaged).value /
+    "ahlers" /
+    "faker" /
+    "datasets" /
+    "opendata500" /
+    "companies"
 
-val unpackZipArchives: TaskKey[Seq[File]] = taskKey[Seq[File]]("Extract entries from source resource archives to managed resources.")
+usCensus1990NameDictionaryOutputDirectory :=
+  (Compile / resourceManaged).value /
+    "ahlers" /
+    "faker" /
+    "datasets" /
+    "uscensus1990" /
+    "persons"
 
-unpackZipArchives := {
-  val log = streams.value.log
-
-  FileTreeView.default
-    .list((Compile / resourceDirectory)
-      .value
-      .toGlob / ** / "*.zip")
-    .flatMap {
-      case (fromFile, _) =>
-        val toDirectory =
-          (Compile / resourceManaged)
-            .value
-            .toPath
-            .resolve(fromFile
-              .getParent
-              .drop((Compile / resourceDirectory)
-                .value
-                .toPath
-                .size)
-              .reduce(_.resolve(_)))
-
-        val files =
-          IO.unzip(
-            from = fromFile.toFile,
-            toDirectory = toDirectory.toFile
-          )
-
-        log.info("""Extracted %d files from archive "%s" to "%s"."""
-          .format(
-            files.size,
-            fromFile
-              .drop(baseDirectory.value
-                .toPath
-                .size)
-              .reduce(_.resolve(_)),
-            toDirectory
-              .drop(baseDirectory.value
-                .toPath
-                .size)
-              .reduce(_.resolve(_))
-          ))
-
-        files
-    }
-}
-
-Compile / resourceGenerators += unpackZipArchives
+usCensus2000NameDictionaryOutputDirectory :=
+  (Compile / resourceManaged).value /
+    "ahlers" /
+    "faker" /
+    "datasets" /
+    "uscensus2000" /
+    "persons"
