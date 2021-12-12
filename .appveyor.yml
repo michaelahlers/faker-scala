@@ -177,8 +177,8 @@ deploy:
       secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
     bucket: ahlers-consulting-artifacts-public
     set_public: true
-    folder: testing
+    folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
     artifact: test
-#    on:
-#      image: Ubuntu
-#      stack: jdk 8
+    on:
+      image: Ubuntu
+      stack: jdk 8
