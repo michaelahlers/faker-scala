@@ -17,6 +17,7 @@ libraryDependencies ++=
     Nil
 
 libraryDependencies ++=
-  "com.softwaremill.diffx" %% "diffx-scalatest" % "0.5.6" % IntegrationTest ::
+  "com.softwaremill.diffx" %% "diffx-scalatest-must" % "0.6.0" % IntegrationTest ::
+    "com.softwaremill.diffx" %% "diffx-scalatest-should" % "0.6.0" % IntegrationTest ::
     "org.scalatest" %% "scalatest" % "3.2.9" % IntegrationTest ::
     Nil

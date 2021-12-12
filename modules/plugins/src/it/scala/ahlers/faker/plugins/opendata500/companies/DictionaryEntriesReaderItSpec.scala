@@ -54,37 +54,33 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
 
     companies.size.should(be(301))
 
-    companies(0).should(
-      matchTo(
-        DictionaryEntry(
-          id = CompanyId("-airblack-inc"),
-          name = CompanyName("airblack Inc."),
-          website = Some(CompanyWebsite("www.airblack.com"))
-        )))
+    companies(0).shouldMatchTo(
+      DictionaryEntry(
+        id = CompanyId("-airblack-inc"),
+        name = CompanyName("airblack Inc."),
+        website = Some(CompanyWebsite("www.airblack.com"))
+      ))
 
-    companies(99).should(
-      matchTo(
-        DictionaryEntry(
-          id = CompanyId("i-s-m-s-"),
-          name = CompanyName("I S M S"),
-          website = Some(CompanyWebsite("http://www.isms.re.kr"))
-        )))
+    companies(99).shouldMatchTo(
+      DictionaryEntry(
+        id = CompanyId("i-s-m-s-"),
+        name = CompanyName("I S M S"),
+        website = Some(CompanyWebsite("http://www.isms.re.kr"))
+      ))
 
-    companies(199).should(
-      matchTo(
-        DictionaryEntry(
-          id = CompanyId("onycom-"),
-          name = CompanyName("onycom"),
-          website = Some(CompanyWebsite("http://www.onycom.com"))
-        )))
+    companies(199).shouldMatchTo(
+      DictionaryEntry(
+        id = CompanyId("onycom-"),
+        name = CompanyName("onycom"),
+        website = Some(CompanyWebsite("http://www.onycom.com"))
+      ))
 
-    companies(299).should(
-      matchTo(
-        DictionaryEntry(
-          id = CompanyId("ywmobile"),
-          name = CompanyName("YWMobile"),
-          website = Some(CompanyWebsite("http://www.evercon.me/homepage/index.html"))
-        )))
+    companies(299).shouldMatchTo(
+      DictionaryEntry(
+        id = CompanyId("ywmobile"),
+        name = CompanyName("YWMobile"),
+        website = Some(CompanyWebsite("http://www.evercon.me/homepage/index.html"))
+      ))
   }
 
   "Companies (United States)" in { fixtures =>
@@ -95,53 +91,47 @@ class DictionaryEntriesReaderItSpec extends FixtureAnyWordSpec {
 
     companies.size.should(be(529))
 
-    companies(0).should(
-      matchTo(
-        DictionaryEntry(
-          id = CompanyId("3-round-stones-inc"),
-          name = CompanyName("3 Round Stones, Inc."),
-          website = Some(CompanyWebsite("http://3RoundStones.com"))
-        )))
+    companies(0).shouldMatchTo(
+      DictionaryEntry(
+        id = CompanyId("3-round-stones-inc"),
+        name = CompanyName("3 Round Stones, Inc."),
+        website = Some(CompanyWebsite("http://3RoundStones.com"))
+      ))
 
-    companies(99).should(
-      matchTo(
-        DictionaryEntry(
-          id = CompanyId("cloudspyre"),
-          name = CompanyName("Cloudspyre"),
-          website = Some(CompanyWebsite("http://www.cloudspyre.com"))
-        )))
+    companies(99).shouldMatchTo(
+      DictionaryEntry(
+        id = CompanyId("cloudspyre"),
+        name = CompanyName("Cloudspyre"),
+        website = Some(CompanyWebsite("http://www.cloudspyre.com"))
+      ))
 
-    companies(199).should(
-      matchTo(
-        DictionaryEntry(
-          id = CompanyId("govtribe"),
-          name = CompanyName("GovTribe"),
-          website = Some(CompanyWebsite("govtribe.com"))
-        )))
+    companies(199).shouldMatchTo(
+      DictionaryEntry(
+        id = CompanyId("govtribe"),
+        name = CompanyName("GovTribe"),
+        website = Some(CompanyWebsite("govtribe.com"))
+      ))
 
-    companies(299).should(
-      matchTo(
-        DictionaryEntry(
-          id = CompanyId("mhealthcoach"),
-          name = CompanyName("mHealthCoach"),
-          website = Some(CompanyWebsite("http://mhealthcoach.com"))
-        )))
+    companies(299).shouldMatchTo(
+      DictionaryEntry(
+        id = CompanyId("mhealthcoach"),
+        name = CompanyName("mHealthCoach"),
+        website = Some(CompanyWebsite("http://mhealthcoach.com"))
+      ))
 
-    companies(399).should(
-      matchTo(
-        DictionaryEntry(
-          id = CompanyId("reed-elsevier"),
-          name = CompanyName("Reed Elsevier"),
-          website = Some(CompanyWebsite("http://www.reedelsevier.com/Pages/Home.aspx"))
-        )))
+    companies(399).shouldMatchTo(
+      DictionaryEntry(
+        id = CompanyId("reed-elsevier"),
+        name = CompanyName("Reed Elsevier"),
+        website = Some(CompanyWebsite("http://www.reedelsevier.com/Pages/Home.aspx"))
+      ))
 
-    companies(499).should(
-      matchTo(
-        DictionaryEntry(
-          id = CompanyId("walk-score"),
-          name = CompanyName("Walk Score"),
-          website = Some(CompanyWebsite("www.walkscore.com"))
-        )))
+    companies(499).shouldMatchTo(
+      DictionaryEntry(
+        id = CompanyId("walk-score"),
+        name = CompanyName("Walk Score"),
+        website = Some(CompanyWebsite("www.walkscore.com"))
+      ))
 
   }
 
