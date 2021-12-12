@@ -110,6 +110,9 @@ for:
 
     cache: *cache-linux
 
+    artifacts:
+      - path: README.md
+
   - matrix:
       only:
         - image: Visual Studio 2019
@@ -160,13 +163,6 @@ for:
 
     cache: *cache-windows
 
-artifacts:
-  - path: README.md
-    name: test
-
-before_deploy:
-  - sh: 'echo "$AWS_ACCESS_KEY_ID"'
-
 deploy:
   - provider: S3
     access_key_id:
@@ -176,7 +172,6 @@ deploy:
     bucket: ahlers-consulting-artifacts-public
     set_public: true
     folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
-    artifact: test
 #    on:
 #      image: Ubuntu
 #      stack: jdk 8
