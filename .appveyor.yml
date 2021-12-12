@@ -110,6 +110,9 @@ for:
 
     cache: *cache-linux
 
+    environment:
+      PUBLISH_ARTIFACTS: true
+
   - matrix:
       only:
         - image: Visual Studio 2019
@@ -173,6 +176,5 @@ deploy:
     folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
     set_public: true
     unzip: true
-#    on:
-#      image: Ubuntu
-#      stack: jdk 8
+    on:
+      PUBLISH_ARTIFACTS: true
