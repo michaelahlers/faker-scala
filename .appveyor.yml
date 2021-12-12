@@ -6,14 +6,14 @@ platform:
   - x64
 
 image:
-  - macOS
+#  - macOS
   - Ubuntu
-  - Visual Studio 2019
+#  - Visual Studio 2019
 
 stack:
   - jdk 8
   - jdk 11
-  - jdk 15
+#  - jdk 15
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
@@ -22,14 +22,14 @@ build_script:
   - sh: 'echo $JAVA_HOME'
   - cmd: 'echo %JAVA_HOME%'
   - 'java -version'
-  - 'sbt faker-plugins/Test/compile'
-  - 'sbt faker-plugins/IntegrationTest/compile'
-  - 'sbt +Test/compile'
+#  - 'sbt faker-plugins/Test/compile'
+#  - 'sbt faker-plugins/IntegrationTest/compile'
+#  - 'sbt +Test/compile'
 
 test_script:
-  - 'sbt faker-plugins/Test/test'
-  - 'sbt faker-plugins/IntegrationTest/test'
-  - 'sbt +Test/test'
+#  - 'sbt faker-plugins/Test/test'
+#  - 'sbt faker-plugins/IntegrationTest/test'
+#  - 'sbt +Test/test'
 
 for:
 
@@ -84,11 +84,11 @@ for:
 
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
     install: &install-linux
-      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list'
-      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list'
-      - 'curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add'
-      - 'sudo apt-get update'
-      - 'sudo apt-get install sbt'
+#      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list'
+#      - 'echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list'
+#      - 'curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add'
+#      - 'sudo apt-get update'
+#      - 'sudo apt-get install sbt'
 
     # https://get-coursier.io/docs/cache
     cache: &cache-linux
@@ -96,6 +96,21 @@ for:
       - '$HOME/.cache/coursier/v1 -> **/dependencies.sbt, project/*'
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
+
+  - matrix:
+      only:
+        - image: Ubuntu
+        - stack: jdk 8
+
+    install: *install-linux
+
+    cache: *cache-linux
+
+    environment:
+      AWS_ACCESS_KEY_ID:
+        secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
+      AWS_SECRET_KEY:
+        secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
 
   - matrix:
       only:
@@ -146,3 +161,24 @@ for:
     install: *install-windows
 
     cache: *cache-windows
+
+artifacts:
+  - path: README.md
+    name: test
+
+before_deploy:
+  - sh: 'echo "$AWS_ACCESS_KEY_ID"'
+
+deploy:
+  - provider: BOGUS
+    access_key_id:
+      secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
+    secret_access_key:
+      secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
+    bucket: ahlers-consulting-artifacts-public
+    set_public: true
+    folder: testing
+    artifact: test
+#    on:
+#      image: Ubuntu
+#      stack: jdk 8
