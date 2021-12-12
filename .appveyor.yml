@@ -102,18 +102,18 @@ for:
         - image: Ubuntu
         - stack: jdk 8
 
-      install: *install-linux
+    install: *install-linux
 
-      cache: *cache-linux
+    cache: *cache-linux
 
-      environment:
-        AWS_ACCESS_KEY_ID:
-          secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
-        AWS_SECRET_KEY:
-          secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
+    environment:
+      AWS_ACCESS_KEY_ID:
+        secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
+      AWS_SECRET_KEY:
+        secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
 
-      deploy_script:
-        - 'sbt publish'
+    deploy_script:
+      - 'sbt publish'
 
   - matrix:
       only:
