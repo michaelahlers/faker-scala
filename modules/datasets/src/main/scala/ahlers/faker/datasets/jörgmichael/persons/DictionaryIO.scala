@@ -42,7 +42,7 @@ private[jörgmichael] object DictionaryIO {
           .toIndexedSeq)
 
       override def loadCountryWeightEntries() =
-        parseCountryWeightEntries(Resource.my.getAsStream("index,country-code,weight.csv")
+        parseCountryWeightEntries(Resource.my.getAsStream("template-index,country-code,weight.csv")
           .lines()
           .zipWithIndex
           .map(CountryWeightLine.tupled)

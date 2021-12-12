@@ -33,7 +33,7 @@ private[uscensus1990] object DictionaryIO {
         .toSeq
 
     override def loadUsageEntries() =
-      Resource.my.getAsStream("index,usage.csv")
+      Resource.my.getAsStream("name-index,usage.csv")
         .lines(StandardCharsets.UTF_8)
         .zipWithIndex
         .map(UsageLine.tupled)

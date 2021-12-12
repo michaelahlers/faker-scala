@@ -94,7 +94,7 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
       .lines(StandardCharsets.UTF_8)
       .toSeq
       .should(matchTo(Resource.my
-        .getAsStream("expected_index,usage.csv")
+        .getAsStream("expected_name-index,usage.csv")
         .lines(StandardCharsets.UTF_8)
         .toSeq))
 

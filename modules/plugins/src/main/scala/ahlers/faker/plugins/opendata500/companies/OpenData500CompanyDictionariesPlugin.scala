@@ -111,7 +111,7 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
 
           case DictionaryOutputFormat.Csv =>
             val nameFile = outputDirectory / "name.csv"
-            val websiteFile = outputDirectory / "index,website.csv"
+            val websiteFile = outputDirectory / "name-index,website.csv"
 
             val writeEntries =
               DictionaryEntriesCsvWriter.using(

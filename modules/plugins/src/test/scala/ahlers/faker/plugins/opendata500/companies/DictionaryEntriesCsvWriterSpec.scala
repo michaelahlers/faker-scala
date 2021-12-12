@@ -29,7 +29,7 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
 
         websiteFile <-
           File.temporaryFile(
-            prefix = "index,website",
+            prefix = "name-index,website",
             suffix = ".csv"
           )
 

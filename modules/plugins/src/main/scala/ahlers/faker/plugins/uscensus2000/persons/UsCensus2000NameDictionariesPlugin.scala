@@ -137,7 +137,7 @@ object UsCensus2000NameDictionariesPlugin extends AutoPlugin {
 
           case DictionaryOutputFormat.Csv =>
             val nameFile = outputDirectory / "name.csv"
-            val usageFile = outputDirectory / "index,usage.csv"
+            val usageFile = outputDirectory / "name-index,usage.csv"
 
             val writeEntries =
               DictionaryEntriesCsvWriter.using(
