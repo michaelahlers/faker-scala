@@ -86,6 +86,7 @@ for:
   - matrix:
       only:
         - image: Ubuntu
+        - stack: jdk 8
 
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
     install: &install-linux
@@ -102,17 +103,26 @@ for:
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
 
+    environment:
+      DEPLOY_ARTIFACTS: true
+
   - matrix:
       only:
         - image: Ubuntu
-        - stack: jdk 8
+        - stack: jdk 11
 
     install: *install-linux
 
     cache: *cache-linux
 
-    environment:
-      DEPLOY_ARTIFACTS: true
+  - matrix:
+      only:
+        - image: Ubuntu
+        - stack: jdk 15
+
+    install: *install-linux
+
+    cache: *cache-linux
 
   - matrix:
       only:
