@@ -20,8 +20,8 @@ environment:
   DEPLOY_ARTIFACTS: false
 
 build_script:
-  - sh: 'echo $JAVA_HOME'
-  - cmd: 'echo %JAVA_HOME%'
+  - sh: 'echo "JAVA_HOME=$JAVA_HOME;DEPLOY_ARTIFACTS=$DEPLOY_ARTIFACTS"'
+  - cmd: 'echo "JAVA_HOME=%JAVA_HOME%;DEPLOY_ARTIFACTS=%DEPLOY_ARTIFACTS%"'
   - 'java -version'
 #  - 'sbt faker-plugins/Test/compile'
 #  - 'sbt faker-plugins/IntegrationTest/compile'
