@@ -156,9 +156,6 @@ for:
       JAVA_HOME: 'C:\Program Files\Java\jdk1.8.0'
       PUBLISH_TO_URL: 'file:published'
 
-    artifacts:
-      - path: 'published\**'
-
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
     install: &install-windows
       - 'SET PATH=%JAVA_HOME%\bin;%PATH%'
@@ -184,9 +181,6 @@ for:
       JAVA_HOME: 'C:\Program Files\Java\jdk11'
       PUBLISH_TO_URL: 'file:published'
 
-    artifacts:
-      - path: 'published\**'
-
     install: *install-windows
 
     cache: *cache-windows
@@ -200,9 +194,6 @@ for:
       JAVA_VERSION: '15'
       JAVA_HOME: 'C:\Program Files\Java\jdk15'
       PUBLISH_TO_URL: 'file:published'
-
-    artifacts:
-      - path: 'published\**'
 
     install: *install-windows
 
