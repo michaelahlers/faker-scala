@@ -40,8 +40,8 @@ test_script:
 after_test:
   - 'sbt faker-plugins/publish'
   - 'sbt +publish'
-  - sh: '7z a published.zip "$APPVEYOR_BUILD_FOLDER\published\*"'
-  - cmd: '7z a published.zip "%APPVEYOR_BUILD_FOLDER%/published/*"'
+  - sh: '7z a published.zip "$APPVEYOR_BUILD_FOLDER/published/*"'
+  - cmd: '7z a published.zip "%APPVEYOR_BUILD_FOLDER%\published\*"'
 
 for:
 
