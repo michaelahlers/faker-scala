@@ -17,11 +17,11 @@ stack:
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
-  DEPLOY_ARTIFACTS: false
 
 build_script:
-  - sh: 'echo "JAVA_HOME=$JAVA_HOME;DEPLOY_ARTIFACTS=$DEPLOY_ARTIFACTS";image=$image;stack=$stack'
-  - cmd: 'echo "JAVA_HOME=%JAVA_HOME%;DEPLOY_ARTIFACTS=%DEPLOY_ARTIFACTS%"'
+  - sh: 'export'
+  - sh: 'echo "JAVA_HOME=$JAVA_HOME;image=$image;stack=$stack"'
+  - cmd: 'echo "JAVA_HOME=%JAVA_HOME%;image=%image%;stack=%stack%"'
   - 'java -version'
 #  - 'sbt faker-plugins/Test/compile'
 #  - 'sbt faker-plugins/IntegrationTest/compile'
@@ -35,6 +35,9 @@ test_script:
 after_test:
 #  - 'sbt faker-plugins/publishLocal'
 #  - 'sbt +publishLocal'
+
+artifacts:
+  - path: project
 
 for:
 
@@ -103,9 +106,6 @@ for:
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
 
-    environment:
-      DEPLOY_ARTIFACTS: true
-
     deploy:
       - provider: S3
         access_key_id:
@@ -116,8 +116,6 @@ for:
         folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
         set_public: true
         unzip: true
-        on:
-          DEPLOY_ARTIFACTS: true
 
   - matrix:
       only:
@@ -176,6 +174,3 @@ for:
     install: *install-windows
 
     cache: *cache-windows
-
-artifacts:
-  - path: project
