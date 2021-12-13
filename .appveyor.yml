@@ -167,7 +167,7 @@ artifacts:
   - path: project
 
 before_deploy:
-  - sh: 'echo "PUBLISH_ARTIFACTS=$PUBLISH_ARTIFACTS"'
+  - 'echo "PUBLISH_ARTIFACTS=$PUBLISH_ARTIFACTS"'
 
 deploy:
   - provider: S3
