@@ -106,6 +106,19 @@ for:
     environment:
       DEPLOY_ARTIFACTS: true
 
+    deploy:
+      - provider: S3
+        access_key_id:
+          secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
+        secret_access_key:
+          secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
+        bucket: ahlers-consulting-artifacts-public
+        folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
+        set_public: true
+        unzip: true
+        on:
+          DEPLOY_ARTIFACTS: true
+
   - matrix:
       only:
         - image: Ubuntu
@@ -176,16 +189,3 @@ for:
 
 artifacts:
   - path: project
-
-deploy:
-  - provider: S3
-    access_key_id:
-      secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
-    secret_access_key:
-      secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
-    bucket: ahlers-consulting-artifacts-public
-    folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
-    set_public: true
-    unzip: true
-    on:
-      DEPLOY_ARTIFACTS: true
