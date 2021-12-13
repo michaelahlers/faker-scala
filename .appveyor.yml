@@ -17,6 +17,11 @@ stack:
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
+  PUBLISH_TO_URL: 'file:published'
+
+artifacts:
+  - path: 'published.zip'
+    type: zip
 
 build_script:
   - sh: 'export'
@@ -35,6 +40,8 @@ test_script:
 after_test:
   - 'sbt faker-plugins/publish'
   - 'sbt +publish'
+  - sh: '7z a published.zip "$APPVEYOR_BUILD_FOLDER\published\*"'
+  - cmd: '7z a published.zip "%APPVEYOR_BUILD_FOLDER%/published/*"'
 
 for:
 
@@ -45,10 +52,6 @@ for:
 
     environment:
       JAVA_VERSION: 1.8
-      PUBLISH_TO_URL: 'file:published'
-
-    artifacts:
-      - path: 'published/**'
 
     install: &install-macos
       - '/usr/libexec/java_home -V'
@@ -71,9 +74,6 @@ for:
     environment:
       JAVA_VERSION: 11
       PUBLISH_TO_URL: 'file:published'
-
-    artifacts:
-      - path: 'published/**'
 
     install: *install-macos
 
