@@ -122,16 +122,6 @@ for:
   - matrix:
       only:
         - image: Ubuntu
-          stack: jdk 11
-
-    install: *install-linux
-
-    cache: *cache-linux
-
-  - matrix:
-      only:
-        - image: Ubuntu
-          stack: jdk 15
 
     install: *install-linux
 
