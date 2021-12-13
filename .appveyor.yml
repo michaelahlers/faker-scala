@@ -33,8 +33,8 @@ test_script:
 #  - 'sbt +Test/test'
 
 after_test:
-  - 'sbt faker-plugins/publishLocal'
-  - 'sbt +publishLocal'
+  - 'sbt faker-plugins/publish'
+  - 'sbt +publish'
 
 for:
 
