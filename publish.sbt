@@ -9,16 +9,20 @@ import fm.sbt.S3URLHandler
 ThisBuild / publishMavenStyle := false
 
 ThisBuild / publishTo := {
-  sys.env.get("PUBLISH_TO_URL").map(url(_)) match {
+  implicit val patterns: Patterns = Resolver.ivyStylePatterns
+
+  sys.env.get("PUBLISH_TO_URL").map(url) match {
 
     case Some(publishToUrl) =>
-      val name = "Environment (PUBLISH_TO_URL)"
-      IO.urlAsFile(publishToUrl)
-        .map(Resolver.file(name, _)(Resolver.ivyStylePatterns))
-        .orElse(Some(Resolver.url(name, publishToUrl)(Resolver.ivyStylePatterns)))
+      val name = s"Environment (PUBLISH_TO_URL=$publishToUrl)"
+      Some(IO.urlAsFile(publishToUrl)
+        .map(Resolver.file(name, _))
+        .getOrElse(Resolver.url(name, publishToUrl)))
 
     case None =>
-      Some(Resolver.url("Ahlers Consulting Artifacts (public)", url("s3://ahlers-consulting-artifacts-public.s3.amazonaws.com/"))(Resolver.ivyStylePatterns))
+      val name = "Ahlers Consulting Artifacts (public)"
+      val publishToUrl = url("s3://ahlers-consulting-artifacts-public.s3.amazonaws.com/")
+      Some(Resolver.url(name, publishToUrl))
 
   }
 }
