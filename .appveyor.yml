@@ -17,6 +17,7 @@ stack:
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
+  DEPLOY_ARTIFACTS: false
 
 build_script:
   - sh: 'echo $JAVA_HOME'
@@ -111,7 +112,7 @@ for:
     cache: *cache-linux
 
     environment:
-      PUBLISH_ARTIFACTS: true
+      DEPLOY_ARTIFACTS: true
 
   - matrix:
       only:
@@ -166,9 +167,6 @@ for:
 artifacts:
   - path: project
 
-before_deploy:
-  - 'echo "PUBLISH_ARTIFACTS=$PUBLISH_ARTIFACTS"'
-
 deploy:
   - provider: S3
     access_key_id:
@@ -180,4 +178,4 @@ deploy:
     set_public: true
     unzip: true
     on:
-      PUBLISH_ARTIFACTS: true
+      DEPLOY_ARTIFACTS: true
