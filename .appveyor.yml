@@ -1,14 +1,15 @@
-version: '{build}'
+version: '0.1.0-{build}'
 
 skip_branch_with_pr: true
+skip_tags: true
 
 platform:
   - x64
 
 image:
-#  - macOS
+  - macOS
   - Ubuntu
-#  - Visual Studio 2019
+  - Visual Studio 2019
 
 stack:
   - jdk 8
@@ -28,14 +29,14 @@ build_script:
   - sh: 'echo "JAVA_HOME=$JAVA_HOME"'
   - cmd: 'echo "JAVA_HOME=%JAVA_HOME%"'
   - 'java -version'
-#  - 'sbt faker-plugins/Test/compile'
-#  - 'sbt faker-plugins/IntegrationTest/compile'
-#  - 'sbt +Test/compile'
+  - 'sbt faker-plugins/Test/compile'
+  - 'sbt faker-plugins/IntegrationTest/compile'
+  - 'sbt +Test/compile'
 
 test_script:
-#  - 'sbt faker-plugins/Test/test'
-#  - 'sbt faker-plugins/IntegrationTest/test'
-#  - 'sbt +Test/test'
+  - 'sbt faker-plugins/Test/test'
+  - 'sbt faker-plugins/IntegrationTest/test'
+  - 'sbt +Test/test'
 
 after_test:
   - 'sbt faker-plugins/publish'
