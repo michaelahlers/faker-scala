@@ -19,6 +19,9 @@ environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
   PUBLISH_TO_URL: 'file:published'
 
+artifacts:
+  - path: published
+
 build_script:
   - sh: 'export'
   - sh: 'echo "JAVA_HOME=$JAVA_HOME"'
@@ -36,9 +39,6 @@ test_script:
 after_test:
   - 'sbt faker-plugins/publishLocal'
   - 'sbt +publishLocal'
-
-artifacts:
-  - path: published
 
 for:
 
