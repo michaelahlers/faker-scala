@@ -89,9 +89,6 @@ for:
       JAVA_VERSION: 15
       PUBLISH_TO_URL: 'file:published'
 
-    artifacts:
-      - path: 'published/**'
-
     install: *install-macos
 
     cache: *cache-macos
@@ -103,9 +100,6 @@ for:
 
     environment:
       PUBLISH_TO_URL: 'file:published'
-
-    artifacts:
-      - path: 'published/**'
 
     # https://scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
     install: &install-linux
@@ -139,9 +133,6 @@ for:
 
     environment:
       PUBLISH_TO_URL: 'file:published'
-
-    artifacts:
-      - path: 'published/**'
 
     install: *install-linux
 
