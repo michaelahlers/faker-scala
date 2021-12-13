@@ -38,6 +38,7 @@ test_script:
   - 'sbt faker-plugins/IntegrationTest/test'
   - 'sbt +Test/test'
 
+# https://appveyor.com/docs/packaging-artifacts/#packaging-multiple-files-in-different-locations-into-a-single-archive
 after_test:
   - 'sbt faker-plugins/publish'
   - 'sbt +publish'
@@ -116,6 +117,7 @@ for:
       - '$HOME/.ivy2 -> **/dependencies.sbt, project/*'
       - '$HOME/.sbt -> **/dependencies.sbt, project/*'
 
+    # https://appveyor.com/docs/deployment/amazon-s3/
     deploy:
       - provider: S3
         access_key_id:
