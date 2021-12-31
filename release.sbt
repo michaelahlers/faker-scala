@@ -1,0 +1,1 @@
+releaseCrossBuild := true
