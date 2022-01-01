@@ -13,6 +13,9 @@ object all {
   val genCompanyName: Gen[CompanyName] =
     opendata500.companies.names.genCompanyName
 
+  val genCompanyWebsite: Gen[CompanyWebsite] =
+    opendata500.companies.websites.genCompanyWebsite
+
   val genPersonGivenName: Gen[PersonGivenName] =
     oneOf(
       uscensus1990.persons.names.genPersonGivenName,
