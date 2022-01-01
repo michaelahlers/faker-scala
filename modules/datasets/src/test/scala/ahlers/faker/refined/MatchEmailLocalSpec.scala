@@ -18,27 +18,27 @@ class MatchEmailLocalSpec extends AnyWordSpec {
   "isValid" in {
     val isValid = Validate[String, MatchEmailLocal].isValid(_)
 
-    isValid("jane").should(be(true))
-    isValid("jane+a").should(be(true))
-    isValid("jane.smith").should(be(true))
-    isValid("jane.smith+a").should(be(true))
-    isValid("jane.smith+a+b").should(be(true))
+    assert(isValid("jane"))
+    assert(isValid("jane+a"))
+    assert(isValid("jane.smith"))
+    assert(isValid("jane.smith+a"))
+    assert(isValid("jane.smith+a+b"))
 
-    isValid("jane-doe").should(be(true))
-    isValid("jane-doe+a").should(be(true))
-    isValid("jane-doe+a+b").should(be(true))
+    assert(isValid("jane-doe"))
+    assert(isValid("jane-doe+a"))
+    assert(isValid("jane-doe+a+b"))
 
-    isValid("host!user").should(be(true))
-    isValid("user%host").should(be(true))
+    assert(isValid("host!user"))
+    assert(isValid("user%host"))
   }
 
   "notValid" in {
     val notValid = Validate[String, MatchEmailLocal].notValid(_)
 
-    notValid("").should(be(true))
-    notValid("jane@doe").should(be(true))
-    notValid("""a"b(c)d,e:f;g<h>i[j\k]l""").should(be(true))
-    notValid("""jane"q"doe""").should(be(true))
+    assert(notValid(""))
+    assert(notValid("jane@doe"))
+    assert(notValid("""a"b(c)d,e:f;g<h>i[j\k]l"""))
+    assert(notValid("""jane"q"doe"""))
   }
 
   "showExpr" in {
