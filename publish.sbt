@@ -21,7 +21,7 @@ ThisBuild / publishTo := {
 
     case None =>
       val name = "Ahlers Consulting Artifacts (public)"
-      val publishToUrl = url("s3://ahlers-consulting-artifacts-public.s3.amazonaws.com/")
+      val publishToUrl = url("s3://artifacts.ahlers.consulting/ivy")
       Some(Resolver.url(name, publishToUrl))
 
   }
