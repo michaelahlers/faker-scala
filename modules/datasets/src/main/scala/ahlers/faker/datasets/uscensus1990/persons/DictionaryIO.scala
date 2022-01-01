@@ -24,7 +24,7 @@ private[uscensus1990] object DictionaryIO {
       Source.fromResource("ahlers/faker/datasets/uscensus1990/persons/name.csv")(Codec.UTF8)
         .getLines()
         .zipWithIndex
-        .map(NameLine.tupled)
+        .map((NameLine(_, _)).tupled)
         .map(line =>
           NameEntry(
             index = NameIndex(line.toInt),
@@ -36,7 +36,7 @@ private[uscensus1990] object DictionaryIO {
       Source.fromResource("ahlers/faker/datasets/uscensus1990/persons/name-index,usage.csv")(Codec.UTF8)
         .getLines()
         .zipWithIndex
-        .map(UsageLine.tupled)
+        .map((UsageLine(_, _)).tupled)
         .map(line =>
           line.toText.split(',') match {
 

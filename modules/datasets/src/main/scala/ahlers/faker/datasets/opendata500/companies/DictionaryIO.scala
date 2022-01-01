@@ -12,7 +12,7 @@ trait DictionaryIO {
 
   def loadNameEntries(): Seq[NameEntry]
 
-  //def loadWebsiteEntries(): Seq[WebsiteEntry]
+  // def loadWebsiteEntries(): Seq[WebsiteEntry]
 
 }
 
@@ -24,7 +24,7 @@ object DictionaryIO {
       Source.fromResource("ahlers/faker/datasets/opendata500/companies/name.csv")(Codec.UTF8)
         .getLines()
         .zipWithIndex
-        .map(NameLine.tupled)
+        .map((NameLine(_, _)).tupled)
         .map(line =>
           NameEntry(
             index = NameIndex(line.toInt),
@@ -32,7 +32,7 @@ object DictionaryIO {
           ))
         .toSeq
 
-    //override def loadWebsiteEntries() =
+    // override def loadWebsiteEntries() =
     //  Source.fromResource("ahlers/faker/datasets/opendata500/companies/name.csv")(Codec.UTF8)
     //    .getLines()
     //    .zipWithIndex

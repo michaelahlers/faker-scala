@@ -13,17 +13,17 @@ class AllSpec extends AnyWordSpec {
 
   "Company names" in {
     import ScalaCheckPropertyChecks._
-    forAll { _: CompanyName => }
+    forAll { (_: CompanyName) => }
   }
 
   "Person given names" in {
     import ScalaCheckPropertyChecks._
-    forAll { _: PersonGivenName => }
+    forAll { (_: PersonGivenName) => }
   }
 
   "Person family names" in {
     import ScalaCheckPropertyChecks._
-    forAll { _: PersonFamilyName => }
+    forAll { (_: PersonFamilyName) => }
   }
 
 }

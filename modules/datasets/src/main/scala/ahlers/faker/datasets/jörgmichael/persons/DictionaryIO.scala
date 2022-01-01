@@ -31,21 +31,21 @@ private[jörgmichael] object DictionaryIO {
         parseTemplateEntries(Source.fromResource("ahlers/faker/datasets/jörgmichael/persons/template.csv")(Codec.UTF8)
           .getLines()
           .zipWithIndex
-          .map(TemplateLine.tupled)
+          .map((TemplateLine(_, _)).tupled)
           .toIndexedSeq)
 
       override def loadUsageEntries() =
         parseUsageRegionWeightEntries(Source.fromResource("ahlers/faker/datasets/jörgmichael/persons/template-index,usage.csv")(Codec.UTF8)
           .getLines()
           .zipWithIndex
-          .map(UsageLine.tupled)
+          .map((UsageLine(_, _)).tupled)
           .toIndexedSeq)
 
       override def loadCountryWeightEntries() =
         parseCountryWeightEntries(Source.fromResource("ahlers/faker/datasets/jörgmichael/persons/template-index,country-code,weight.csv")(Codec.UTF8)
           .getLines()
           .zipWithIndex
-          .map(CountryWeightLine.tupled)
+          .map((CountryWeightLine(_, _)).tupled)
           .toIndexedSeq)
 
     }
