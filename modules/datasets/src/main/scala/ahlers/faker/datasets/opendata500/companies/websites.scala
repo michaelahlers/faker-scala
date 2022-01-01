@@ -6,25 +6,10 @@ package ahlers.faker.datasets.opendata500.companies
  */
 case object websites {
 
-  private val entries: Seq[WebsiteEntry] =
+  val byIndex: Map[WebsiteIndex, Website] =
     DictionaryIO.default
       .loadWebsiteEntries()
-
-  val byWebsiteIndex: Map[WebsiteIndex, Website] =
-    entries
-      .map(entry =>
-        (entry.index, entry.website))
+      .map(entry => (entry.index, entry.website))
       .toMap
-
-  val byNameIndex: Map[NameIndex, Seq[Website]] =
-    entries
-      .groupBy(_.name)
-      .map { case (nameIndex, entries) =>
-        (nameIndex, entries.map(_.website))
-      }
-
-  val all: Seq[Website] =
-    entries
-      .map(_.website)
 
 }

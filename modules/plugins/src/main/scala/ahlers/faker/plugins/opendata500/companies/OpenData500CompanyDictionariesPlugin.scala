@@ -52,13 +52,13 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
   /** @todo Consider restoring from authoritative source. */
   private val usCompanySourceUrlSetting: Setting[URL] =
     openData500UsCompanyDictionarySourceUrl :=
-      //url("https://www.opendata500.com/us/download/us_companies.csv")
+      // url("https://www.opendata500.com/us/download/us_companies.csv")
       url("classpath:www.opendata500.com/us/download/us_companies.csv")
 
   /** @todo Consider restoring from authoritative source. */
   private val krCompanySourceUrlSetting: Setting[URL] =
     openData500KrCompanyDictionarySourceUrl :=
-      //url("https://www.opendata500.com/kr/download/kr_companies.csv")
+      // url("https://www.opendata500.com/kr/download/kr_companies.csv")
       url("classpath:www.opendata500.com/kr/download/kr_companies.csv")
 
   private val outputFormatSetting: Setting[DictionaryOutputFormat] =
@@ -111,7 +111,8 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
 
           case DictionaryOutputFormat.Csv =>
             val nameFile = outputDirectory / "name.csv"
-            val websiteFile = outputDirectory / "name-index,website.csv"
+            val websiteFile = outputDirectory / "website.csv"
+            val nameWebsiteFile = outputDirectory / "name,website.csv"
 
             val writeEntries =
               DictionaryEntriesCsvWriter.using(
@@ -121,15 +122,17 @@ object OpenData500CompanyDictionariesPlugin extends AutoPlugin {
             writeEntries(
               dictionaryEntries = dictionaryEntries.toIndexedSeq,
               nameFile = nameFile,
-              websiteFile = websiteFile
+              websiteFile = websiteFile,
+              nameWebsiteFile = nameWebsiteFile
             )
 
             Seq(
               nameFile,
-              websiteFile
+              websiteFile,
+              nameWebsiteFile
             )
 
-          //case DictionaryOutputFormat.Yaml =>
+          // case DictionaryOutputFormat.Yaml =>
           //  ???
 
         }

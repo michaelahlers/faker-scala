@@ -15,7 +15,8 @@ object websites {
     oneOf(ahlers.faker.datasets.opendata500
       .companies
       .websites
-      .all
+      .byIndex
+      .values
       .map(website => CompanyWebsite(Refined.unsafeApply(website.toText))))
 
 }

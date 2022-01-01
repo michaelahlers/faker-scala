@@ -22,8 +22,9 @@ object names {
     oneOf(ahlers.faker.datasets.opendata500
       .companies
       .names
-      .all
+      .byIndex
+      .values
       .map(name => CompanyName(Refined.unsafeApply(name.toText))))
-  //oneOf(genCompanyKr, genCompanyUs)
+  // oneOf(genCompanyKr, genCompanyUs)
 
 }

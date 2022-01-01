@@ -1,12 +1,9 @@
 package ahlers.faker.plugins.opendata500.companies
 
-import sbt._
+import sbt.Logger
+import sbt.File
 
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 import java.io.PrintWriter
-import java.nio.charset.StandardCharsets
 
 /**
  * @since November 13, 2021
@@ -16,73 +13,59 @@ trait DictionaryEntriesCsvWriter {
 
   def apply(
     dictionaryEntries: IndexedSeq[DictionaryEntry],
-    nameStream: OutputStream,
-    websiteStream: OutputStream
+    nameWriter: PrintWriter,
+    websiteWriter: PrintWriter,
+    nameWebsiteWriter: PrintWriter
   ): Unit
 
   final def apply(
     dictionaryEntries: IndexedSeq[DictionaryEntry],
     nameFile: File,
-    websiteFile: File
+    websiteFile: File,
+    nameWebsiteFile: File
   ): Unit = {
-    val nameStream = new FileOutputStream(nameFile, false)
-    val websiteStream = new FileOutputStream(websiteFile, false)
+    import better.files._
 
-    try apply(
-      dictionaryEntries = dictionaryEntries,
-      nameStream = nameStream,
-      websiteStream = websiteStream
-    )
-    finally {
-      nameStream.flush()
-      websiteStream.flush()
-
-      nameStream.close()
-      websiteStream.close()
-    }
+    (for {
+      nameWriter <- nameFile.toScala.newFileOutputStream().printWriter().autoClosed
+      websiteWriter <- websiteFile.toScala.newFileOutputStream().printWriter().autoClosed
+      nameWebsiteWriter <- nameWebsiteFile.toScala.newFileOutputStream().printWriter().autoClosed
+    } yield {
+      apply(
+        dictionaryEntries = dictionaryEntries,
+        nameWriter = nameWriter,
+        websiteWriter = websiteWriter,
+        nameWebsiteWriter = nameWebsiteWriter
+      )
+    }).get()
   }
 
 }
 
 object DictionaryEntriesCsvWriter {
 
-  implicit val orderingName: Ordering[CompanyName] =
-    Ordering.by(_.toText)
-
   def using(
     logger: Logger
-  ): DictionaryEntriesCsvWriter = { (dictionaryEntries, nameStream, websiteStream) =>
-    /** Group around unique [[CompanyName]] values. */
-    val indexByName: Map[CompanyName, Int] =
-      dictionaryEntries
-        .map(_.name)
-        .sorted
-        .distinct
-        .zipWithIndex
-        .toMap
+  ): DictionaryEntriesCsvWriter = { (companyEntries, nameWriter, websiteWriter, nameWebsiteWriter) =>
+    var nameIndex = 0
+    var websiteIndex = 0
 
-    IO.writeLines(
-      writer = new PrintWriter(nameStream, true),
-      lines = indexByName
-        .keys.toSeq
-        .sorted
-        .map { name =>
-          """%s""".format(name.toText)
-        }
-    )
+    companyEntries.foreach { companyEntry =>
+      val name = companyEntry.name
+      nameWriter.println(s"${name.toText}")
 
-    IO.writeLines(
-      writer = new PrintWriter(websiteStream, true),
-      lines = dictionaryEntries
-        .sortBy(_.name)
-        .flatMap(entry => entry.website.map((entry.name, _)))
-        .distinct
-        .map { case (name, website) =>
-          """%x,%s""".format(
-            indexByName(name),
-            website.toText)
-        }
-    )
+      companyEntry.website.foreach { website =>
+        websiteWriter.println(s"${website.toText}")
+        nameWebsiteWriter.println(f"$nameIndex%x,$websiteIndex%x")
+        websiteIndex += 1
+      }
+
+      nameIndex += 1
+    }
+
+    nameWriter.flush()
+    websiteWriter.flush()
+    nameWebsiteWriter.flush()
 
     ()
   }

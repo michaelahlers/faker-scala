@@ -6,18 +6,10 @@ package ahlers.faker.datasets.opendata500.companies
  */
 object names {
 
-  private[opendata500] val entries: Seq[NameEntry] =
+  val byIndex: Map[NameIndex, Name] =
     DictionaryIO.default
       .loadNameEntries()
-
-  val byNameIndex: Map[NameIndex, Name] =
-    entries
-      .map(entry =>
-        (entry.index, entry.name))
+      .map(entry => (entry.index, entry.name))
       .toMap
-
-  val all: Seq[Name] =
-    entries
-      .map(_.name)
 
 }
