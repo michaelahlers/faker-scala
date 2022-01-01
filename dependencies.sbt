@@ -1,5 +1,8 @@
 ThisBuild / scalaVersion := "2.12.15"
-ThisBuild / crossScalaVersions += "2.13.7"
+ThisBuild / crossScalaVersions ++=
+  "2.13.7" ::
+    "3.1.0" ::
+    Nil
 
 ThisBuild / libraryDependencies ++=
   "com.softwaremill.diffx" %% "diffx-scalatest-must" % "0.7.0" % Test ::
