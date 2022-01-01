@@ -4,21 +4,49 @@ Realistic sample value generators for Scala.
 
 ## Status
 
-**This project's a work-in-progress**, and it's settling on design patterns and essential datasets to provide. **Until those are stabilized**, this project will _not_ publish artifacts or accept pull-requests.
+**This project's a work-in-progress**, and it's settling on design patterns and essential datasets to provide. **Until those are stabilized**, this project will _not_ accept pull-requests.
 
 ## Installation
 
 ### SBT
 
-Add both this project's resolver and library dependencies:
+Add both this project's resolver and library dependencies.
+
+Most projects will want to obtain the ScalaCheck `Gen` and `Arbitrary` instances:
 
 ```scala
 resolvers += "Ahlers Consulting" at "https://artifacts.ahlers.consulting/maven2"
-libraryDependencies ++= 
-  "ahlers.faker" %% "faker-datasets" % "0.1.2-SNAPSHOT" % Test ::
-    "ahlers.faker" %% "faker-scalatest" % "0.1.2-SNAPSHOT" % Test ::
-    Nil
+libraryDependencies += "ahlers.faker" %% "faker-scalatest" % "0.1.2-SNAPSHOT" % Test 
 ```
+
+For those interested only in the data:
+
+```scala
+resolvers += "Ahlers Consulting" at "https://artifacts.ahlers.consulting/maven2"
+libraryDependencies += "ahlers.faker" %% "faker-datasets" % "0.1.2-SNAPSHOT" % Test :: 
+```
+
+## Platforms
+
+### Java
+
+Artifacts for this library are built for:
+
+- Scala 2.12
+- Scala 2.13
+- Scala 3.1
+
+It's tested on and supported for these Java versions and operating systems:
+
+| JDK | macOS | Linux | Windows |
+| ---: | :---: | :---: | :---: |
+| **8** | :white_check_mark: | :white_check_mark: | :white_check_mark: | 
+| **9** | :grey_question: | :grey_question: | :grey_question: | 
+| **11** | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| **12** | :grey_question: | :grey_question: | :grey_question: | 
+| **13** | :grey_question: | :grey_question: | :grey_question: | 
+| **14** | :grey_question: | :grey_question: | :grey_question: | 
+| **15** | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 ## Datasets
 
@@ -70,20 +98,6 @@ Because this project preprocesses upstream sources, it's able to be largely free
 
 - [kantan.csv](https://github.com/nrinaudo/kantan.csv)
 - [refined](https://github.com/fthomas/refined)
-
-## Platforms
-
-This library and tools are fully-tested on and supported for these Java versions and operating systems:
-
-| JDK | macOS | Linux | Windows |
-| ---: | :---: | :---: | :---: |
-| **8** | :white_check_mark: | :white_check_mark: | :white_check_mark: | 
-| **9** | :grey_question: | :grey_question: | :grey_question: | 
-| **11** | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| **12** | :grey_question: | :grey_question: | :grey_question: | 
-| **13** | :grey_question: | :grey_question: | :grey_question: | 
-| **14** | :grey_question: | :grey_question: | :grey_question: | 
-| **15** | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 ## Acknowledgements
 
