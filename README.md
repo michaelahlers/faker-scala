@@ -69,7 +69,6 @@ And means to fill gaps left by those for Scala which haven't seen recent activit
 Because this project preprocesses upstream sources, it's able to be largely free of extraneous dependencies in modules intended for end users. Confined to the [Plugins][#plugins] module, noteworthy dependencies include: 
 
 - [kantan.csv](https://github.com/nrinaudo/kantan.csv)
-- [NewType](https://github.com/estatico/scala-newtype)
 - [refined](https://github.com/fthomas/refined)
 
 ## Platforms
