@@ -23,14 +23,14 @@ Most projects will want to obtain the ScalaCheck `Gen` and `Arbitrary` instances
 
 ```scala
 resolvers += "Ahlers Consulting" at "https://artifacts.ahlers.consulting/maven2"
-libraryDependencies += "ahlers.faker" %% "faker-scalatest" % "0.1.2" % Test 
+libraryDependencies += "ahlers.faker" %% "faker-scalatest" % "0.2.0-SNAPSHOT" % Test 
 ```
 
 For those interested only in the data:
 
 ```scala
 resolvers += "Ahlers Consulting" at "https://artifacts.ahlers.consulting/maven2"
-libraryDependencies += "ahlers.faker" %% "faker-datasets" % "0.1.2" % Test :: 
+libraryDependencies += "ahlers.faker" %% "faker-datasets" % "0.2.0-SNAPSHOT" % Test :: 
 ```
 
 ### Mill
