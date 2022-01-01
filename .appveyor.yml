@@ -7,8 +7,8 @@ platform:
   - x64
 
 image:
-  - macOS
   - Ubuntu
+  - macOS
   - Visual Studio 2019
 
 stack:
@@ -124,7 +124,7 @@ for:
           secure: z8mEVIKfSkpmq+WaQpy55p4MwJ4/cH7d2rEHbr+DVZQ=
         secret_access_key:
           secure: n6Vac0IBz5K1GYM5b9ZNR/cbtm+vznGhiIsB/hXXv96WyT2+00nIqX/61ZgBMw/m
-        bucket: ahlers-consulting-artifacts-public
+        bucket: artifacts.ahlers.consulting
 #        folder: $(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)
         folder: /ivy
         set_public: true
