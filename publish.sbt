@@ -6,11 +6,7 @@ import com.amazonaws.auth.EnvironmentVariableCredentialsProvider
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import fm.sbt.S3URLHandler
 
-ThisBuild / publishMavenStyle := false
-
 ThisBuild / publishTo := {
-  implicit val patterns: Patterns = Resolver.ivyStylePatterns
-
   sys.env.get("PUBLISH_TO_URL").map(url) match {
 
     case Some(publishToUrl) =>
@@ -21,7 +17,7 @@ ThisBuild / publishTo := {
 
     case None =>
       val name = "Ahlers Consulting Artifacts (public)"
-      val publishToUrl = url("s3://artifacts.ahlers.consulting/ivy")
+      val publishToUrl = url("s3://artifacts.ahlers.consulting/maven2")
       Some(Resolver.url(name, publishToUrl))
 
   }

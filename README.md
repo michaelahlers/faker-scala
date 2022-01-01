@@ -6,6 +6,20 @@ Realistic sample value generators for Scala.
 
 **This project's a work-in-progress**, and it's settling on design patterns and essential datasets to provide. **Until those are stabilized**, this project will _not_ publish artifacts or accept pull-requests.
 
+## Installation
+
+### SBT
+
+Add both this project's resolver and library dependencies:
+
+```scala
+resolvers += "Ahlers Consulting" at "https://artifacts.ahlers.consulting/maven2"
+libraryDependencies ++= 
+  "ahlers.faker" %% "faker-datasets" % "0.1.2-SNAPSHOT" % Test ::
+    "ahlers.faker" %% "faker-scalatest" % "0.1.2-SNAPSHOT" % Test ::
+    Nil
+```
+
 ## Datasets
 
 ### Companies
