@@ -6,6 +6,13 @@ Realistic sample value generators for Scala.
 
 **This project's a work-in-progress**, and it's settling on design patterns and essential datasets to provide. **Until those are stabilized**, this project will _not_ accept pull-requests.
 
+## Artifacts
+
+| Target | Scala 2.12 | Scala 2.13 | Scala 3 |
+| ---: | :---: | :---: | :---: |
+| **JVM** | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| **JavaScript** | :grey_question: | :grey_question: | :grey_question: |
+
 ## Installation
 
 ### SBT
@@ -26,17 +33,19 @@ resolvers += "Ahlers Consulting" at "https://artifacts.ahlers.consulting/maven2"
 libraryDependencies += "ahlers.faker" %% "faker-datasets" % "0.1.2-SNAPSHOT" % Test :: 
 ```
 
+### Mill
+
+_TBD._
+
+### Gradle
+
+_TBD._
+
 ## Platforms
 
+This library tested on and supported on these platforms.
+
 ### Java
-
-Artifacts for this library are built for:
-
-- Scala 2.12
-- Scala 2.13
-- Scala 3.1
-
-It's tested on and supported for these Java versions and operating systems:
 
 | JDK | macOS | Linux | Windows |
 | ---: | :---: | :---: | :---: |
