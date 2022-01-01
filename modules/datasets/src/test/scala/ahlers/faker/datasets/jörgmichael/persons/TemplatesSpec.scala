@@ -1,6 +1,6 @@
 package ahlers.faker.datasets.jörgmichael.persons
 
-import com.softwaremill.diffx.generic.auto._
+import com.softwaremill.diffx.generic.AutoDerivation
 import com.softwaremill.diffx.scalatest.DiffShouldMatcher._
 import org.scalatest.Inside._
 import org.scalatest.LoneElement._
@@ -11,7 +11,7 @@ import org.scalatest.wordspec.AnyWordSpec
  * @since November 13, 2021
  * @author <a href="mailto:michael@ahlers.consulting">Michael Ahlers</a>
  */
-class TemplatesSpec extends AnyWordSpec {
+class TemplatesSpec extends AnyWordSpec with AutoDerivation {
 
   "Specify correct type" in {
     import Template.{ Equivalent, Hyphenated, Literal }
@@ -110,5 +110,3 @@ class TemplatesSpec extends AnyWordSpec {
   }
 
 }
-
-object TemplatesSpec {}
