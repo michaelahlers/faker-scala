@@ -24,16 +24,18 @@ package object companies {
     DictionaryIO.default
       .loadNameWebsiteRelations()
       .groupBy(_.name)
-      .mapValues(_.map(_.website))
-      .toMap
+      .map { case (name, relations) =>
+        (name, relations.map(_.website))
+      }
   }
 
   lazy val websiteNames: Map[WebsiteIndex, Seq[NameIndex]] = {
     DictionaryIO.default
       .loadNameWebsiteRelations()
       .groupBy(_.website)
-      .mapValues(_.map(_.name))
-      .toMap
+      .map { case (website, relations) =>
+        (website, relations.map(_.name))
+      }
   }
 
   def nameBy(website: WebsiteIndex): Seq[Name] =
