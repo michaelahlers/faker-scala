@@ -15,6 +15,11 @@ class AllSpec extends AnyWordSpec {
     forAll(genCompanyName) { (_) => }
   }
 
+  "Company websites" in {
+    import ScalaCheckPropertyChecks._
+    forAll(genCompanyWebsite) { (_) => }
+  }
+
   "Person given names" in {
     import ScalaCheckPropertyChecks._
     forAll(genPersonGivenName) { (_) => }

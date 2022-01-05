@@ -12,7 +12,9 @@ trait DictionaryIO {
 
   def loadNameEntries(): Seq[NameEntry]
 
-  // def loadWebsiteEntries(): Seq[WebsiteEntry]
+  def loadWebsiteEntries(): Seq[WebsiteEntry]
+
+  def loadNameWebsiteRelations(): Seq[NameWebsiteRelation]
 
 }
 
@@ -32,24 +34,35 @@ object DictionaryIO {
           ))
         .toSeq
 
-    // override def loadWebsiteEntries() =
-    //  Source.fromResource("ahlers/faker/datasets/opendata500/companies/name.csv")(Codec.UTF8)
-    //    .getLines()
-    //    .zipWithIndex
-    //    .map(WebsiteLine.tupled)
-    //    .map(line =>
-    //      line.toText.split(',') match {
-    //        case Array(nameIndex, website) =>
-    //          WebsiteEntry(
-    //            index = WebsiteIndex(line.toInt),
-    //            name = NameIndex(nameIndex.toInt),
-    //            website =
-    //              website match {
-    //                case "S" => Website.Sur
-    //              }
-    //          )
-    //      })
-    //    .toSeq
+    override def loadWebsiteEntries() =
+      Source.fromResource("ahlers/faker/datasets/opendata500/companies/website.csv")(Codec.UTF8)
+        .getLines()
+        .zipWithIndex
+        .map((WebsiteLine(_, _)).tupled)
+        .map(line =>
+          WebsiteEntry(
+            index = WebsiteIndex(line.toInt),
+            website = Website(line.toText)
+          ))
+        .toSeq
+
+    override def loadNameWebsiteRelations() =
+      Source.fromResource("ahlers/faker/datasets/opendata500/companies/name,website.csv")
+        .getLines()
+        .map(_.split(',') match {
+
+          case Array(name, website) =>
+            NameWebsiteRelation(
+              NameIndex(Integer.parseInt(name, 16)),
+              WebsiteIndex(Integer.parseInt(website, 16))
+            )
+
+          case _ =>
+            /** @todo Proper error handling. */
+            ???
+
+        })
+        .toSeq
 
   }
 

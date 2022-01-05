@@ -9,7 +9,11 @@ import org.scalacheck._
  * @since May 18, 2020
  */
 object all {
+
   implicit val arbCompanyName: Arbitrary[CompanyName] = Arbitrary(genCompanyName)
+  implicit val arbCompanyWebsite: Arbitrary[CompanyWebsite] = Arbitrary(genCompanyWebsite)
+
   implicit val arbPersonGivenName: Arbitrary[PersonGivenName] = Arbitrary(genPersonGivenName)
   implicit val arbPersonFamilyName: Arbitrary[PersonFamilyName] = Arbitrary(genPersonFamilyName)
+
 }
