@@ -29,7 +29,13 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
 
         websiteFile <-
           File.temporaryFile(
-            prefix = "name-index,website",
+            prefix = "website",
+            suffix = ".csv"
+          )
+
+        nameWebsiteFile <-
+          File.temporaryFile(
+            prefix = "name,website",
             suffix = ".csv"
           )
 
@@ -42,7 +48,8 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
       } yield withFixture(test.toNoArgTest(Fixtures(
         nameFile = nameFile,
         websiteFile = websiteFile,
-        writeEntries = writeEntries
+        writeEntries = writeEntries,
+        nameWebsiteFile = nameWebsiteFile
       )))
 
     outcomeF.get()
@@ -51,20 +58,23 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
   "Consolidate duplicate company names" in { fixtures =>
     import fixtures.nameFile
     import fixtures.websiteFile
+    import fixtures.nameWebsiteFile
     import fixtures.writeEntries
 
     val partialEntry = DictionaryEntry(CompanyId(""), _, _)
 
     val entries = IndexedSeq(
       partialEntry(CompanyName("Alpha"), Some(CompanyWebsite("http://alpha.com"))),
-      partialEntry(CompanyName("Bravo"), Some(CompanyWebsite("http://bravo0.com"))),
-      partialEntry(CompanyName("Bravo"), Some(CompanyWebsite("http://bravo1.com")))
+      partialEntry(CompanyName("Bravo"), Some(CompanyWebsite("http://bravo.com"))),
+      partialEntry(CompanyName("Charlie"), None),
+      partialEntry(CompanyName("Delta"), Some(CompanyWebsite("http://delta.com")))
     )
 
     writeEntries(
       dictionaryEntries = entries,
       nameFile = nameFile.toJava,
-      websiteFile = websiteFile.toJava
+      websiteFile = websiteFile.toJava,
+      nameWebsiteFile = nameWebsiteFile.toJava
     )
 
     nameFile
@@ -79,7 +89,15 @@ class DictionaryEntriesCsvWriterSpec extends FixtureAnyWordSpec {
       .lines(StandardCharsets.UTF_8)
       .toSeq
       .shouldMatchTo(Resource.my
-        .getAsStream("expected_index,website.csv")
+        .getAsStream("expected_website.csv")
+        .lines(StandardCharsets.UTF_8)
+        .toSeq)
+
+    nameWebsiteFile
+      .lines(StandardCharsets.UTF_8)
+      .toSeq
+      .shouldMatchTo(Resource.my
+        .getAsStream("expected_name,website.csv")
         .lines(StandardCharsets.UTF_8)
         .toSeq)
 
@@ -92,6 +110,7 @@ object DictionaryEntriesCsvWriterSpec {
   case class Fixtures(
     nameFile: File,
     websiteFile: File,
+    nameWebsiteFile: File,
     writeEntries: DictionaryEntriesCsvWriter)
 
 }
