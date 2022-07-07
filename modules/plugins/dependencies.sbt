@@ -11,9 +11,9 @@ libraryDependencies ++=
     Nil
 
 libraryDependencies ++=
-  "com.nrinaudo" %% "kantan.csv" % "0.6.0" ::
-    "com.nrinaudo" %% "kantan.csv-generic" % "0.6.0" ::
-    "com.nrinaudo" %% "kantan.csv-refined" % "0.6.0" ::
+  "com.nrinaudo" %% "kantan.csv" % "0.6.2" ::
+    "com.nrinaudo" %% "kantan.csv-generic" % "0.6.2" ::
+    "com.nrinaudo" %% "kantan.csv-refined" % "0.6.2" ::
     Nil
 
 libraryDependencies ++=
