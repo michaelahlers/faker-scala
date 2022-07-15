@@ -53,19 +53,19 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
   /** @todo Consider restoring from authoritative source. */
   private val lastNameDictionarySourceUrlSetting: Setting[URL] =
     usCensus1990LastNameDictionarySourceUrl :=
-      //url("https://www2.census.gov/topics/genealogy/1990surnames/dist.all.last")
+      // url("https://www2.census.gov/topics/genealogy/1990surnames/dist.all.last")
       url("classpath:www2.census.gov/topics/genealogy/1990surnames/dist.all.last")
 
   /** @todo Consider restoring from authoritative source. */
   private val femaleFirstNameDictionarySourceUrlSetting: Setting[URL] =
     usCensus1990FirstNameFemaleDictionaryFileSourceUrl :=
-      //url("https://www2.census.gov/topics/genealogy/1990surnames/dist.female.first")
+      // url("https://www2.census.gov/topics/genealogy/1990surnames/dist.female.first")
       url("classpath:www2.census.gov/topics/genealogy/1990surnames/dist.female.first")
 
   /** @todo Consider restoring from authoritative source. */
   private val maleFirstNameDictionarySourceUrlSetting: Setting[URL] =
     usCensus1990FirstNameMaleDictionaryFileSourceUrl :=
-      //url("https://www2.census.gov/topics/genealogy/1990surnames/dist.male.first")
+      // url("https://www2.census.gov/topics/genealogy/1990surnames/dist.male.first")
       url("classpath:www2.census.gov/topics/genealogy/1990surnames/dist.male.first")
 
   private val downloadDirectorySetting: Setting[File] =
@@ -152,7 +152,7 @@ object UsCensus1990NameDictionariesPlugin extends AutoPlugin {
               usageFile
             )
 
-          //case DictionaryOutputFormat.Yaml =>
+          // case DictionaryOutputFormat.Yaml =>
           //  ???
 
         }

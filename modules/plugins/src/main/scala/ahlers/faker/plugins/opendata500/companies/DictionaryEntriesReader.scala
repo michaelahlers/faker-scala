@@ -19,8 +19,8 @@ trait DictionaryEntriesReader {
     val entriesStream = new FileInputStream(entriesFile)
 
     try apply(
-      entriesStream = entriesStream
-    )
+        entriesStream = entriesStream
+      )
     finally entriesStream.close()
   }
 
