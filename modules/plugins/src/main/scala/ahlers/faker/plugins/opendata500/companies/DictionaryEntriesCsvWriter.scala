@@ -29,10 +29,10 @@ trait DictionaryEntriesCsvWriter {
     val websiteStream = new FileOutputStream(websiteFile, false)
 
     try apply(
-      dictionaryEntries = dictionaryEntries,
-      nameStream = nameStream,
-      websiteStream = websiteStream
-    )
+        dictionaryEntries = dictionaryEntries,
+        nameStream = nameStream,
+        websiteStream = websiteStream
+      )
     finally {
       nameStream.flush()
       websiteStream.flush()

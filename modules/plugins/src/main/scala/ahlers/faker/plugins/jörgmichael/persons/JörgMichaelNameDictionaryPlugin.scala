@@ -47,7 +47,7 @@ object JörgMichaelNameDictionaryPlugin extends AutoPlugin {
   /** @todo Consider restoring from authoritative source. */
   private val archiveSourceUrlSetting: Setting[URL] =
     jörgMichaelNameDictionaryArchiveSourceUrl :=
-      //url("ftp://ftp.heise.de/pub/ct/listings/0717-182.zip")
+      // url("ftp://ftp.heise.de/pub/ct/listings/0717-182.zip")
       url("classpath:ftp.heise.de/pub/ct/listings/0717-182.zip")
 
   private val dictionaryExtractDirectorySetting: Setting[File] =
@@ -180,7 +180,7 @@ object JörgMichaelNameDictionaryPlugin extends AutoPlugin {
               countryCodeWeightFile
             )
 
-          //case DictionaryOutputFormat.Yaml =>
+          // case DictionaryOutputFormat.Yaml =>
           //  ???
 
         }

@@ -24,6 +24,6 @@ object names {
       .names
       .all
       .map(name => CompanyName(Refined.unsafeApply(name.toText))))
-  //oneOf(genCompanyKr, genCompanyUs)
+  // oneOf(genCompanyKr, genCompanyUs)
 
 }

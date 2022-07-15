@@ -45,7 +45,7 @@ object UsCensus2000NameDictionariesPlugin extends AutoPlugin {
   /** @todo Consider restoring from authoritative source. */
   private val nameDictionarySourceUrlSetting: Setting[URL] =
     usCensus2000SurnameDictionarySourceUrl :=
-      //url("https://www2.census.gov/topics/genealogy/2000surnames/names.zip")
+      // url("https://www2.census.gov/topics/genealogy/2000surnames/names.zip")
       url("classpath:www2.census.gov/topics/genealogy/2000surnames/names.zip")
 
   private val downloadDirectorySetting: Setting[File] =
@@ -155,7 +155,7 @@ object UsCensus2000NameDictionariesPlugin extends AutoPlugin {
               usageFile
             )
 
-          //case DictionaryOutputFormat.Yaml =>
+          // case DictionaryOutputFormat.Yaml =>
           //  ???
 
         }

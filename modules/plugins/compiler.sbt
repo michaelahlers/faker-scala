@@ -1,9 +1,9 @@
 scalacOptions --=
-  //"-Wunused:implicits" ::
-  //"-Wunused:imports" ::
-  //"-Wunused:locals" ::
-  //"-Wunused:params" ::
-  //"-Wunused:privates" ::
+  // "-Wunused:implicits" ::
+  // "-Wunused:imports" ::
+  // "-Wunused:locals" ::
+  // "-Wunused:params" ::
+  // "-Wunused:privates" ::
   "-Ywarn-unused-import" ::
     "-Ywarn-unused:implicits" ::
     "-Ywarn-unused:imports" ::
@@ -14,7 +14,7 @@ scalacOptions --=
 
 scalacOptions ++= {
   CrossVersion.partialVersion(scalaVersion.value) match {
-    //case Some((2, 13)) =>
+    // case Some((2, 13)) =>
     //  "-Ymacro-annotations" ::
     //    Nil
     case Some((2, 12)) =>

@@ -25,9 +25,9 @@ trait DictionaryEntriesReader {
     val entriesStream = new FileInputStream(entriesFile)
 
     try apply(
-      usage = usage,
-      entriesStream = entriesStream
-    )
+        usage = usage,
+        entriesStream = entriesStream
+      )
     finally entriesStream.close()
   }
 

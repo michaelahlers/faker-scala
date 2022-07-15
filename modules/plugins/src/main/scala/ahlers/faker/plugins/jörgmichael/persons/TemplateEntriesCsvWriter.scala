@@ -32,11 +32,11 @@ trait TemplateEntriesCsvWriter {
     val countryCodeWeightStream = new FileOutputStream(countryCodeWeightFile, false)
 
     try apply(
-      dictionaryEntries = dictionaryEntries,
-      templatesStream = templatesStream,
-      usageStream = usageStream,
-      countryCodeWeightStream = countryCodeWeightStream
-    )
+        dictionaryEntries = dictionaryEntries,
+        templatesStream = templatesStream,
+        usageStream = usageStream,
+        countryCodeWeightStream = countryCodeWeightStream
+      )
     finally {
       templatesStream.flush()
       usageStream.flush()
