@@ -1,7 +1,7 @@
 scalaVersion := "2.12.15"
 crossScalaVersions := Nil
 
-libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1"
+libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.2"
 
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.6.1"
 
