@@ -19,5 +19,5 @@ libraryDependencies ++=
 libraryDependencies ++=
   "com.softwaremill.diffx" %% "diffx-scalatest-must" % "0.7.0" % IntegrationTest ::
     "com.softwaremill.diffx" %% "diffx-scalatest-should" % "0.7.0" % IntegrationTest ::
-    "org.scalatest" %% "scalatest" % "3.2.10" % IntegrationTest ::
+    "org.scalatest" %% "scalatest" % "3.2.17" % IntegrationTest ::
     Nil
