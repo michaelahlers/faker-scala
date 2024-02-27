@@ -1,4 +1,4 @@
-scalaVersion := "2.12.15"
+scalaVersion := "2.12.19"
 crossScalaVersions := Nil
 
 libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1"
